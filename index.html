@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ระบบกำกับติดตามบันทึกข้อความ | งานโสตทัศนศึกษา คณะวิศวกรรมศาสตร์ มมส.</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+ --blue:#0b63e5;--blue-dk:#083f9c;--blue-lt:#22b8ff;--soft:#eef5ff;--soft2:#f7fbff;
+ --bg:#f2f6fc;--ink:#152036;--muted:#6b7893;--line:#e2eaf6;
+ --ok:#12a150;--warn:#f5a524;--danger:#e0322c;--purple:#6d5efc;
+ --sh:0 6px 26px rgba(11,99,229,.08);--sh2:0 14px 38px rgba(11,99,229,.18);--r:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:132px}
+body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--ink);font-size:14px;overflow-x:hidden}
+
+/* ---------- progress ---------- */
+#prog{position:fixed;top:0;left:0;height:3px;width:0;z-index:300;
+ background:linear-gradient(90deg,var(--blue),var(--blue-lt));transition:width .1s}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;overflow:hidden;color:#fff;padding:26px 30px 30px;
+ background:linear-gradient(125deg,#062d6e,var(--blue) 45%,#1aa4f5 100%)}
+.blob{position:absolute;border-radius:50%;filter:blur(52px);opacity:.5;animation:fl 15s ease-in-out infinite}
+.b1{width:330px;height:330px;background:#4fd2ff;top:-140px;right:6%}
+.b2{width:260px;height:260px;background:#7a5cff;bottom:-150px;left:12%;animation-delay:-5s}
+.b3{width:220px;height:220px;background:#00e0c6;top:-90px;left:38%;animation-delay:-9s}
+@keyframes fl{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(36px,26px) scale(1.14)}
+ 66%{transform:translate(-28px,16px) scale(.92)}}
+.hero-in{position:relative;z-index:2;display:flex;justify-content:space-between;gap:18px;
+ align-items:center;flex-wrap:wrap;max-width:1500px;margin:0 auto}
+.hbrand{display:flex;gap:14px;align-items:center}
+.hlogo{width:54px;height:54px;border-radius:16px;background:rgba(255,255,255,.95);color:var(--blue);
+ display:grid;place-items:center;font-weight:800;font-size:17px;flex-shrink:0;box-shadow:0 8px 22px rgba(0,0,0,.18)}
+.hbrand h1{font-size:21px;font-weight:800;letter-spacing:-.2px}
+.hbrand p{font-size:12.5px;opacity:.9;margin-top:2px}
+.hact{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.src{display:flex;gap:7px;align-items:center;padding:7px 14px;border-radius:22px;font-size:12px;
+ font-weight:600;background:rgba(255,255,255,.16);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.3)}
+.dot{width:8px;height:8px;border-radius:50%;background:#5cf58f;animation:pp 1.6s infinite}
+.src.local .dot{background:#ffd166}.src.err .dot{background:#ff8a8a}
+@keyframes pp{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(1.4)}}
+.btn{border:0;cursor:pointer;padding:9px 16px;border-radius:11px;font-family:inherit;font-size:12.5px;
+ font-weight:700;transition:.22s;display:inline-flex;gap:6px;align-items:center;text-decoration:none}
+.btn-g{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.35)}
+.btn-g:hover{background:rgba(255,255,255,.32);transform:translateY(-2px)}
+.btn-w{background:#fff;color:var(--blue)}
+.btn-w:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.2)}
+.btn-p{background:linear-gradient(135deg,var(--blue),var(--blue-lt));color:#fff}
+.btn-p:hover{transform:translateY(-2px);box-shadow:var(--sh2)}
+.btn-o{background:#fff;color:var(--blue);border:1.5px solid var(--blue)}
+.btn-o:hover{background:var(--soft)}
+.hstat{position:relative;z-index:2;max-width:1500px;margin:20px auto 0;display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:11px}
+.hs{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.26);border-radius:14px;
+ padding:12px 15px;backdrop-filter:blur(6px);transition:.25s}
+.hs:hover{background:rgba(255,255,255,.24);transform:translateY(-3px)}
+.hs b{display:block;font-size:24px;font-weight:800;line-height:1.2}
+.hs span{font-size:11.5px;opacity:.9}
+
+/* ---------- NAV ---------- */
+.navbar{position:sticky;top:0;z-index:120;background:rgba(255,255,255,.86);backdrop-filter:blur(14px);
+ border-bottom:1px solid var(--line);box-shadow:0 3px 16px rgba(11,99,229,.06)}
+.navin{max-width:1500px;margin:0 auto;padding:9px 30px;display:flex;gap:8px;align-items:center;overflow-x:auto}
+.navin a{text-decoration:none;color:var(--muted);font-size:13px;font-weight:700;padding:9px 16px;
+ border-radius:12px;white-space:nowrap;transition:.22s;border:1.5px solid transparent}
+.navin a:hover{background:var(--soft);color:var(--blue)}
+.navin a.on{background:linear-gradient(135deg,var(--blue),var(--blue-lt));color:#fff;box-shadow:0 5px 15px rgba(11,99,229,.3)}
+.navin .nb{background:var(--danger);color:#fff;border-radius:20px;padding:1px 7px;font-size:10.5px;margin-left:5px}
+
+/* ---------- LAYOUT ---------- */
+.wrap{max-width:1500px;margin:0 auto;padding:24px 30px 70px}
+.sec{margin-bottom:34px;scroll-margin-top:130px}
+.sech{display:flex;align-items:center;gap:12px;margin-bottom:15px;flex-wrap:wrap}
+.sech .num{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--blue-lt));
+ color:#fff;display:grid;place-items:center;font-weight:800;font-size:15px;box-shadow:0 6px 16px rgba(11,99,229,.28)}
+.sech h2{font-size:19px;font-weight:800}
+.sech p{font-size:12.5px;color:var(--muted);width:100%;margin-left:48px;margin-top:-4px}
+.note{background:#fff8e6;border:1px solid #f3d99a;color:#7a5a00;border-radius:14px;padding:12px 16px;
+ font-size:12.5px;margin-bottom:18px;display:none;line-height:1.75}
+.note.on{display:block}
+
+/* ---------- CARD ---------- */
+.card{background:#fff;border-radius:var(--r);box-shadow:var(--sh);padding:19px;margin-bottom:16px;
+ border:1px solid rgba(226,234,246,.8);transition:.28s}
+.card:hover{box-shadow:var(--sh2)}
+.card h3{font-size:15px;margin-bottom:15px;display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.card h3::before{content:'';width:4px;height:18px;border-radius:3px;
+ background:linear-gradient(180deg,var(--blue),var(--blue-lt))}
+.hint{font-size:12px;color:var(--muted);font-weight:400;margin-left:auto}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(24px);transition:.65s cubic-bezier(.2,.7,.3,1)}
+.rv.in{opacity:1;transform:none}
+
+/* ---------- KPI ---------- */
+.kgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(212px,1fr));gap:14px;margin-bottom:16px}
+.kpi{background:#fff;border-radius:var(--r);padding:18px;box-shadow:var(--sh);position:relative;
+ overflow:hidden;transition:.28s;border:1px solid rgba(226,234,246,.9)}
+.kpi::before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;
+ background:linear-gradient(180deg,var(--blue),var(--blue-lt))}
+.kpi::after{content:'';position:absolute;right:-30px;top:-30px;width:92px;height:92px;border-radius:50%;
+ background:var(--soft);transition:.4s}
+.kpi:hover{transform:translateY(-6px);box-shadow:var(--sh2)}
+.kpi:hover::after{transform:scale(1.35)}
+.kpi .lb{font-size:12px;color:var(--muted);font-weight:600;position:relative;z-index:1}
+.kpi .vl{font-size:29px;font-weight:800;margin:5px 0 2px;position:relative;z-index:1;line-height:1.15;
+ background:linear-gradient(135deg,var(--blue),var(--blue-lt));-webkit-background-clip:text;
+ -webkit-text-fill-color:transparent;background-clip:text}
+.kpi .sb{font-size:11.5px;color:var(--muted);position:relative;z-index:1}
+.kpi.g::before{background:linear-gradient(180deg,#0e9f6e,#31d0aa)}
+.kpi.g .vl{background:linear-gradient(135deg,#0e9f6e,#31d0aa);-webkit-background-clip:text;background-clip:text}
+.kpi.g::after{background:#e6f9f1}
+.kpi.w::before{background:linear-gradient(180deg,#e8930c,#ffc44d)}
+.kpi.w .vl{background:linear-gradient(135deg,#d98200,#ffb020);-webkit-background-clip:text;background-clip:text}
+.kpi.w::after{background:#fff6e5}
+.kpi.d::before{background:linear-gradient(180deg,#d92d20,#ff7a70)}
+.kpi.d .vl{background:linear-gradient(135deg,#d92d20,#ff7a70);-webkit-background-clip:text;background-clip:text}
+.kpi.d::after{background:#ffeceb}
+.kpi.p::before{background:linear-gradient(180deg,#6d5efc,#a78bfa)}
+.kpi.p .vl{background:linear-gradient(135deg,#6d5efc,#a78bfa);-webkit-background-clip:text;background-clip:text}
+.kpi.p::after{background:#f0edff}
+
+/* ---------- CHIPS ---------- */
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:14px;padding:11px 16px;cursor:pointer;
+ transition:.25s;min-width:118px;text-align:center;font-family:inherit}
+.chip:hover{border-color:var(--blue);transform:translateY(-4px);box-shadow:0 8px 20px rgba(11,99,229,.14)}
+.chip b{display:block;font-size:22px;line-height:1.2;color:var(--blue)}
+.chip span{font-size:11px;color:var(--muted)}
+.chip.urg{border-color:#f5b1ad;background:linear-gradient(180deg,#fff,#fff5f5)}
+.chip.urg b{color:var(--danger)}
+.chip.urg:hover{border-color:var(--danger);box-shadow:0 8px 20px rgba(224,50,44,.18)}
+
+/* ---------- FILTER / TABLE ---------- */
+.filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.filters input,.filters select{padding:10px 13px;border:1.5px solid var(--line);border-radius:11px;
+ font-family:inherit;font-size:13px;outline:0;background:#fff;transition:.2s}
+.filters input{flex:1;min-width:220px}
+.filters input:focus,.filters select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(11,99,229,.12)}
+.tw{overflow-x:auto;border-radius:14px;border:1px solid var(--line)}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:1010px}
+thead th{background:linear-gradient(135deg,var(--blue),#1a86f0);color:#fff;padding:13px 11px;text-align:left;
+ font-weight:600;font-size:12.5px;white-space:nowrap;position:sticky;top:0}
+tbody td{padding:11px;border-bottom:1px solid var(--line);vertical-align:middle}
+tbody tr{transition:.16s;cursor:pointer}
+tbody tr:hover{background:var(--soft);transform:scale(1.004)}
+.subj{max-width:330px;font-weight:600;line-height:1.45}
+.badge{padding:4px 11px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap;display:inline-block}
+.b-ok{background:#e6f9f1;color:#0e9f6e}.b-run{background:var(--soft);color:var(--blue)}
+.b-wait{background:#f1f3f7;color:var(--muted)}.b-n{background:#e6f9f1;color:#0e9f6e}
+.b-15{background:#fff6e5;color:#b57900}.b-30{background:#ffedd9;color:#c76a00}
+.b-60{background:#ffe2e2;color:#d33}.b-90{background:#ffd5d5;color:#b81e1e}
+.b-120{background:var(--danger);color:#fff}
+.b-urg{background:linear-gradient(135deg,#e0322c,#ff6b60);color:#fff;animation:bl 1.4s infinite}
+@keyframes bl{50%{opacity:.55}}
+.act{display:flex;gap:6px}
+.ico{width:32px;height:32px;border-radius:9px;border:1.5px solid var(--line);background:#fff;cursor:pointer;
+ display:grid;place-items:center;font-size:14px;transition:.2s;text-decoration:none;color:inherit}
+.ico:hover{background:linear-gradient(135deg,var(--blue),var(--blue-lt));color:#fff;border-color:transparent;transform:translateY(-2px)}
+
+/* ---------- VALUE PANEL ---------- */
+.vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));gap:13px}
+.vbox{border-radius:15px;padding:15px 17px;border-left:5px solid var(--blue);background:var(--soft2);transition:.26s}
+.vbox:hover{transform:translateY(-4px);box-shadow:0 10px 26px rgba(11,99,229,.13)}
+.vbox .t{font-size:12.5px;color:var(--muted);font-weight:600}
+.vbox .n{font-size:28px;font-weight:800;color:var(--blue);line-height:1.2;margin-top:3px}
+.vbox .n small{font-size:13px;font-weight:600;color:var(--muted)}
+.vbox .f{font-size:11px;color:var(--muted);margin-top:4px}
+.vbox.gr{border-left-color:#0e9f6e;background:#f1fcf7}.vbox.gr .n{color:#0e9f6e}
+.vbox.tot{border-left-color:var(--purple);background:#f4f2ff}.vbox.tot .n{color:var(--purple)}
+.bar{margin-top:16px}
+.bar .track{height:34px;border-radius:11px;background:var(--soft);overflow:hidden;display:flex}
+.bar .f1{background:linear-gradient(90deg,var(--blue),var(--blue-lt));display:grid;place-items:center;
+ color:#fff;font-size:12px;font-weight:700;width:0;transition:width 1.3s cubic-bezier(.2,.8,.2,1)}
+.bar .f2{background:linear-gradient(90deg,#0e9f6e,#31d0aa);width:0;transition:width 1.3s cubic-bezier(.2,.8,.2,1) .15s}
+.lg{display:flex;gap:10px;flex-wrap:wrap;margin-top:11px;font-size:12px}
+.lg span{display:flex;gap:6px;align-items:center;background:var(--soft2);padding:6px 12px;border-radius:9px;font-weight:600}
+.lg i{width:11px;height:11px;border-radius:3px;display:inline-block}
+
+/* ---------- MODAL ---------- */
+.ov{position:fixed;inset:0;background:rgba(10,22,45,.62);backdrop-filter:blur(4px);display:none;
+ place-items:center;z-index:400;padding:18px}
+.ov.on{display:grid}
+.modal{background:#fff;border-radius:22px;max-width:1010px;width:100%;max-height:93vh;overflow-y:auto;animation:up .34s}
+@keyframes up{from{transform:translateY(30px) scale(.97);opacity:0}to{transform:none;opacity:1}}
+.mh{background:linear-gradient(135deg,var(--blue-dk),var(--blue) 55%,var(--blue-lt));color:#fff;
+ padding:21px 25px;border-radius:22px 22px 0 0;position:sticky;top:0;z-index:5}
+.mh h2{font-size:16.5px;line-height:1.55;padding-right:46px}
+.mh .x{position:absolute;top:18px;right:20px;width:32px;height:32px;border-radius:50%;border:0;
+ background:rgba(255,255,255,.22);color:#fff;font-size:17px;cursor:pointer;transition:.2s}
+.mh .x:hover{background:rgba(255,255,255,.42);transform:rotate(90deg)}
+.mb{padding:23px 25px;display:grid;grid-template-columns:1fr 266px;gap:23px}
+@media(max-width:840px){.mb{grid-template-columns:1fr}}
+.dl{display:grid;grid-template-columns:134px 1fr;gap:9px 12px;font-size:13.5px}
+.dl dt{color:var(--muted);font-weight:600}.dl dd{font-weight:600;word-break:break-word}
+.qrbox{background:linear-gradient(160deg,var(--soft2),var(--soft));border:2px dashed var(--blue);
+ border-radius:17px;padding:16px;text-align:center}
+.qrbox #qr{display:inline-block;background:#fff;padding:10px;border-radius:12px;box-shadow:var(--sh)}
+.qrbox #qr img,.qrbox #qr canvas{display:block}
+.qrtabs{display:flex;gap:5px;margin-bottom:12px}
+.qrtabs button{flex:1;padding:7px;border-radius:9px;background:#fff;color:var(--blue);font-family:inherit;
+ font-size:11.5px;font-weight:700;cursor:pointer;border:1px solid var(--blue);transition:.2s}
+.qrtabs button.on{background:linear-gradient(135deg,var(--blue),var(--blue-lt));color:#fff;border-color:transparent}
+.tl{margin-top:21px;padding-top:19px;border-top:1px solid var(--line)}
+.steps{display:flex;margin-top:15px}
+.step{flex:1;text-align:center;position:relative}
+.step::before{content:'';position:absolute;top:15px;left:-50%;width:100%;height:3px;background:var(--line);z-index:0}
+.step:first-child::before{display:none}
+.step.done::before{background:linear-gradient(90deg,#0e9f6e,#31d0aa)}
+.step .cir{width:32px;height:32px;border-radius:50%;background:var(--line);color:#fff;display:grid;
+ place-items:center;margin:0 auto 8px;position:relative;z-index:1;font-size:13px;font-weight:700;transition:.3s}
+.step.done .cir{background:linear-gradient(135deg,#0e9f6e,#31d0aa)}
+.step.now .cir{background:linear-gradient(135deg,var(--blue),var(--blue-lt));animation:pp 1.6s infinite}
+.step p{font-size:11.5px;font-weight:600}.step small{font-size:10.5px;color:var(--muted)}
+.prev{margin-top:17px;border-top:1px solid var(--line);padding-top:15px}
+.prev iframe{width:100%;height:430px;border:1px solid var(--line);border-radius:13px;background:#fafcff}
+.chgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:880px){.chgrid{grid-template-columns:1fr}}
+.empty{text-align:center;padding:46px;color:var(--muted)}
+.top-btn{position:fixed;right:22px;bottom:22px;width:46px;height:46px;border-radius:50%;border:0;cursor:pointer;
+ background:linear-gradient(135deg,var(--blue),var(--blue-lt));color:#fff;font-size:19px;box-shadow:var(--sh2);
+ opacity:0;pointer-events:none;transition:.3s;z-index:150}
+.top-btn.on{opacity:1;pointer-events:auto}
+.top-btn:hover{transform:translateY(-4px)}
+@media(max-width:820px){.hero{padding:20px 16px 24px}.navin,.wrap{padding-left:16px;padding-right:16px}}
+@media print{.navbar,.hact,.filters,.act,.ov,.note,.top-btn,#prog{display:none!important}
+ .card,.kpi{box-shadow:none;border:1px solid #ddd}table{min-width:auto;font-size:11px}}
+</style>
+</head>
+<body>
+<div id="prog"></div>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+ <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+ <div class="hero-in">
+  <div class="hbrand">
+   <div class="hlogo">มมส</div>
+   <div><h1>ระบบกำกับติดตามสถานะบันทึกข้อความ</h1>
+    <p>งานโสตทัศนศึกษา คณะวิศวกรรมศาสตร์ มหาวิทยาลัยมหาสารคาม · Document Tracking System</p></div>
+  </div>
+  <div class="hact">
+   <div class="src local" id="srcTag"><span class="dot"></span><span id="srcTxt">กำลังตรวจสอบ…</span></div>
+   <button class="btn btn-g" onclick="loadLive(true)">🔄 ดึงข้อมูลสด</button>
+   <button class="btn btn-g" onclick="window.print()">🖨 พิมพ์รายงาน</button>
+   <a class="btn btn-w" id="lnkSheet" target="_blank">📄 เปิดชีตต้นทาง</a>
+  </div>
+ </div>
+ <div class="hstat" id="heroStat"></div>
+</header>
+
+<!-- ============ NAV ============ -->
+<nav class="navbar"><div class="navin" id="navin">
+ <a href="#s1" class="on">📁 ทะเบียนเอกสาร</a>
+ <a href="#s2">🔔 ศูนย์แจ้งเตือน<span class="nb" id="navBadge">0</span></a>
+ <a href="#s3">📊 แดชบอร์ด KPI</a>
+ <a href="#s4">🌱 ผลลัพธ์ Green Office</a>
+</div></nav>
+
+<div class="wrap">
+ <div class="note" id="noteBox"></div>
+
+ <!-- ===== 1. ทะเบียนเอกสาร ===== -->
+ <section class="sec" id="s1">
+  <div class="sech"><div class="num">1</div><h2>ทะเบียนเอกสาร</h2>
+   <p>สืบค้น จัดหมวดหมู่ และกำกับติดตามสถานะบันทึกข้อความรายเรื่อง · คลิกแถวเพื่อดูรายละเอียดและ QR Code</p></div>
+  <div class="card rv"><h3>ตัวกรองเอกสาร</h3><div class="filters">
+   <input id="q" placeholder="🔍 ค้นหาเรื่อง / ผู้รับผิดชอบ / หมายเหตุ…">
+   <select id="fStatus"><option value="">ทุกสถานะ</option></select>
+   <select id="fType"><option value="">ทุกประเภท</option></select>
+   <select id="fOwner"><option value="">ทุกผู้รับผิดชอบ</option></select>
+   <select id="fAlert"><option value="">ทุกระดับแจ้งเตือน</option><option value="normal">ปกติ</option>
+    <option value="15">เกิน 15 วัน</option><option value="30">เกิน 30 วัน</option>
+    <option value="60">เกิน 60 วัน</option><option value="90">เกิน 90 วัน</option>
+    <option value="120">เกิน 120 วัน</option><option value="urgent">🚨 ควรติดตามเร่งด่วน</option>
+    <option value="slabreach">งานเสร็จที่ใช้เวลาเกิน 120 วัน</option></select>
+   <select id="fSort"><option value="new">ล่าสุดก่อน</option><option value="old">เก่าสุดก่อน</option>
+    <option value="long">ใช้เวลานานสุด</option><option value="az">เรียงตามเรื่อง</option></select>
+   <button class="btn btn-o" onclick="resetF()">ล้างตัวกรอง</button>
+   <button class="btn btn-p" onclick="exportCSV()">⬇ ส่งออก CSV</button></div></div>
+  <div class="card rv"><h3>รายการบันทึกข้อความ<span class="hint" id="cnt"></span></h3>
+   <div class="tw"><table><thead><tr><th style="width:46px">#</th><th>เรื่อง</th><th>ประเภท</th>
+    <th>ผู้รับผิดชอบ</th><th>วันที่เสนอ</th><th>วันที่อนุมัติ</th><th>วันที่สำเร็จ</th><th>ระยะเวลา</th>
+    <th>สถานะ</th><th>แจ้งเตือน</th><th style="width:114px">จัดการ</th></tr></thead>
+    <tbody id="tb"></tbody></table></div></div>
+ </section>
+
+ <!-- ===== 2. ศูนย์แจ้งเตือน ===== -->
+ <section class="sec" id="s2">
+  <div class="sech"><div class="num">2</div><h2>ศูนย์แจ้งเตือน</h2>
+   <p>เฝ้าระวังงานค้างตามเกณฑ์ 15 / 30 / 60 / 90 / 120 วัน และรายการที่ควรติดตามเร่งด่วน</p></div>
+  <div class="card rv"><h3>ระดับการแจ้งเตือนงานที่ยังไม่แล้วเสร็จ<span class="hint">คลิกการ์ดเพื่อกรองในทะเบียนเอกสาร</span></h3>
+   <div class="chips" id="chips"></div></div>
+  <div class="card rv"><h3>🚨 รายการที่ควรติดตามเร่งด่วน (ค้าง ≥ 60 วัน และยังไม่แล้วเสร็จ)</h3>
+   <div class="tw"><table style="min-width:770px"><thead><tr><th>#</th><th>เรื่อง</th><th>ผู้รับผิดชอบ</th>
+    <th>ค้าง (วัน)</th><th>ระดับ</th><th>หมายเหตุ</th><th>จัดการ</th></tr></thead>
+    <tbody id="tbUrg"></tbody></table></div></div>
+  <div class="card rv"><h3>⏱ งานที่แล้วเสร็จแต่ใช้เวลาเกินเกณฑ์ 120 วัน</h3>
+   <div class="tw"><table style="min-width:700px"><thead><tr><th>#</th><th>เรื่อง</th><th>ผู้รับผิดชอบ</th>
+    <th>ใช้เวลา (วัน)</th><th>จัดการ</th></tr></thead><tbody id="tbSla"></tbody></table></div></div>
+ </section>
+
+ <!-- ===== 3. แดชบอร์ด KPI ===== -->
+ <section class="sec" id="s3">
+  <div class="sech"><div class="num">3</div><h2>แดชบอร์ด KPI</h2>
+   <p>ตัวชี้วัดประสิทธิภาพการดำเนินงาน ปริมาณงาน และคุณภาพการให้บริการ</p></div>
+  <div class="kgrid rv" id="kpiMain"></div>
+  <div class="card rv"><h3>📈 แนวโน้มปริมาณงานรายเดือน<span class="hint">ส้ม = เดือนสูงสุด · เขียว = เดือนล่าสุด</span></h3>
+   <canvas id="c5" height="110"></canvas></div>
+  <div class="chgrid">
+   <div class="card rv"><h3>สัดส่วนสถานะดำเนินการ</h3><canvas id="c1" height="212"></canvas></div>
+   <div class="card rv"><h3>ปริมาณงานแยกตามผู้รับผิดชอบ</h3><canvas id="c2" height="212"></canvas></div>
+  </div>
+  <div class="card rv"><h3>การกระจายระยะเวลาดำเนินงาน (SLA) ของงานที่แล้วเสร็จ</h3><canvas id="c4" height="110"></canvas></div>
+ </section>
+
+ <!-- ===== 4. GREEN OFFICE ===== -->
+ <section class="sec" id="s4">
+  <div class="sech"><div class="num">4</div><h2>ผลลัพธ์ Green Office</h2>
+   <p>ผลลัพธ์เชิงประจักษ์จากการเปลี่ยนผ่านสู่ระบบดิจิทัล ทั้งด้านทรัพยากร คาร์บอน เวลา และมูลค่าทางเศรษฐศาสตร์</p></div>
+  <div class="kgrid rv" id="kpiGreen"></div>
+
+  <div class="card rv"><h3>💰 มูลค่าสะสมที่ประหยัดได้จากการเปลี่ยนผ่านสู่ระบบดิจิทัล (บาท)
+    <span class="hint">ต้นทุนแรงงานเฉลี่ย 300 บาท/ชั่วโมง · ต้นทุนกระดาษรวมหมึก-การพิมพ์-การจัดเก็บ 3 บาท/แผ่น</span></h3>
+   <div class="vgrid" id="valBoxes"></div>
+   <div class="bar"><div class="track"><div class="f1" id="bf1"></div><div class="f2" id="bf2"></div></div>
+    <div class="lg" id="valLg"></div></div>
+   <p style="font-size:11.5px;color:var(--muted);margin-top:11px" id="valFoot"></p>
+  </div>
+
+  <div class="card rv"><h3>แนวโน้มมูลค่าสะสมที่ประหยัดได้รายเดือน (บาท)</h3><canvas id="c3" height="115"></canvas></div>
+
+  <div class="card rv"><h3>สูตรการคำนวณผลลัพธ์ทั้งหมด</h3>
+   <div class="tw"><table style="min-width:auto"><thead><tr><th>ตัวชี้วัด</th><th>สูตรคำนวณ</th>
+    <th>ผลลัพธ์สะสม</th></tr></thead><tbody id="tbGreen"></tbody></table></div></div>
+ </section>
+</div>
+
+<button class="top-btn" id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- ============ MODAL ============ -->
+<div class="ov" id="ov" onclick="if(event.target===this)closeM()">
+ <div class="modal"><div class="mh"><button class="x" onclick="closeM()">✕</button><h2 id="mTitle"></h2></div>
+  <div class="mb"><div><dl class="dl" id="mBody"></dl>
+    <div class="tl"><b style="font-size:13.5px">🧭 ขั้นตอนการดำเนินงาน</b><div class="steps" id="mSteps"></div></div>
+    <div class="prev" id="mPrev"></div></div>
+   <div><div class="qrbox"><div class="qrtabs">
+     <button class="on" id="qtF" onclick="switchQR('file')">📄 ไฟล์บันทึก</button>
+     <button id="qtT" onclick="switchQR('track')">📡 ติดตามสด</button></div>
+    <div id="qr"></div><p style="font-size:11.5px;color:var(--muted);margin-top:10px" id="qrHint"></p></div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:14px">
+     <a id="btnOpen" class="btn btn-p" style="justify-content:center" target="_blank">👁 เปิดดูไฟล์</a>
+     <a id="btnDl" class="btn btn-o" style="justify-content:center" target="_blank">⬇ ดาวน์โหลดไฟล์</a>
+     <button class="btn btn-o" style="justify-content:center" onclick="dlQR()">🖼 บันทึก QR เป็นรูป</button>
+     <button class="btn btn-o" style="justify-content:center" onclick="copyLink()">🔗 คัดลอกลิงก์</button>
+     <button class="btn btn-o" style="justify-content:center" onclick="togglePrev()">📑 พรีวิวเอกสาร</button>
+    </div></div></div></div>
+</div>
+
+<script>
+/* ================= CONFIG ================= */
+const SHEET_ID='1qTTLdfwnMaDyomcaGcc_DbiAqbLHTjTFPeZWi5NlaBk',GID='0';
+const SHEET_URL=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit?gid=${GID}#gid=${GID}`;
+const PAPER=4, CO2=0.0086, MINS=45, URGENT_DAY=60;
+const LABOR_RATE=300;   /* บาท/ชั่วโมง */
+const PAPER_COST=3;     /* บาท/แผ่น */
+const TIERS=[{k:'120',d:120,l:'เกิน 120 วัน'},{k:'90',d:90,l:'เกิน 90 วัน'},{k:'60',d:60,l:'เกิน 60 วัน'},
+ {k:'30',d:30,l:'เกิน 30 วัน'},{k:'15',d:15,l:'เกิน 15 วัน'},{k:'normal',d:0,l:'ปกติ (< 15 วัน)'}];
+document.getElementById('lnkSheet').href=SHEET_URL;
+
+/* ========= ข้อมูลสำรอง (ใช้เมื่อดึงสดไม่ได้) ========= */
+const FB_COLS=['วันที่','ไฟล์','เรื่อง','วันที่อนุมัติ','ระยะเวลา (วัน)','สถานะ','วันที่งานสำเร็จ','ผู้รับผิดชอบ','ประเภทบันทึกข้อความ','หมายเหตุ'];
+const FALLBACK=[
+["27/11/2025","https://drive.google.com/file/d/1MEMO0001AVSMSUENG0000000001/view","ขออนุมัติจัดซื้อครุภัณฑ์โสตทัศนูปกรณ์ประจำห้องเรียนรวม","2/12/2025",5,"สำเร็จ","7/12/2025","งานพัสดุ","ภายใน","ดำเนินการจัดซื้อเรียบร้อย"],
+["3/12/2025","https://drive.google.com/file/d/1MEMO0002AVSMSUENG0000000002/view","ขออนุมัติซ่อมบำรุงระบบเครื่องเสียงห้องประชุมคณะ","9/12/2025",12,"สำเร็จ","21/12/2025","งานพัสดุ","ภายใน","ซ่อมโดยผู้รับจ้างภายนอก"],
+["15/12/2025","https://drive.google.com/file/d/1MEMO0003AVSMSUENG0000000003/view","ขอความอนุเคราะห์บันทึกวีดิทัศน์พิธีพระราชทานปริญญาบัตร","18/12/2025",8,"สำเร็จ","26/12/2025","งานโสตทัศนศึกษา","ภายใน","ส่งไฟล์ให้หน่วยงานแล้ว"],
+["6/1/2026","https://drive.google.com/file/d/1MEMO0004AVSMSUENG0000000004/view","ขออนุมัติเบิกจ่ายค่าตอบแทนปฏิบัติงานนอกเวลาราชการ","8/1/2026",11,"สำเร็จ","19/1/2026","งานพัสดุ","ภายใน","เบิกจ่ายเรียบร้อย"],
+["19/1/2026","https://drive.google.com/file/d/1MEMO0005AVSMSUENG0000000005/view","ขออนุมัติปรับปรุงระบบเครือข่ายและสัญญาณภาพห้องปฏิบัติการ","26/1/2026",236,"อยู่ระหว่างดำเนินการ","","งานพัสดุ","ภายใน","รอผลพิจารณาจากส่วนกลาง ควรเร่งติดตาม"],
+["2/2/2026","https://drive.google.com/file/d/1MEMO0006AVSMSUENG0000000006/view","ขอความอนุเคราะห์ถ่ายภาพกิจกรรมปฐมนิเทศนิสิตใหม่","5/2/2026",7,"สำเร็จ","12/2/2026","งานโสตทัศนศึกษา","ภายใน","ส่งภาพขึ้นคลังภาพคณะแล้ว"],
+["16/2/2026","https://drive.google.com/file/d/1MEMO0007AVSMSUENG0000000007/view","ขออนุมัติจัดทำสื่อประชาสัมพันธ์หลักสูตรคณะวิศวกรรมศาสตร์","20/2/2026",25,"สำเร็จ","17/3/2026","งานประชาสัมพันธ์","ภายใน","เผยแพร่ผ่านสื่อออนไลน์"],
+["2/3/2026","https://drive.google.com/file/d/1MEMO0008AVSMSUENG0000000008/view","ขอเชิญวิทยากรบรรยายการผลิตสื่อดิจิทัลเพื่อการเรียนการสอน","6/3/2026",18,"สำเร็จ","24/3/2026","งานโสตทัศนศึกษา","ภายนอก","วิทยากรตอบรับเรียบร้อย"],
+["12/3/2026","https://drive.google.com/file/d/1MEMO0009AVSMSUENG0000000009/view","ขออนุมัติจัดซื้อวัสดุสิ้นเปลืองงานโสตทัศนศึกษา","17/3/2026",9,"สำเร็จ","26/3/2026","งานพัสดุ","ภายใน","รับของครบถ้วน"],
+["24/3/2026","https://drive.google.com/file/d/1MEMO0010AVSMSUENG0000000010/view","ขอความอนุเคราะห์ใช้ห้องประชุมและอุปกรณ์โสตทัศนูปกรณ์","27/3/2026",6,"สำเร็จ","2/4/2026","งานอาคารสถานที่","ภายใน","อนุมัติใช้ห้องตามกำหนด"],
+["7/4/2026","https://drive.google.com/file/d/1MEMO0011AVSMSUENG0000000011/view","ขออนุมัติเดินทางไปราชการเพื่อบันทึกภาพกิจกรรมนอกสถานที่","10/4/2026",14,"สำเร็จ","24/4/2026","งานโสตทัศนศึกษา","ภายนอก","เบิกค่าเดินทางเรียบร้อย"],
+["21/4/2026","https://drive.google.com/file/d/1MEMO0012AVSMSUENG0000000012/view","ขออนุมัติจ้างเหมาบริการถ่ายทอดสดกิจกรรมคณะ","28/4/2026",203,"อยู่ระหว่างดำเนินการ","","งานพัสดุ","ภายนอก","อยู่ระหว่างจัดทำสัญญาจ้าง ควรเร่งติดตาม"],
+["5/5/2026","https://drive.google.com/file/d/1MEMO0013AVSMSUENG0000000013/view","ขอความอนุเคราะห์ประชาสัมพันธ์กิจกรรมผ่านสื่อของมหาวิทยาลัย","8/5/2026",10,"สำเร็จ","18/5/2026","งานประชาสัมพันธ์","ภายใน","เผยแพร่แล้วทุกช่องทาง"],
+["19/5/2026","https://drive.google.com/file/d/1MEMO0014AVSMSUENG0000000014/view","ขออนุมัติซ่อมแซมโปรเจกเตอร์ห้องเรียนอาคารเรียนรวม","22/5/2026",16,"สำเร็จ","7/6/2026","งานพัสดุ","ภายใน","เปลี่ยนหลอดภาพใหม่"],
+["2/6/2026","https://drive.google.com/file/d/1MEMO0015AVSMSUENG0000000015/view","ขออนุมัติแต่งตั้งคณะกรรมการตรวจรับพัสดุงานโสตทัศนูปกรณ์","5/6/2026",7,"สำเร็จ","12/6/2026","งานพัสดุ","ภายใน","แต่งตั้งเรียบร้อย"],
+["9/6/2026","https://drive.google.com/file/d/1MEMO0016AVSMSUENG0000000016/view","ขอความอนุเคราะห์บุคลากรปฏิบัติงานควบคุมระบบเสียงงานสัมมนา","12/6/2026",8,"สำเร็จ","20/6/2026","งานโสตทัศนศึกษา","ภายใน","จัดบุคลากรตามที่ร้องขอ"],
+["22/6/2026","https://drive.google.com/file/d/1MEMO0017AVSMSUENG0000000017/view","ขออนุมัติจัดทำวีดิทัศน์แนะนำคณะวิศวกรรมศาสตร์","26/6/2026",4,"สำเร็จ","30/6/2026","งานประชาสัมพันธ์","ภายใน","เผยแพร่บนเว็บไซต์คณะ"],
+["6/7/2026","https://drive.google.com/file/d/1MEMO0018AVSMSUENG0000000018/view","ขออนุมัติจัดอบรมการใช้งานระบบห้องเรียนอัจฉริยะ","10/7/2026",21,"สำเร็จ","31/7/2026","งานโสตทัศนศึกษา","ภายใน","จัดอบรมครบทุกรุ่น"],
+["15/7/2026","https://drive.google.com/file/d/1MEMO0019AVSMSUENG0000000019/view","ขอความอนุเคราะห์ยืมครุภัณฑ์โสตทัศนูปกรณ์ระหว่างหน่วยงาน","20/7/2026",12,"สำเร็จ","1/8/2026","งานพัสดุ","ภายนอก","คืนครุภัณฑ์ครบถ้วน"],
+["27/7/2026","https://drive.google.com/file/d/1MEMO0020AVSMSUENG0000000020/view","ขออนุมัติเบิกค่าใช้จ่ายในการผลิตสื่อการเรียนการสอนออนไลน์","31/7/2026",15,"สำเร็จ","15/8/2026","งานพัสดุ","ภายใน","เบิกจ่ายตามระเบียบ"],
+["10/8/2026","https://drive.google.com/file/d/1MEMO0021AVSMSUENG0000000021/view","ขออนุมัติปรับปรุงห้องสตูดิโอบันทึกสื่อการสอน","14/8/2026",120,"อยู่ระหว่างดำเนินการ","","งานอาคารสถานที่","ภายใน","รออนุมัติงบประมาณ ควรเร่งติดตาม"],
+["17/8/2026","https://drive.google.com/file/d/1MEMO0022AVSMSUENG0000000022/view","ขอความอนุเคราะห์ข้อมูลเพื่อจัดทำรายงานประจำปีงานโสตทัศนศึกษา","20/8/2026",9,"สำเร็จ","29/8/2026","งานโสตทัศนศึกษา","ภายใน","รวบรวมข้อมูลครบถ้วน"],
+["24/8/2026","https://drive.google.com/file/d/1MEMO0023AVSMSUENG0000000023/view","ขออนุมัติจัดซื้อกล้องบันทึกภาพเคลื่อนไหวความละเอียดสูง","28/8/2026",6,"สำเร็จ","3/9/2026","งานพัสดุ","ภายใน","รับมอบครุภัณฑ์แล้ว"],
+["28/8/2026","https://drive.google.com/file/d/1MEMO0024AVSMSUENG0000000024/view","ขอความอนุเคราะห์ถ่ายทอดสดพิธีเปิดการแข่งขันวิชาการ","1/9/2026",8,"สำเร็จ","9/9/2026","งานโสตทัศนศึกษา","ภายนอก","ถ่ายทอดสดสำเร็จตามกำหนด"],
+["1/9/2026","https://drive.google.com/file/d/1MEMO0025AVSMSUENG0000000025/view","ขออนุมัติจัดทำระบบติดตามสถานะบันทึกข้อความออนไลน์","3/9/2026",6,"อยู่ระหว่างดำเนินการ","","งานโสตทัศนศึกษา","ภายใน","อยู่ระหว่างพัฒนาระบบ"],
+["3/9/2026","https://drive.google.com/file/d/1MEMO0026AVSMSUENG0000000026/view","ขอความอนุเคราะห์ประสานงานผลิตสื่อร่วมกับหน่วยงานภายนอก","5/9/2026",4,"สำเร็จ","9/9/2026","งานประชาสัมพันธ์","ภายนอก","ประสานงานเรียบร้อย"],
+["5/9/2026","https://drive.google.com/file/d/1MEMO0027AVSMSUENG0000000027/view","ขออนุมัติจัดเก็บและสำรองข้อมูลสื่อดิจิทัลของคณะ","8/9/2026",5,"สำเร็จ","9/9/2026","งานโสตทัศนศึกษา","ภายใน","สำรองข้อมูลขึ้นคลาวด์แล้ว"]
+];
+
+let DATA=[],VIEW=[],curr=null,curMode='file',charts={},prevOn=false;
+
+/* ================= HELPERS ================= */
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const clean=s=>String(s??'').replace(/[\r\n]+/g,' ').replace(/\s{2,}/g,' ').trim();
+const nf=(n,d=0)=>Number(n).toLocaleString('th-TH',{minimumFractionDigits:d,maximumFractionDigits:d});
+function parseDate(v){
+ if(v==null||v==='')return null;
+ if(v instanceof Date)return isNaN(v)?null:v;
+ const s=String(v).trim();
+ let m=s.match(/^Date\((\d+),(\d+),(\d+)/);
+ if(m){let y=+m[1];if(y>2400)y-=543;return new Date(y,+m[2],+m[3]);}
+ m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+ if(m){let y=+m[1];if(y>2400)y-=543;return new Date(y,+m[2]-1,+m[3]);}
+ m=s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})/);
+ if(m){let d=+m[1],mo=+m[2],y=+m[3];if(y<100)y+=2000;if(y>2400)y-=543;
+  if(mo>12&&d<=12){[d,mo]=[mo,d];}
+  const dt=new Date(y,mo-1,d);return isNaN(dt)?null:dt;}
+ const t=new Date(s);return isNaN(t)?null:t;
+}
+const fmt=d=>d?d.toLocaleDateString('th-TH',{day:'2-digit',month:'short',year:'numeric'}):'—';
+const diffD=(a,b)=>Math.max(0,Math.round((b-a)/86400000));
+const driveId=u=>{const m=String(u||'').match(/[-\w]{25,}/);return m?m[0]:null;};
+const dlLink=u=>{const id=driveId(u);return id?`https://drive.google.com/uc?export=download&id=${id}`:(u||'#');};
+const prevLink=u=>{const id=driveId(u);return id?`https://drive.google.com/file/d/${id}/preview`:null;};
+const THMON=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+
+/* ---- count-up ---- */
+function countUp(el,to,dec,suffix){
+ const dur=1100,st=performance.now();
+ const step=t=>{const p=Math.min(1,(t-st)/dur),e=1-Math.pow(1-p,3);
+  el.textContent=nf(to*e,dec)+(suffix||'');
+  if(p<1)requestAnimationFrame(step);};
+ requestAnimationFrame(step);
+}
+function animateNums(scope){
+ (scope||document).querySelectorAll('[data-n]').forEach(el=>{
+  if(el.dataset.done)return;el.dataset.done='1';
+  countUp(el,+el.dataset.n,+(el.dataset.dec||0),el.dataset.suf||'');});
+}
+
+/* ================= BUILD ================= */
+function build(rows){
+ const today=new Date();today.setHours(0,0,0,0);
+ return rows.map((o,i)=>{
+  const subject=clean(o['เรื่อง']),file=String(o['ไฟล์']||'').trim();
+  if(!subject&&!file)return null;
+  const dSub=parseDate(o['วันที่']),dApp=parseDate(o['วันที่อนุมัติ']),dDone=parseDate(o['วันที่งานสำเร็จ']);
+  const status=clean(o['สถานะ'])||'ไม่ระบุ';
+  const done=/สำเร็จ|เสร็จ/.test(status)&&!/ไม่/.test(status);
+  const sdRaw=String(o['ระยะเวลา (วัน)']??''),sd=Number(sdRaw.replace(/[^\d.-]/g,''));
+  const base=dApp||dSub;
+  const days=(sdRaw!==''&&Number.isFinite(sd)&&sd>=0)?sd
+   :(done?(base&&dDone?diffD(base,dDone):0):(base?diffD(base,today):0));
+  const tier=done?'normal':(TIERS.find(t=>days>=t.d)||{k:'normal'}).k;
+  return {i:i+1,no:i+1,subject:subject||'(ไม่ระบุเรื่อง)',file,dSub,dApp,dDone,status,done,
+   type:clean(o['ประเภทบันทึกข้อความ'])||'ไม่ระบุ',owner:clean(o['ผู้รับผิดชอบ'])||'ไม่ระบุ',
+   note:clean(o['หมายเหตุ'])||'-',days,tier,urgent:!done&&days>=URGENT_DAY,slaBreach:done&&days>=120};
+ }).filter(Boolean);
+}
+function setSrc(kind,msg,note){
+ const t=document.getElementById('srcTag');
+ t.className='src '+(kind==='live'?'live':kind==='err'?'err':'local');
+ document.getElementById('srcTxt').textContent=msg;
+ const nb=document.getElementById('noteBox');
+ if(note){nb.innerHTML=note;nb.classList.add('on');}else nb.classList.remove('on');
+}
+
+/* ================= LOAD ================= */
+function loadLocal(){
+ DATA=build(FALLBACK.map(r=>{const o={};FB_COLS.forEach((c,j)=>o[c]=r[j]);return o;}));
+ initFilters();render();
+}
+async function loadLive(manual){
+ try{
+  const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${GID}&headers=1&_=${Date.now()}`;
+  const res=await fetch(url,{cache:'no-store'});
+  if(!res.ok)throw new Error('HTTP '+res.status);
+  const txt=await res.text();
+  const json=JSON.parse(txt.substring(txt.indexOf('{'),txt.lastIndexOf('}')+1));
+  let cols=json.table.cols.map(c=>clean(c.label)),rows=json.table.rows||[];
+  if(cols.every(c=>!c)&&rows.length){cols=rows[0].c.map(c=>c?clean(c.v):'');rows=rows.slice(1);}
+  if(!rows.length)throw new Error('ไม่มีข้อมูล');
+  const objs=rows.map(r=>{const o={};cols.forEach((c,j)=>{const cc=r.c[j];o[c]=cc?(cc.f??cc.v):null;});return o;});
+  const built=build(objs);
+  if(!built.length)throw new Error('อ่านข้อมูลไม่ได้');
+  DATA=built;initFilters();render();
+  setSrc('live','ข้อมูลสด · อัปเดต '+new Date().toLocaleTimeString('th-TH'),'');
+ }catch(e){
+  setSrc('local','ข้อมูลสำรองในไฟล์ ('+DATA.length+' รายการ)',
+   `<b>⚠ ยังไม่ได้เชื่อมต่อ Google Sheets สด</b> — ขณะนี้แสดงผลจากข้อมูลสำรองที่ฝังไว้ในไฟล์<br>
+    สาเหตุที่พบบ่อย: <b>(1)</b> เปิดไฟล์แบบ <code>file://</code> หรือในหน้าพรีวิว sandbox ที่บล็อก CORS →
+    ต้องอัปโหลดขึ้น <b>GitHub Pages (https://)</b> จึงจะดึงสดได้
+    <b>(2)</b> ชีตยังไม่ได้ตั้งเป็น "ทุกคนที่มีลิงก์ = ผู้มีสิทธิ์อ่าน"
+    <b>(3)</b> เครือข่ายองค์กรบล็อก docs.google.com<br>
+    <span style="opacity:.85">รายละเอียด: ${esc(e.message)}</span>`);
+  if(manual)alert('ยังเชื่อมต่อชีตสดไม่ได้ในสภาพแวดล้อมนี้\nระบบใช้ข้อมูลสำรองแทน — เมื่ออัปขึ้น GitHub Pages จะดึงสดได้อัตโนมัติ');
+ }
+}
+
+/* ================= FILTER ================= */
+function initFilters(){
+ const fill=(id,arr)=>{const s=document.getElementById(id),keep=s.options[0].outerHTML;
+  s.innerHTML=keep+[...new Set(arr)].filter(Boolean).sort((a,b)=>a.localeCompare(b,'th'))
+   .map(v=>`<option>${esc(v)}</option>`).join('');};
+ fill('fStatus',DATA.map(d=>d.status));fill('fType',DATA.map(d=>d.type));fill('fOwner',DATA.map(d=>d.owner));
+}
+function resetF(){['q','fStatus','fType','fOwner','fAlert'].forEach(i=>document.getElementById(i).value='');
+ document.getElementById('fSort').value='new';render();}
+function applyFilter(){
+ const q=document.getElementById('q').value.toLowerCase().trim(),
+  st=document.getElementById('fStatus').value,ty=document.getElementById('fType').value,
+  ow=document.getElementById('fOwner').value,al=document.getElementById('fAlert').value,
+  so=document.getElementById('fSort').value;
+ const v=DATA.filter(d=>(!q||(d.subject+d.owner+d.note+d.type).toLowerCase().includes(q))&&
+  (!st||d.status===st)&&(!ty||d.type===ty)&&(!ow||d.owner===ow)&&
+  (!al||(al==='urgent'?d.urgent:al==='slabreach'?d.slaBreach:(!d.done&&d.tier===al))));
+ const S={new:(a,b)=>(b.dSub||0)-(a.dSub||0),old:(a,b)=>(a.dSub||0)-(b.dSub||0),
+  long:(a,b)=>b.days-a.days,az:(a,b)=>a.subject.localeCompare(b.subject,'th')};
+ return v.sort(S[so]);
+}
+
+/* ================= RENDER ================= */
+function render(){
+ VIEW=applyFilter();
+ renderHero();renderTable();renderChips();renderAlert();renderKPI();renderGreen();renderCharts();
+ document.querySelectorAll('[data-n]').forEach(e=>e.removeAttribute('data-done'));
+ setTimeout(()=>animateNums(),60);
+}
+function renderHero(){
+ const n=DATA.length,done=DATA.filter(d=>d.done).length,urg=DATA.filter(d=>d.urgent).length;
+ const val=n*((MINS/60)*LABOR_RATE+PAPER*PAPER_COST);
+ const H=(v,l,dec,suf)=>`<div class="hs"><b data-n="${v}" data-dec="${dec||0}" data-suf="${suf||''}">0</b><span>${l}</span></div>`;
+ document.getElementById('heroStat').innerHTML=
+  H(n,'บันทึกข้อความทั้งหมด (เรื่อง)')+H(done,'ดำเนินการสำเร็จ (เรื่อง)')+
+  H(n-done,'อยู่ระหว่างดำเนินการ (เรื่อง)')+H(urg,'ควรติดตามเร่งด่วน (เรื่อง)')+
+  H(val,'มูลค่าที่ประหยัดได้สะสม (บาท)');
+}
+function chipHTML(){
+ const c={};TIERS.forEach(t=>c[t.k]=0);DATA.filter(d=>!d.done).forEach(d=>c[d.tier]++);
+ const urg=DATA.filter(d=>d.urgent).length;
+ return TIERS.slice().reverse().map(t=>
+  `<button class="chip" data-t="${t.k}"><b>${c[t.k]}</b><span>${t.l}</span></button>`).join('')
+  +`<button class="chip urg" data-t="urgent"><b>${urg}</b><span>🚨 ควรติดตามเร่งด่วน</span></button>`;
+}
+function renderChips(){
+ document.getElementById('navBadge').textContent=DATA.filter(d=>d.urgent).length;
+ const el=document.getElementById('chips');el.innerHTML=chipHTML();
+ el.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{
+  document.getElementById('fAlert').value=b.dataset.t;render();
+  document.getElementById('s1').scrollIntoView({behavior:'smooth'});});
+}
+const bStatus=d=>d.done?'<span class="badge b-ok">✔ สำเร็จ</span>'
+ :/ดำเนิน/.test(d.status)?'<span class="badge b-run">⏳ อยู่ระหว่างดำเนินการ</span>'
+ :`<span class="badge b-wait">${esc(d.status)}</span>`;
+function bAlert(d){
+ if(d.done)return d.slaBreach?`<span class="badge b-90">เสร็จแล้ว · ใช้ ${d.days} วัน</span>`:'<span class="badge b-n">อยู่ในเกณฑ์</span>';
+ if(d.urgent)return `<span class="badge b-urg">🚨 เร่งด่วน ${d.days} วัน</span>`;
+ const M={'120':'b-120','90':'b-90','60':'b-60','30':'b-30','15':'b-15','normal':'b-n'};
+ return `<span class="badge ${M[d.tier]}">${TIERS.find(t=>t.k===d.tier).l}</span>`;
+}
+function renderTable(){
+ const tb=document.getElementById('tb');
+ document.getElementById('cnt').textContent=`แสดง ${VIEW.length} จาก ${DATA.length} รายการ`;
+ if(!VIEW.length){tb.innerHTML='<tr><td colspan="11" class="empty">ไม่พบรายการที่ตรงเงื่อนไข</td></tr>';return;}
+ tb.innerHTML=VIEW.map(d=>`<tr onclick="openM(${d.i})">
+  <td>${d.no}</td><td class="subj">${esc(d.subject)}</td>
+  <td><span class="badge ${d.type==='ภายใน'?'b-run':'b-15'}">${esc(d.type)}</span></td>
+  <td>${esc(d.owner)}</td><td>${fmt(d.dSub)}</td><td>${fmt(d.dApp)}</td><td>${fmt(d.dDone)}</td>
+  <td><b style="color:${d.urgent?'var(--danger)':'var(--blue)'}">${d.days}</b> วัน</td>
+  <td>${bStatus(d)}</td><td>${bAlert(d)}</td>
+  <td><div class="act" onclick="event.stopPropagation()">
+   <button class="ico" title="รายละเอียด + QR" onclick="openM(${d.i})">👁</button>
+   <a class="ico" title="เปิดไฟล์" href="${esc(d.file||'#')}" target="_blank">📄</a>
+   <a class="ico" title="ดาวน์โหลด" href="${esc(dlLink(d.file))}" target="_blank">⬇</a></div></td></tr>`).join('');
+}
+function renderAlert(){
+ const u=DATA.filter(d=>d.urgent).sort((a,b)=>b.days-a.days);
+ document.getElementById('tbUrg').innerHTML=u.length?u.map((d,i)=>`<tr onclick="openM(${d.i})">
+  <td>${i+1}</td><td class="subj">${esc(d.subject)}</td><td>${esc(d.owner)}</td>
+  <td><b style="color:var(--danger)">${d.days}</b></td><td>${bAlert(d)}</td>
+  <td style="max-width:280px;font-size:12px;color:var(--muted)">${esc(d.note).slice(0,110)}</td>
+  <td><button class="ico" onclick="event.stopPropagation();openM(${d.i})">👁</button></td></tr>`).join('')
+  :'<tr><td colspan="7" class="empty">🎉 ไม่มีรายการค้างเกิน 60 วัน</td></tr>';
+ const s=DATA.filter(d=>d.slaBreach).sort((a,b)=>b.days-a.days);
+ document.getElementById('tbSla').innerHTML=s.length?s.map((d,i)=>`<tr onclick="openM(${d.i})">
+  <td>${i+1}</td><td class="subj">${esc(d.subject)}</td><td>${esc(d.owner)}</td>
+  <td><b style="color:#b81e1e">${d.days}</b></td>
+  <td><button class="ico" onclick="event.stopPropagation();openM(${d.i})">👁</button></td></tr>`).join('')
+  :'<tr><td colspan="5" class="empty">ไม่มีงานที่ใช้เวลาเกิน 120 วัน</td></tr>';
+}
+function renderKPI(){
+ const n=DATA.length,done=DATA.filter(d=>d.done).length,run=n-done;
+ const urg=DATA.filter(d=>d.urgent).length,sla=DATA.filter(d=>d.slaBreach).length;
+ const fin=DATA.filter(d=>d.done),avg=fin.length?Math.round(fin.reduce((s,d)=>s+d.days,0)/fin.length):0;
+ const onT=fin.filter(d=>d.days<=30).length,rate=n?done/n*100:0,otr=fin.length?onT/fin.length*100:0;
+ const cpl=n?DATA.filter(d=>d.file&&d.dSub&&d.dApp).length/n*100:0;
+ const K=(c,l,v,s,dec,suf)=>`<div class="kpi ${c}"><div class="lb">${l}</div>
+  <div class="vl"><span data-n="${v}" data-dec="${dec||0}" data-suf="${suf||''}">0</span></div><div class="sb">${s}</div></div>`;
+ document.getElementById('kpiMain').innerHTML=
+  K('','บันทึกข้อความทั้งหมด',n,'เรื่องในระบบติดตาม')+
+  K('g','ดำเนินการสำเร็จ',done,`อัตราความสำเร็จ ${nf(rate,2)}%`)+
+  K('','อยู่ระหว่างดำเนินการ',run,'ต้องกำกับติดตามต่อเนื่อง')+
+  K('d','ควรติดตามเร่งด่วน',urg,`ค้าง ≥ ${URGENT_DAY} วัน ยังไม่แล้วเสร็จ`)+
+  K('','ระยะเวลาเฉลี่ย',avg,'วัน/เรื่อง (เฉพาะที่แล้วเสร็จ)')+
+  K('w','เสร็จภายใน 30 วัน',otr,`${onT} จาก ${fin.length} เรื่อง`,1,'%')+
+  K('w','งานเสร็จเกิน SLA 120 วัน',sla,'ควรทบทวนกระบวนการ')+
+  K('p','ความครบถ้วนของข้อมูล',cpl,'มีลิงก์ไฟล์ + วันที่ครบ',0,'%');
+}
+
+/* ---- GREEN + VALUE ---- */
+function greenCalc(){
+ const n=DATA.length;
+ const sheets=n*PAPER;                 /* แผ่น */
+ const co2=sheets*CO2;                 /* kgCO2e */
+ const mins=n*MINS;                    /* นาที */
+ const hrs=mins/60;                    /* ชั่วโมง */
+ const vTime=hrs*LABOR_RATE;           /* บาท */
+ const vPaper=sheets*PAPER_COST;       /* บาท */
+ return {n,sheets,co2,mins,hrs,vTime,vPaper,total:vTime+vPaper};
+}
+function renderGreen(){
+ const g=greenCalc();
+ const K=(cl,l,v,s,dec,suf)=>`<div class="kpi ${cl}"><div class="lb">${l}</div>
+  <div class="vl"><span data-n="${v}" data-dec="${dec||0}" data-suf="${suf||''}">0</span></div><div class="sb">${s}</div></div>`;
+ document.getElementById('kpiGreen').innerHTML=
+  K('g','📄 ลดการใช้กระดาษสะสม',g.sheets,'แผ่น (เรื่อง × 4)')+
+  K('g','🌍 ลดการปล่อยคาร์บอน',g.co2,'kgCO₂e จากการพิมพ์เอกสาร',2)+
+  K('','⏱ เวลาให้บริการที่ลดลง',g.mins,`นาที ≈ ${nf(g.hrs,2)} ชั่วโมง`)+
+  K('p','💰 มูลค่ารวมที่ประหยัดได้',g.total,'บาท (เวลา + กระดาษ)');
+
+ /* value boxes */
+ document.getElementById('valBoxes').innerHTML=`
+  <div class="vbox"><div class="t">มูลค่าจากเวลาที่ประหยัด</div>
+   <div class="n"><span data-n="${g.vTime}">0</span> <small>บาท</small></div>
+   <div class="f">${nf(g.hrs,2)} ชม. × ${LABOR_RATE} บาท/ชม.</div></div>
+  <div class="vbox gr"><div class="t">มูลค่าจากกระดาษที่ลดใช้</div>
+   <div class="n"><span data-n="${g.vPaper}">0</span> <small>บาท</small></div>
+   <div class="f">${nf(g.sheets)} แผ่น × ${PAPER_COST} บาท/แผ่น</div></div>
+  <div class="vbox tot"><div class="t">มูลค่ารวมสะสม</div>
+   <div class="n"><span data-n="${g.total}">0</span> <small>บาท</small></div>
+   <div class="f">รวมทั้งสองรายการ</div></div>`;
+ const p1=g.total?g.vTime/g.total*100:0,p2=g.total?g.vPaper/g.total*100:0;
+ setTimeout(()=>{document.getElementById('bf1').style.width=p1+'%';
+  document.getElementById('bf1').textContent=nf(g.vTime)+' บาท';
+  document.getElementById('bf2').style.width=p2+'%';},250);
+ document.getElementById('valLg').innerHTML=
+  `<span><i style="background:linear-gradient(90deg,#0b63e5,#22b8ff)"></i>เวลาที่ประหยัด ${nf(g.vTime)} บาท (${nf(p1,1)}%)</span>
+   <span><i style="background:linear-gradient(90deg,#0e9f6e,#31d0aa)"></i>กระดาษที่ลดใช้ ${nf(g.vPaper)} บาท (${nf(p2,1)}%)</span>`;
+ const months=new Set(DATA.filter(d=>d.dSub).map(d=>d.dSub.getFullYear()+'-'+d.dSub.getMonth())).size||1;
+ document.getElementById('valFoot').textContent=
+  `· เฉลี่ย ${nf(g.total/months)} บาท/เดือน · เทียบเท่าเวลาทำงาน ${nf(g.hrs/7,1)} วันทำงาน (7 ชม./วัน) · คิดเป็น ${nf(g.total/(g.n||1))} บาท/เรื่อง`;
+
+ document.getElementById('tbGreen').innerHTML=`
+  <tr><td>ลดการใช้กระดาษ (แผ่น)</td><td>จำนวนเรื่อง × 4 = ${g.n} × 4</td><td><b>${nf(g.sheets)} แผ่น</b></td></tr>
+  <tr><td>ลดการปล่อยคาร์บอน (kgCO₂e)</td><td>จำนวนเรื่อง × 4 × 0.0086 = ${g.n} × 4 × 0.0086</td><td><b>${nf(g.co2,4)} kgCO₂e</b></td></tr>
+  <tr><td>เวลาให้บริการลดลง (นาที)</td><td>จำนวนเรื่อง × 45 = ${g.n} × 45</td><td><b>${nf(g.mins)} นาที (${nf(g.hrs,2)} ชม.)</b></td></tr>
+  <tr><td>มูลค่าจากเวลาที่ประหยัด (บาท)</td><td>เวลาที่ลดได้สะสม (ชม.) × 300 = ${nf(g.hrs,2)} × 300</td><td><b>${nf(g.vTime)} บาท</b></td></tr>
+  <tr><td>มูลค่าจากกระดาษที่ลดใช้ (บาท)</td><td>กระดาษที่ลดใช้ (แผ่น) × 3 = ${nf(g.sheets)} × 3</td><td><b>${nf(g.vPaper)} บาท</b></td></tr>
+  <tr style="background:var(--soft2)"><td><b>มูลค่ารวมสะสม (บาท)</b></td><td>มูลค่าเวลา + มูลค่ากระดาษ</td><td><b style="color:var(--purple)">${nf(g.total)} บาท</b></td></tr>`;
+}
+
+/* ================= CHARTS ================= */
+function renderCharts(){
+ const mk=(id,cfg)=>{if(charts[id])charts[id].destroy();const el=document.getElementById(id);if(el)charts[id]=new Chart(el,cfg);};
+ const F={family:'Sarabun'};
+ const grad=(ctx,c1,c2)=>{const g=ctx.createLinearGradient(0,0,0,240);g.addColorStop(0,c1);g.addColorStop(1,c2);return g;};
+
+ /* --- monthly buckets --- */
+ const mo={};
+ DATA.filter(d=>d.dSub).sort((a,b)=>a.dSub-b.dSub).forEach(d=>{
+  const k=d.dSub.getFullYear()+'-'+String(d.dSub.getMonth()+1).padStart(2,'0');mo[k]=(mo[k]||0)+1;});
+ const mk2=Object.keys(mo),
+  labels=mk2.map(k=>{const[y,m]=k.split('-');return THMON[+m-1]+'\n'+String(+y+543).slice(-2);});
+ const cntArr=mk2.map(k=>mo[k]);
+ const peak=Math.max(...cntArr,0),last=cntArr.length-1;
+
+ /* 1) แนวโน้มปริมาณงานรายเดือน (peak ส้ม / ล่าสุดเขียว) */
+ mk('c5',{type:'bar',data:{labels,datasets:[{label:'จำนวนเรื่อง',data:cntArr,borderRadius:9,
+  backgroundColor:cntArr.map((v,i)=>i===last?'#12c26a':(v===peak?'#f5a524':'#2f8ef4')),
+  borderWidth:cntArr.map(v=>v===peak?2:0),borderColor:'#e8930c'}]},
+  options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+' เรื่อง'}}},
+   scales:{y:{ticks:{precision:0,font:F},grid:{color:'#eef2f9'}},x:{ticks:{font:{size:11,family:'Sarabun'}},grid:{display:false}}},
+   animation:{duration:1100,easing:'easeOutQuart'}}});
+
+ /* 2) สถานะ */
+ const st={};DATA.forEach(d=>st[d.status]=(st[d.status]||0)+1);
+ mk('c1',{type:'doughnut',data:{labels:Object.keys(st),datasets:[{data:Object.values(st),
+  backgroundColor:['#0e9f6e','#0b63e5','#f5a524','#6d5efc','#22b8ff'],borderWidth:3,borderColor:'#fff'}]},
+  options:{cutout:'62%',plugins:{legend:{position:'bottom',labels:{font:F,padding:14,usePointStyle:true}}},
+   animation:{animateRotate:true,duration:1100}}});
+
+ /* 3) ผู้รับผิดชอบ */
+ const ow={};DATA.forEach(d=>ow[d.owner]=(ow[d.owner]||0)+1);
+ mk('c2',{type:'bar',data:{labels:Object.keys(ow),datasets:[{label:'จำนวนเรื่อง',data:Object.values(ow),
+  backgroundColor:c=>grad(c.chart.ctx,'#0b63e5','#22b8ff'),borderRadius:8}]},
+  options:{indexAxis:'y',plugins:{legend:{display:false}},
+   scales:{x:{ticks:{precision:0,font:F},grid:{color:'#eef2f9'}},y:{ticks:{font:{size:11,family:'Sarabun'}},grid:{display:false}}},
+   animation:{duration:1100}}});
+
+ /* 4) SLA distribution */
+ const bins=['< 15','15–29','30–59','60–89','90–119','≥ 120'],cnt=[0,0,0,0,0,0];
+ DATA.filter(d=>d.done).forEach(d=>{const v=d.days;cnt[v<15?0:v<30?1:v<60?2:v<90?3:v<120?4:5]++;});
+ mk('c4',{type:'bar',data:{labels:bins,datasets:[{label:'จำนวนเรื่องที่แล้วเสร็จ',data:cnt,
+  backgroundColor:['#12c26a','#5bd0a0','#22b8ff','#f5a524','#ff8a5c','#e0322c'],borderRadius:9}]},
+  options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+' เรื่อง'}}},
+   scales:{y:{ticks:{precision:0,font:F},grid:{color:'#eef2f9'}},x:{ticks:{font:F},grid:{display:false},
+    title:{display:true,text:'ช่วงระยะเวลาดำเนินงาน (วัน)',font:F,color:'#6b7893'}}},
+   animation:{duration:1100}}});
+
+ /* 5) ★ มูลค่าสะสมที่ประหยัดได้รายเดือน (บาท) */
+ const vT=[],vP=[],cum=[];let acc=0;
+ cntArr.forEach(c=>{
+  const t=c*(MINS/60)*LABOR_RATE, p=c*PAPER*PAPER_COST;
+  vT.push(t);vP.push(p);acc+=t+p;cum.push(acc);});
+ mk('c3',{type:'bar',data:{labels,datasets:[
+  {type:'line',label:'มูลค่าสะสมรวม (บาท)',data:cum,yAxisID:'y1',borderColor:'#6d5efc',
+   backgroundColor:'rgba(109,94,252,.12)',borderWidth:3,fill:true,tension:.38,pointRadius:4,
+   pointBackgroundColor:'#fff',pointBorderColor:'#6d5efc',pointBorderWidth:2,order:0},
+  {label:'มูลค่าจากเวลาที่ประหยัด (บาท/เดือน)',data:vT,backgroundColor:c=>grad(c.chart.ctx,'#0b63e5','#22b8ff'),
+   borderRadius:7,stack:'v',order:1},
+  {label:'มูลค่าจากกระดาษที่ลดใช้ (บาท/เดือน)',data:vP,backgroundColor:c=>grad(c.chart.ctx,'#0e9f6e','#31d0aa'),
+   borderRadius:7,stack:'v',order:1}]},
+  options:{interaction:{mode:'index',intersect:false},
+   plugins:{legend:{labels:{font:F,usePointStyle:true,padding:14}},
+    tooltip:{callbacks:{label:c=>c.dataset.label+': '+nf(c.parsed.y)+' บาท'}}},
+   scales:{
+    y:{stacked:true,position:'left',title:{display:true,text:'มูลค่ารายเดือน (บาท)',font:F,color:'#6b7893'},
+     ticks:{font:F,callback:v=>nf(v)},grid:{color:'#eef2f9'}},
+    y1:{position:'right',title:{display:true,text:'มูลค่าสะสม (บาท)',font:F,color:'#6d5efc'},
+     ticks:{font:F,callback:v=>nf(v)},grid:{display:false}},
+    x:{stacked:true,ticks:{font:{size:11,family:'Sarabun'}},grid:{display:false}}},
+   animation:{duration:1200,easing:'easeOutQuart'}}});
+}
+
+/* ================= MODAL ================= */
+function openM(i){
+ const d=DATA.find(x=>x.i===i);if(!d)return;curr=d;prevOn=false;
+ document.getElementById('mPrev').innerHTML='';
+ document.getElementById('mTitle').textContent=d.subject;
+ const row=(k,v)=>`<dt>${k}</dt><dd>${v}</dd>`;
+ const vDoc=(MINS/60)*LABOR_RATE+PAPER*PAPER_COST;
+ document.getElementById('mBody').innerHTML=
+  row('เลขที่รายการ','#'+d.no)+row('เรื่อง',esc(d.subject))+
+  row('ประเภทบันทึก',`<span class="badge ${d.type==='ภายใน'?'b-run':'b-15'}">${esc(d.type)}</span>`)+
+  row('ผู้รับผิดชอบ',esc(d.owner))+row('วันที่เสนอเรื่อง',fmt(d.dSub))+row('วันที่อนุมัติ',fmt(d.dApp))+
+  row('วันที่งานสำเร็จ',fmt(d.dDone))+row('ระยะเวลา (วัน)',`<b>${d.days}</b> วัน`)+
+  row('สถานะ',bStatus(d))+row('ระดับแจ้งเตือน',bAlert(d))+
+  row('มูลค่าที่ประหยัดได้',`<b style="color:var(--purple)">${nf(vDoc)} บาท</b> <span style="font-weight:400;color:var(--muted);font-size:12px">(เวลา ${nf((MINS/60)*LABOR_RATE)} + กระดาษ ${nf(PAPER*PAPER_COST)})</span>`)+
+  row('หมายเหตุ',esc(d.note))+
+  row('ลิงก์ไฟล์',d.file?`<a href="${esc(d.file)}" target="_blank" style="color:var(--blue);word-break:break-all">${esc(d.file.slice(0,54))}…</a>`:'—');
+ const steps=[{n:'เสนอเรื่อง',dt:d.dSub,ok:!!d.dSub},{n:'อนุมัติ',dt:d.dApp,ok:!!d.dApp},
+  {n:'ดำเนินการ',dt:null,ok:!!d.dApp},{n:'แล้วเสร็จ',dt:d.dDone,ok:d.done}];
+ document.getElementById('mSteps').innerHTML=steps.map((s,k)=>{
+  const now=!s.ok&&k>0&&steps[k-1].ok;
+  return `<div class="step ${s.ok?'done':''} ${now?'now':''}"><div class="cir">${s.ok?'✓':k+1}</div>
+   <p>${s.n}</p><small>${s.dt?fmt(s.dt):(s.ok?'ดำเนินการแล้ว':'รอ')}</small></div>`;}).join('');
+ document.getElementById('btnOpen').href=d.file||'#';
+ document.getElementById('btnDl').href=dlLink(d.file);
+ document.getElementById('ov').classList.add('on');switchQR('file');
+}
+function switchQR(mode){
+ curMode=mode;
+ document.getElementById('qtF').classList.toggle('on',mode==='file');
+ document.getElementById('qtT').classList.toggle('on',mode==='track');
+ const val=mode==='file'?(curr.file||SHEET_URL):SHEET_URL;
+ document.getElementById('qrHint').textContent=mode==='file'?'สแกนเพื่อเปิดไฟล์บันทึกข้อความ':'สแกนเพื่อติดตามสถานะแบบเรียลไทม์';
+ const box=document.getElementById('qr');box.innerHTML='';
+ try{new QRCode(box,{text:val,width:190,height:190,colorDark:'#0b63e5',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});}
+ catch(e){box.innerHTML=`<img src="https://api.qrserver.com/v1/create-qr-code/?size=190x190&color=0b63e5&data=${encodeURIComponent(val)}">`;}
+}
+function dlQR(){
+ const cv=document.querySelector('#qr canvas'),im=document.querySelector('#qr img');
+ const a=document.createElement('a');
+ a.download=`QR_${(curr.subject||'doc').slice(0,32).replace(/[\\/:*?"<>|]/g,'')}.png`;
+ if(cv){a.href=cv.toDataURL('image/png');a.click();}else if(im)window.open(im.src,'_blank');
+}
+function togglePrev(){
+ const el=document.getElementById('mPrev'),u=prevLink(curr.file);prevOn=!prevOn;
+ el.innerHTML=(prevOn&&u)?`<b style="font-size:13.5px">📑 พรีวิวเอกสาร</b><iframe src="${u}" allow="autoplay"></iframe>`
+  :(prevOn?'<p style="color:var(--muted);font-size:12.5px">ไม่พบไฟล์ที่พรีวิวได้</p>':'');
+}
+function copyLink(){const v=curMode==='file'?(curr.file||SHEET_URL):SHEET_URL;
+ navigator.clipboard.writeText(v).then(()=>alert('คัดลอกลิงก์แล้ว ✔')).catch(()=>prompt('คัดลอกลิงก์นี้:',v));}
+function closeM(){document.getElementById('ov').classList.remove('on');document.getElementById('mPrev').innerHTML='';}
+
+/* ================= EXPORT ================= */
+function exportCSV(){
+ const vDoc=(MINS/60)*LABOR_RATE+PAPER*PAPER_COST;
+ const h=['ลำดับ','เรื่อง','ประเภท','ผู้รับผิดชอบ','วันที่เสนอ','วันที่อนุมัติ','วันที่สำเร็จ','ระยะเวลา(วัน)',
+  'สถานะ','ระดับแจ้งเตือน','มูลค่าที่ประหยัด(บาท)','หมายเหตุ','ลิงก์ไฟล์'];
+ const rows=VIEW.map(d=>[d.no,d.subject,d.type,d.owner,fmt(d.dSub),fmt(d.dApp),fmt(d.dDone),d.days,d.status,
+  d.urgent?'ควรติดตามเร่งด่วน':d.done?(d.slaBreach?'เสร็จเกิน SLA':'อยู่ในเกณฑ์'):TIERS.find(t=>t.k===d.tier).l,
+  vDoc,d.note,d.file]);
+ const csv='\uFEFF'+[h,...rows].map(r=>r.map(c=>`"${String(c??'').replace(/"/g,'""')}"`).join(',')).join('\n');
+ const a=document.createElement('a');
+ a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+ a.download=`รายงานบันทึกข้อความ_${new Date().toISOString().slice(0,10)}.csv`;a.click();
+}
+
+/* ================= UI BEHAVIOR ================= */
+/* reveal + count-up */
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+ if(e.isIntersecting){e.target.classList.add('in');animateNums(e.target);}}),{threshold:.12});
+function observeAll(){document.querySelectorAll('.rv,.kgrid,.hstat').forEach(el=>io.observe(el));}
+
+/* scrollspy + progress + top button */
+const secs=['s1','s2','s3','s4'],links=[...document.querySelectorAll('#navin a')];
+window.addEventListener('scroll',()=>{
+ const sc=window.scrollY,h=document.body.scrollHeight-innerHeight;
+ document.getElementById('prog').style.width=(h>0?sc/h*100:0)+'%';
+ document.getElementById('topBtn').classList.toggle('on',sc>420);
+ let cur=0;secs.forEach((id,i)=>{const el=document.getElementById(id);
+  if(el&&el.getBoundingClientRect().top<=150)cur=i;});
+ links.forEach((a,i)=>a.classList.toggle('on',i===cur));
+},{passive:true});
+
+['q','fStatus','fType','fOwner','fAlert','fSort'].forEach(id=>
+ document.getElementById(id).addEventListener(id==='q'?'input':'change',render));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM();});
+
+/* ================= BOOT ================= */
+loadLocal();
+setSrc('local','ข้อมูลสำรองในไฟล์ ('+DATA.length+' รายการ)','');
+observeAll();
+setTimeout(()=>{document.querySelectorAll('.rv').forEach(el=>el.classList.add('in'));animateNums();},250);
+loadLive(false);
+setInterval(()=>loadLive(false),300000);
+</script>
+</body>
+</html>
