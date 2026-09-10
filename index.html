@@ -37,14 +37,15 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--ink);font
  align-items:center;flex-wrap:wrap;max-width:1500px;margin:0 auto}
 .hbrand{display:flex;gap:15px;align-items:center}
 
-/* ---- LOGO : ย่อ/ขยายอัตโนมัติ ไม่บิดเบี้ยว ---- */
-.hlogo{display:grid;place-items:center;background:#fff;border-radius:14px;padding:8px 16px;
- height:62px;min-width:130px;flex-shrink:0;text-decoration:none;transition:.28s;
+/* ---- LOGO : ขยายเต็มกรอบขาว ---- */
+.hlogo{display:grid;place-items:center;background:#fff;border-radius:14px;padding:6px 10px;
+ height:82px;min-width:210px;flex-shrink:0;text-decoration:none;transition:.28s;
  box-shadow:0 8px 24px rgba(0,0,0,.2)}
 .hlogo:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 14px 32px rgba(0,0,0,.28)}
-.hlogo img{height:44px;width:auto;max-width:180px;object-fit:contain;display:block}
-.hlogo .fb{display:none;font-weight:800;color:var(--blue);font-size:15px;letter-spacing:.4px;white-space:nowrap}
-@media(max-width:520px){.hlogo{height:52px;min-width:104px;padding:7px 12px}.hlogo img{height:34px}}
+.hlogo img{height:70px;width:auto;max-width:275px;object-fit:contain;display:block}
+.hlogo .fb{display:none;font-weight:800;color:var(--blue);font-size:17px;letter-spacing:.4px;white-space:nowrap}
+@media(max-width:640px){.hlogo{height:66px;min-width:168px;padding:5px 9px}.hlogo img{height:56px;max-width:220px}}
+@media(max-width:420px){.hlogo{height:56px;min-width:140px}.hlogo img{height:46px;max-width:180px}}
 
 .hbrand h1{font-size:21px;font-weight:800;letter-spacing:-.2px}
 .hbrand p{font-size:12.5px;opacity:.9;margin-top:2px}
@@ -96,7 +97,6 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--ink);font
 .note{background:#fff8e6;border:1px solid #f3d99a;color:#7a5a00;border-radius:14px;padding:12px 16px;
  font-size:12.5px;margin-bottom:18px;display:none;line-height:1.75}
 .note.on{display:block}
-
 .card{background:#fff;border-radius:var(--r);box-shadow:var(--sh);padding:19px;margin-bottom:16px;
  border:1px solid rgba(226,234,246,.8);transition:.28s}
 .card:hover{box-shadow:var(--sh2)}
@@ -248,9 +248,9 @@ tbody tr:hover{background:var(--soft)}
 .ft-in{position:relative;z-index:2;max-width:1500px;margin:0 auto;padding:32px 30px;
  display:flex;gap:24px;justify-content:space-between;align-items:center;flex-wrap:wrap}
 .ft-l{display:flex;gap:15px;align-items:center}
-.ft-logo{background:#fff;border-radius:13px;padding:8px 14px;height:58px;display:grid;place-items:center;flex-shrink:0}
-.ft-logo img{height:40px;width:auto;max-width:160px;object-fit:contain;display:block}
-.ft-logo .fb{display:none;font-weight:800;color:var(--blue);font-size:14px}
+.ft-logo{background:#fff;border-radius:13px;padding:6px 10px;height:76px;display:grid;place-items:center;flex-shrink:0}
+.ft-logo img{height:64px;width:auto;max-width:250px;object-fit:contain;display:block}
+.ft-logo .fb{display:none;font-weight:800;color:var(--blue);font-size:15px}
 .ft-l b{font-size:14.5px;display:block;line-height:1.5}
 .ft-l span{font-size:12.5px;opacity:.9}
 .ft-r{text-align:right;font-size:12.5px;line-height:2}
@@ -262,8 +262,8 @@ tbody tr:hover{background:var(--soft)}
 .ft-btm{position:relative;z-index:2;border-top:1px solid rgba(255,255,255,.2);
  padding:14px 30px;text-align:center;font-size:12px;opacity:.92}
 @media(max-width:820px){.ft-in{flex-direction:column;text-align:center;padding:26px 16px}
- .ft-r{text-align:center}.ft-l{flex-direction:column}}
-@media(max-width:820px){.hero{padding:20px 16px 24px}.navin,.wrap{padding-left:16px;padding-right:16px}}
+ .ft-r{text-align:center}.ft-l{flex-direction:column}
+ .hero{padding:20px 16px 24px}.navin,.wrap{padding-left:16px;padding-right:16px}}
 @media print{.navbar,.hact,.filters,.act,.ov,.note,.top-btn,#prog{display:none!important}
  .card,.kpi{box-shadow:none;border:1px solid #ddd}table{min-width:auto;font-size:11px}
  .ft::before,.ft::after{display:none}
@@ -432,18 +432,18 @@ tbody tr:hover{background:var(--soft)}
 
 <script>
 /* ================= CONFIG ================= */
-const SHEET_ID='1qTTLdfwnMaDyomcaGcc_DbiAqbLHTjTFPeZWi5NlaBk',GID='0';
-const SHEET_URL=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit?gid=${GID}#gid=${GID}`;
-const PAPER=4, CO2=0.0086, MINS=45, URGENT_DAY=60;
-const LABOR_RATE=300;   /* บาท/ชั่วโมง */
-const PAPER_COST=3;     /* บาท/แผ่น */
-const TIERS=[{k:'120',d:120,l:'เกิน 120 วัน'},{k:'90',d:90,l:'เกิน 90 วัน'},{k:'60',d:60,l:'เกิน 60 วัน'},
+var SHEET_ID='1qTTLdfwnMaDyomcaGcc_DbiAqbLHTjTFPeZWi5NlaBk',GID='0';
+var SHEET_URL='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/edit?gid='+GID+'#gid='+GID;
+var PAPER=4, CO2=0.0086, MINS=45, URGENT_DAY=60;
+var LABOR_RATE=300;   /* บาท/ชั่วโมง */
+var PAPER_COST=3;     /* บาท/แผ่น */
+var TIERS=[{k:'120',d:120,l:'เกิน 120 วัน'},{k:'90',d:90,l:'เกิน 90 วัน'},{k:'60',d:60,l:'เกิน 60 วัน'},
  {k:'30',d:30,l:'เกิน 30 วัน'},{k:'15',d:15,l:'เกิน 15 วัน'},{k:'normal',d:0,l:'ปกติ (< 15 วัน)'}];
 document.getElementById('lnkSheet').href=SHEET_URL;
 
 /* ========= ข้อมูลสำรอง (ใช้เมื่อดึงสดไม่ได้) ========= */
-const FB_COLS=['วันที่','ไฟล์','เรื่อง','วันที่อนุมัติ','ระยะเวลา (วัน)','สถานะ','วันที่งานสำเร็จ','ผู้รับผิดชอบ','ประเภทบันทึกข้อความ','หมายเหตุ'];
-const FALLBACK=[
+var FB_COLS=['วันที่','ไฟล์','เรื่อง','วันที่อนุมัติ','ระยะเวลา (วัน)','สถานะ','วันที่งานสำเร็จ','ผู้รับผิดชอบ','ประเภทบันทึกข้อความ','หมายเหตุ'];
+var FALLBACK=[
 ["27/11/2025","https://drive.google.com/file/d/1MEMO0001AVSMSUENG0000000001/view","ขออนุมัติจัดซื้อครุภัณฑ์โสตทัศนูปกรณ์ประจำห้องเรียนรวม","2/12/2025",5,"สำเร็จ","7/12/2025","งานพัสดุ","ภายใน","ดำเนินการจัดซื้อเรียบร้อย"],
 ["3/12/2025","https://drive.google.com/file/d/1MEMO0002AVSMSUENG0000000002/view","ขออนุมัติซ่อมบำรุงระบบเครื่องเสียงห้องประชุมคณะ","9/12/2025",12,"สำเร็จ","21/12/2025","งานพัสดุ","ภายใน","ซ่อมโดยผู้รับจ้างภายนอก"],
 ["15/12/2025","https://drive.google.com/file/d/1MEMO0003AVSMSUENG0000000003/view","ขอความอนุเคราะห์บันทึกวีดิทัศน์พิธีพระราชทานปริญญาบัตร","18/12/2025",8,"สำเร็จ","26/12/2025","งานโสตทัศนศึกษา","ภายใน","ส่งไฟล์ให้หน่วยงานแล้ว"],
@@ -473,124 +473,157 @@ const FALLBACK=[
 ["5/9/2026","https://drive.google.com/file/d/1MEMO0027AVSMSUENG0000000027/view","ขออนุมัติจัดเก็บและสำรองข้อมูลสื่อดิจิทัลของคณะ","8/9/2026",5,"สำเร็จ","9/9/2026","งานโสตทัศนศึกษา","ภายใน","สำรองข้อมูลขึ้นคลาวด์แล้ว"]
 ];
 
-let DATA=[],VIEW=[],curr=null,curMode='file',charts={},prevOn=false;
+var DATA=[],VIEW=[],curr=null,curMode='file',charts={},prevOn=false;
 
 /* ================= HELPERS ================= */
-const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-const clean=s=>String(s??'').replace(/[\r\n]+/g,' ').replace(/\s{2,}/g,' ').trim();
-const nf=(n,d=0)=>Number(n).toLocaleString('th-TH',{minimumFractionDigits:d,maximumFractionDigits:d});
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(m){
+ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];});}
+function clean(s){return String(s==null?'':s).replace(/[\r\n]+/g,' ').replace(/\s{2,}/g,' ').trim();}
+function nf(n,d){d=d||0;return Number(n).toLocaleString('th-TH',{minimumFractionDigits:d,maximumFractionDigits:d});}
 function parseDate(v){
  if(v==null||v==='')return null;
  if(v instanceof Date)return isNaN(v)?null:v;
- const s=String(v).trim();
- let m=s.match(/^Date\((\d+),(\d+),(\d+)/);
- if(m){let y=+m[1];if(y>2400)y-=543;return new Date(y,+m[2],+m[3]);}
+ var s=String(v).trim(),m;
+ m=s.match(/^Date\((\d+),(\d+),(\d+)/);
+ if(m){var y1=+m[1];if(y1>2400)y1-=543;return new Date(y1,+m[2],+m[3]);}
  m=s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
- if(m){let y=+m[1];if(y>2400)y-=543;return new Date(y,+m[2]-1,+m[3]);}
+ if(m){var y2=+m[1];if(y2>2400)y2-=543;return new Date(y2,+m[2]-1,+m[3]);}
  m=s.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})/);
- if(m){let d=+m[1],mo=+m[2],y=+m[3];if(y<100)y+=2000;if(y>2400)y-=543;
-  if(mo>12&&d<=12){const t=d;d=mo;mo=t;}
-  const dt=new Date(y,mo-1,d);return isNaN(dt)?null:dt;}
- const t=new Date(s);return isNaN(t)?null:t;
+ if(m){var d=+m[1],mo=+m[2],y=+m[3];
+  if(y<100)y+=2000; if(y>2400)y-=543;
+  if(mo>12&&d<=12){var t=d;d=mo;mo=t;}
+  var dt=new Date(y,mo-1,d);return isNaN(dt)?null:dt;}
+ var t2=new Date(s);return isNaN(t2)?null:t2;
 }
-const fmt=d=>d?d.toLocaleDateString('th-TH',{day:'2-digit',month:'short',year:'numeric'}):'—';
-const diffD=(a,b)=>Math.max(0,Math.round((b-a)/86400000));
-const driveId=u=>{const m=String(u||'').match(/[-\w]{25,}/);return m?m[0]:null;};
-const dlLink=u=>{const id=driveId(u);return id?`https://drive.google.com/uc?export=download&id=${id}`:(u||'#');};
-const prevLink=u=>{const id=driveId(u);return id?`https://drive.google.com/file/d/${id}/preview`:null;};
-const THMON=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+function fmt(d){return d?d.toLocaleDateString('th-TH',{day:'2-digit',month:'short',year:'numeric'}):'—';}
+function diffD(a,b){return Math.max(0,Math.round((b-a)/86400000));}
+function driveId(u){var m=String(u||'').match(/[-\w]{25,}/);return m?m[0]:null;}
+function dlLink(u){var id=driveId(u);return id?'https://drive.google.com/uc?export=download&id='+id:(u||'#');}
+function prevLink(u){var id=driveId(u);return id?'https://drive.google.com/file/d/'+id+'/preview':null;}
+var THMON=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
 
 function countUp(el,to,dec,suffix){
- const dur=1100,st=performance.now();
- const step=t=>{const p=Math.min(1,(t-st)/dur),e=1-Math.pow(1-p,3);
+ var dur=1100,st=performance.now();
+ function step(t){var p=Math.min(1,(t-st)/dur),e=1-Math.pow(1-p,3);
   el.textContent=nf(to*e,dec)+(suffix||'');
-  if(p<1)requestAnimationFrame(step);};
+  if(p<1)requestAnimationFrame(step);}
  requestAnimationFrame(step);
 }
 function animateNums(scope){
- (scope||document).querySelectorAll('[data-n]').forEach(el=>{
-  if(el.dataset.done)return;el.dataset.done='1';
-  countUp(el,+el.dataset.n,+(el.dataset.dec||0),el.dataset.suf||'');});
+ (scope||document).querySelectorAll('[data-n]').forEach(function(el){
+  if(el.getAttribute('data-done'))return;
+  el.setAttribute('data-done','1');
+  countUp(el,+el.getAttribute('data-n'),+(el.getAttribute('data-dec')||0),el.getAttribute('data-suf')||'');});
 }
 
 /* ================= BUILD ================= */
 function build(rows){
- const today=new Date();today.setHours(0,0,0,0);
- return rows.map((o,i)=>{
-  const subject=clean(o['เรื่อง']),file=String(o['ไฟล์']||'').trim();
-  if(!subject&&!file)return null;
-  const dSub=parseDate(o['วันที่']),dApp=parseDate(o['วันที่อนุมัติ']),dDone=parseDate(o['วันที่งานสำเร็จ']);
-  const status=clean(o['สถานะ'])||'ไม่ระบุ';
-  const done=/สำเร็จ|เสร็จ/.test(status)&&!/ไม่/.test(status);
-  const sdRaw=String(o['ระยะเวลา (วัน)']??''),sd=Number(sdRaw.replace(/[^\d.-]/g,''));
-  const base=dApp||dSub;
-  const days=(sdRaw!==''&&Number.isFinite(sd)&&sd>=0)?sd
-   :(done?(base&&dDone?diffD(base,dDone):0):(base?diffD(base,today):0));
-  const tier=done?'normal':(TIERS.find(t=>days>=t.d)||{k:'normal'}).k;
-  return {i:i+1,no:i+1,subject:subject||'(ไม่ระบุเรื่อง)',file,dSub,dApp,dDone,status,done,
+ var today=new Date();today.setHours(0,0,0,0);
+ var out=[];
+ rows.forEach(function(o,i){
+  var subject=clean(o['เรื่อง']),file=String(o['ไฟล์']||'').trim();
+  if(!subject&&!file)return;
+  var dSub=parseDate(o['วันที่']),dApp=parseDate(o['วันที่อนุมัติ']),dDone=parseDate(o['วันที่งานสำเร็จ']);
+  var status=clean(o['สถานะ'])||'ไม่ระบุ';
+  var done=/สำเร็จ|เสร็จ/.test(status)&&!/ไม่/.test(status);
+  var sdRaw=String(o['ระยะเวลา (วัน)']==null?'':o['ระยะเวลา (วัน)']);
+  var sd=Number(sdRaw.replace(/[^\d.-]/g,''));
+  var base=dApp||dSub, days;
+  if(sdRaw!==''&&isFinite(sd)&&sd>=0){days=sd;}
+  else if(done){days=(base&&dDone)?diffD(base,dDone):0;}
+  else{days=base?diffD(base,today):0;}
+  var tier='normal';
+  if(!done){for(var t=0;t<TIERS.length;t++){if(days>=TIERS[t].d){tier=TIERS[t].k;break;}}}
+  out.push({i:out.length+1,no:out.length+1,subject:subject||'(ไม่ระบุเรื่อง)',file:file,
+   dSub:dSub,dApp:dApp,dDone:dDone,status:status,done:done,
    type:clean(o['ประเภทบันทึกข้อความ'])||'ไม่ระบุ',owner:clean(o['ผู้รับผิดชอบ'])||'ไม่ระบุ',
-   note:clean(o['หมายเหตุ'])||'-',days,tier,urgent:!done&&days>=URGENT_DAY,slaBreach:done&&days>=120};
- }).filter(Boolean);
+   note:clean(o['หมายเหตุ'])||'-',days:days,tier:tier,
+   urgent:(!done&&days>=URGENT_DAY),slaBreach:(done&&days>=120)});
+ });
+ return out;
 }
 function setSrc(kind,msg,note){
- const t=document.getElementById('srcTag');
+ var t=document.getElementById('srcTag');
  t.className='src '+(kind==='live'?'live':kind==='err'?'err':'local');
  document.getElementById('srcTxt').textContent=msg;
- const nb=document.getElementById('noteBox');
- if(note){nb.innerHTML=note;nb.classList.add('on');}else nb.classList.remove('on');
+ var nb=document.getElementById('noteBox');
+ if(note){nb.innerHTML=note;nb.classList.add('on');}else{nb.classList.remove('on');}
 }
 
 /* ================= LOAD ================= */
 function loadLocal(){
- DATA=build(FALLBACK.map(r=>{const o={};FB_COLS.forEach((c,j)=>o[c]=r[j]);return o;}));
+ DATA=build(FALLBACK.map(function(r){var o={};FB_COLS.forEach(function(c,j){o[c]=r[j];});return o;}));
  initFilters();render();
 }
-async function loadLive(manual){
- try{
-  const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${GID}&headers=1&_=${Date.now()}`;
-  const res=await fetch(url,{cache:'no-store'});
+function loadLive(manual){
+ var url='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:json&gid='+GID+'&headers=1&_='+Date.now();
+ fetch(url,{cache:'no-store'}).then(function(res){
   if(!res.ok)throw new Error('HTTP '+res.status);
-  const txt=await res.text();
-  const json=JSON.parse(txt.substring(txt.indexOf('{'),txt.lastIndexOf('}')+1));
-  let cols=json.table.cols.map(c=>clean(c.label)),rows=json.table.rows||[];
-  if(cols.every(c=>!c)&&rows.length){cols=rows[0].c.map(c=>c?clean(c.v):'');rows=rows.slice(1);}
-  if(!rows.length)throw new Error('ไม่มีข้อมูล');
-  const objs=rows.map(r=>{const o={};cols.forEach((c,j)=>{const cc=r.c[j];o[c]=cc?(cc.f??cc.v):null;});return o;});
-  const built=build(objs);
+  return res.text();
+ }).then(function(txt){
+  var json=JSON.parse(txt.substring(txt.indexOf('{'),txt.lastIndexOf('}')+1));
+  var cols=json.table.cols.map(function(c){return clean(c.label);});
+  var rows=json.table.rows||[];
+  var allEmpty=cols.every(function(c){return !c;});
+  if(allEmpty&&rows.length){cols=rows[0].c.map(function(c){return c?clean(c.v):'';});rows=rows.slice(1);}
+  if(!rows.length)throw new Error('ไม่มีข้อมูลในชีต');
+  var objs=rows.map(function(r){var o={};cols.forEach(function(c,j){
+   var cc=r.c[j];o[c]=cc?(cc.f!=null?cc.f:cc.v):null;});return o;});
+  var built=build(objs);
   if(!built.length)throw new Error('อ่านข้อมูลไม่ได้');
   DATA=built;initFilters();render();
   setSrc('live','ข้อมูลสด · อัปเดต '+new Date().toLocaleTimeString('th-TH'),'');
- }catch(e){
+ }).catch(function(e){
   setSrc('local','ข้อมูลสำรองในไฟล์ ('+DATA.length+' รายการ)',
-   `<b>⚠ ยังไม่ได้เชื่อมต่อ Google Sheets สด</b> — ขณะนี้แสดงผลจากข้อมูลสำรองที่ฝังไว้ในไฟล์<br>
-    สาเหตุที่พบบ่อย: <b>(1)</b> เปิดไฟล์แบบ <code>file://</code> หรือในหน้าพรีวิวที่บล็อก CORS →
-    ต้องเปิดผ่าน <b>GitHub Pages (https://)</b> จึงจะดึงสดได้
-    <b>(2)</b> ชีตยังไม่ได้ตั้งเป็น "ทุกคนที่มีลิงก์ = ผู้มีสิทธิ์อ่าน"
-    <b>(3)</b> เครือข่ายองค์กรบล็อก docs.google.com<br>
-    <span style="opacity:.85">รายละเอียด: ${esc(e.message)}</span>`);
+   '<b>⚠ ยังไม่ได้เชื่อมต่อ Google Sheets สด</b> — ขณะนี้แสดงผลจากข้อมูลสำรองที่ฝังไว้ในไฟล์<br>'+
+   'สาเหตุที่พบบ่อย: <b>(1)</b> เปิดไฟล์แบบ <code>file://</code> หรือในหน้าพรีวิวที่บล็อก CORS → '+
+   'ต้องเปิดผ่าน <b>GitHub Pages (https://)</b> จึงจะดึงสดได้ '+
+   '<b>(2)</b> ชีตยังไม่ได้ตั้งเป็น "ทุกคนที่มีลิงก์ = ผู้มีสิทธิ์อ่าน" '+
+   '<b>(3)</b> เครือข่ายองค์กรบล็อก docs.google.com<br>'+
+   '<span style="opacity:.85">รายละเอียด: '+esc(e.message)+'</span>');
   if(manual)alert('ยังเชื่อมต่อชีตสดไม่ได้ในสภาพแวดล้อมนี้\nระบบใช้ข้อมูลสำรองแทน — เมื่อเปิดผ่าน GitHub Pages จะดึงสดได้อัตโนมัติ');
- }
+ });
 }
 
 /* ================= FILTER ================= */
 function initFilters(){
- const fill=(id,arr)=>{const s=document.getElementById(id),keep=s.options[0].outerHTML;
-  s.innerHTML=keep+[...new Set(arr)].filter(Boolean).sort((a,b)=>a.localeCompare(b,'th'))
-   .map(v=>`<option>${esc(v)}</option>`).join('');};
- fill('fStatus',DATA.map(d=>d.status));fill('fType',DATA.map(d=>d.type));fill('fOwner',DATA.map(d=>d.owner));
+ function fill(id,arr){
+  var s=document.getElementById(id),keep=s.options[0].outerHTML,seen={},list=[];
+  arr.forEach(function(v){if(v&&!seen[v]){seen[v]=1;list.push(v);}});
+  list.sort(function(a,b){return a.localeCompare(b,'th');});
+  s.innerHTML=keep+list.map(function(v){return '<option>'+esc(v)+'</option>';}).join('');
+ }
+ fill('fStatus',DATA.map(function(d){return d.status;}));
+ fill('fType',DATA.map(function(d){return d.type;}));
+ fill('fOwner',DATA.map(function(d){return d.owner;}));
 }
-function resetF(){['q','fStatus','fType','fOwner','fAlert'].forEach(i=>document.getElementById(i).value='');
- document.getElementById('fSort').value='new';render();}
+function resetF(){
+ ['q','fStatus','fType','fOwner','fAlert'].forEach(function(i){document.getElementById(i).value='';});
+ document.getElementById('fSort').value='new';render();
+}
 function applyFilter(){
- const q=document.getElementById('q').value.toLowerCase().trim(),
+ var q=document.getElementById('q').value.toLowerCase().trim(),
   st=document.getElementById('fStatus').value,ty=document.getElementById('fType').value,
   ow=document.getElementById('fOwner').value,al=document.getElementById('fAlert').value,
   so=document.getElementById('fSort').value;
- const v=DATA.filter(d=>(!q||(d.subject+d.owner+d.note+d.type).toLowerCase().includes(q))&&
-  (!st||d.status===st)&&(!ty||d.type===ty)&&(!ow||d.owner===ow)&&
-  (!al||(al==='urgent'?d.urgent:al==='slabreach'?d.slaBreach:(!d.done&&d.tier===al))));
- const S={new:(a,b)=>(b.dSub||0)-(a.dSub||0),old:(a,b)=>(a.dSub||0)-(b.dSub||0),
-  long:(a,b)=>b.days-a.days,az:(a,b)=>a.subject.localeCompare(b.subject,'th')};
+ var v=DATA.filter(function(d){
+  if(q&&(d.subject+d.owner+d.note+d.type).toLowerCase().indexOf(q)<0)return false;
+  if(st&&d.status!==st)return false;
+  if(ty&&d.type!==ty)return false;
+  if(ow&&d.owner!==ow)return false;
+  if(al){
+   if(al==='urgent')return d.urgent;
+   if(al==='slabreach')return d.slaBreach;
+   return (!d.done&&d.tier===al);
+  }
+  return true;
+ });
+ var S={
+  'new':function(a,b){return (b.dSub||0)-(a.dSub||0);},
+  'old':function(a,b){return (a.dSub||0)-(b.dSub||0);},
+  'long':function(a,b){return b.days-a.days;},
+  'az':function(a,b){return a.subject.localeCompare(b.subject,'th');}
+ };
  return v.sort(S[so]);
 }
 
@@ -598,272 +631,333 @@ function applyFilter(){
 function render(){
  VIEW=applyFilter();
  renderHero();renderTable();renderChips();renderAlert();renderKPI();renderGreen();renderCharts();
- document.querySelectorAll('[data-n]').forEach(e=>e.removeAttribute('data-done'));
- setTimeout(()=>animateNums(),60);
+ document.querySelectorAll('[data-n]').forEach(function(e){e.removeAttribute('data-done');});
+ setTimeout(function(){animateNums();},60);
 }
 function renderHero(){
- const n=DATA.length,done=DATA.filter(d=>d.done).length,urg=DATA.filter(d=>d.urgent).length;
- const val=n*((MINS/60)*LABOR_RATE+PAPER*PAPER_COST);
- const H=(v,l,dec,suf)=>`<div class="hs"><b data-n="${v}" data-dec="${dec||0}" data-suf="${suf||''}">0</b><span>${l}</span></div>`;
+ var n=DATA.length,
+  done=DATA.filter(function(d){return d.done;}).length,
+  urg=DATA.filter(function(d){return d.urgent;}).length;
+ var val=n*((MINS/60)*LABOR_RATE+PAPER*PAPER_COST);
+ function H(v,l){return '<div class="hs"><b data-n="'+v+'">0</b><span>'+l+'</span></div>';}
  document.getElementById('heroStat').innerHTML=
   H(n,'บันทึกข้อความทั้งหมด (เรื่อง)')+H(done,'ดำเนินการสำเร็จ (เรื่อง)')+
   H(n-done,'อยู่ระหว่างดำเนินการ (เรื่อง)')+H(urg,'ควรติดตามเร่งด่วน (เรื่อง)')+
   H(val,'มูลค่าที่ประหยัดได้สะสม (บาท)');
 }
 function chipHTML(){
- const c={};TIERS.forEach(t=>c[t.k]=0);DATA.filter(d=>!d.done).forEach(d=>c[d.tier]++);
- const urg=DATA.filter(d=>d.urgent).length;
- return TIERS.slice().reverse().map(t=>
-  `<button class="chip" data-t="${t.k}"><b>${c[t.k]}</b><span>${t.l}</span></button>`).join('')
-  +`<button class="chip urg" data-t="urgent"><b>${urg}</b><span>🚨 ควรติดตามเร่งด่วน</span></button>`;
+ var c={};TIERS.forEach(function(t){c[t.k]=0;});
+ DATA.filter(function(d){return !d.done;}).forEach(function(d){c[d.tier]++;});
+ var urg=DATA.filter(function(d){return d.urgent;}).length;
+ return TIERS.slice().reverse().map(function(t){
+  return '<button class="chip" data-t="'+t.k+'"><b>'+c[t.k]+'</b><span>'+t.l+'</span></button>';}).join('')
+  +'<button class="chip urg" data-t="urgent"><b>'+urg+'</b><span>🚨 ควรติดตามเร่งด่วน</span></button>';
 }
 function renderChips(){
- document.getElementById('navBadge').textContent=DATA.filter(d=>d.urgent).length;
- const el=document.getElementById('chips');el.innerHTML=chipHTML();
- el.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{
-  document.getElementById('fAlert').value=b.dataset.t;render();
-  document.getElementById('s1').scrollIntoView({behavior:'smooth'});});
+ document.getElementById('navBadge').textContent=DATA.filter(function(d){return d.urgent;}).length;
+ var el=document.getElementById('chips');el.innerHTML=chipHTML();
+ el.querySelectorAll('.chip').forEach(function(b){
+  b.onclick=function(){
+   document.getElementById('fAlert').value=b.getAttribute('data-t');render();
+   document.getElementById('s1').scrollIntoView({behavior:'smooth'});};});
 }
-const bStatus=d=>d.done?'<span class="badge b-ok">✔ สำเร็จ</span>'
- :/ดำเนิน/.test(d.status)?'<span class="badge b-run">⏳ อยู่ระหว่างดำเนินการ</span>'
- :`<span class="badge b-wait">${esc(d.status)}</span>`;
+function bStatus(d){
+ if(d.done)return '<span class="badge b-ok">✔ สำเร็จ</span>';
+ if(/ดำเนิน/.test(d.status))return '<span class="badge b-run">⏳ อยู่ระหว่างดำเนินการ</span>';
+ return '<span class="badge b-wait">'+esc(d.status)+'</span>';
+}
 function bAlert(d){
- if(d.done)return d.slaBreach?`<span class="badge b-90">เสร็จแล้ว · ใช้ ${d.days} วัน</span>`:'<span class="badge b-n">อยู่ในเกณฑ์</span>';
- if(d.urgent)return `<span class="badge b-urg">🚨 เร่งด่วน ${d.days} วัน</span>`;
- const M={'120':'b-120','90':'b-90','60':'b-60','30':'b-30','15':'b-15','normal':'b-n'};
- return `<span class="badge ${M[d.tier]}">${TIERS.find(t=>t.k===d.tier).l}</span>`;
+ if(d.done)return d.slaBreach?'<span class="badge b-90">เสร็จแล้ว · ใช้ '+d.days+' วัน</span>'
+  :'<span class="badge b-n">อยู่ในเกณฑ์</span>';
+ if(d.urgent)return '<span class="badge b-urg">🚨 เร่งด่วน '+d.days+' วัน</span>';
+ var M={'120':'b-120','90':'b-90','60':'b-60','30':'b-30','15':'b-15','normal':'b-n'};
+ var lab='ปกติ (< 15 วัน)';
+ TIERS.forEach(function(t){if(t.k===d.tier)lab=t.l;});
+ return '<span class="badge '+M[d.tier]+'">'+lab+'</span>';
 }
 function renderTable(){
- const tb=document.getElementById('tb');
- document.getElementById('cnt').textContent=`แสดง ${VIEW.length} จาก ${DATA.length} รายการ`;
+ var tb=document.getElementById('tb');
+ document.getElementById('cnt').textContent='แสดง '+VIEW.length+' จาก '+DATA.length+' รายการ';
  if(!VIEW.length){tb.innerHTML='<tr><td colspan="11" class="empty">ไม่พบรายการที่ตรงเงื่อนไข</td></tr>';return;}
- tb.innerHTML=VIEW.map(d=>`<tr onclick="openM(${d.i})">
-  <td>${d.no}</td><td class="subj">${esc(d.subject)}</td>
-  <td><span class="badge ${d.type==='ภายใน'?'b-run':'b-15'}">${esc(d.type)}</span></td>
-  <td>${esc(d.owner)}</td><td>${fmt(d.dSub)}</td><td>${fmt(d.dApp)}</td><td>${fmt(d.dDone)}</td>
-  <td><b style="color:${d.urgent?'var(--danger)':'var(--blue)'}">${d.days}</b> วัน</td>
-  <td>${bStatus(d)}</td><td>${bAlert(d)}</td>
-  <td><div class="act" onclick="event.stopPropagation()">
-   <button class="ico" title="รายละเอียด + QR" onclick="openM(${d.i})">👁</button>
-   <a class="ico" title="เปิดไฟล์" href="${esc(d.file||'#')}" target="_blank">📄</a>
-   <a class="ico" title="ดาวน์โหลด" href="${esc(dlLink(d.file))}" target="_blank">⬇</a></div></td></tr>`).join('');
+ tb.innerHTML=VIEW.map(function(d){
+  return '<tr onclick="openM('+d.i+')">'+
+   '<td>'+d.no+'</td><td class="subj">'+esc(d.subject)+'</td>'+
+   '<td><span class="badge '+(d.type==='ภายใน'?'b-run':'b-15')+'">'+esc(d.type)+'</span></td>'+
+   '<td>'+esc(d.owner)+'</td><td>'+fmt(d.dSub)+'</td><td>'+fmt(d.dApp)+'</td><td>'+fmt(d.dDone)+'</td>'+
+   '<td><b style="color:'+(d.urgent?'var(--danger)':'var(--blue)')+'">'+d.days+'</b> วัน</td>'+
+   '<td>'+bStatus(d)+'</td><td>'+bAlert(d)+'</td>'+
+   '<td><div class="act" onclick="event.stopPropagation()">'+
+    '<button class="ico" title="รายละเอียด + QR" onclick="openM('+d.i+')">👁</button>'+
+    '<a class="ico" title="เปิดไฟล์" href="'+esc(d.file||'#')+'" target="_blank">📄</a>'+
+    '<a class="ico" title="ดาวน์โหลด" href="'+esc(dlLink(d.file))+'" target="_blank">⬇</a></div></td></tr>';
+ }).join('');
 }
 function renderAlert(){
- const u=DATA.filter(d=>d.urgent).sort((a,b)=>b.days-a.days);
- document.getElementById('tbUrg').innerHTML=u.length?u.map((d,i)=>`<tr onclick="openM(${d.i})">
-  <td>${i+1}</td><td class="subj">${esc(d.subject)}</td><td>${esc(d.owner)}</td>
-  <td><b style="color:var(--danger)">${d.days}</b></td><td>${bAlert(d)}</td>
-  <td style="max-width:280px;font-size:12px;color:var(--muted)">${esc(d.note).slice(0,110)}</td>
-  <td><button class="ico" onclick="event.stopPropagation();openM(${d.i})">👁</button></td></tr>`).join('')
-  :'<tr><td colspan="7" class="empty">🎉 ไม่มีรายการค้างเกิน 60 วัน</td></tr>';
- const s=DATA.filter(d=>d.slaBreach).sort((a,b)=>b.days-a.days);
- document.getElementById('tbSla').innerHTML=s.length?s.map((d,i)=>`<tr onclick="openM(${d.i})">
-  <td>${i+1}</td><td class="subj">${esc(d.subject)}</td><td>${esc(d.owner)}</td>
-  <td><b style="color:#b81e1e">${d.days}</b></td>
-  <td><button class="ico" onclick="event.stopPropagation();openM(${d.i})">👁</button></td></tr>`).join('')
-  :'<tr><td colspan="5" class="empty">ไม่มีงานที่ใช้เวลาเกิน 120 วัน</td></tr>';
+ var u=DATA.filter(function(d){return d.urgent;}).sort(function(a,b){return b.days-a.days;});
+ document.getElementById('tbUrg').innerHTML=u.length?u.map(function(d,i){
+  return '<tr onclick="openM('+d.i+')"><td>'+(i+1)+'</td><td class="subj">'+esc(d.subject)+'</td>'+
+   '<td>'+esc(d.owner)+'</td><td><b style="color:var(--danger)">'+d.days+'</b></td><td>'+bAlert(d)+'</td>'+
+   '<td style="max-width:280px;font-size:12px;color:var(--muted)">'+esc(d.note).slice(0,110)+'</td>'+
+   '<td><button class="ico" onclick="event.stopPropagation();openM('+d.i+')">👁</button></td></tr>';
+ }).join(''):'<tr><td colspan="7" class="empty">🎉 ไม่มีรายการค้างเกิน 60 วัน</td></tr>';
+ var s=DATA.filter(function(d){return d.slaBreach;}).sort(function(a,b){return b.days-a.days;});
+ document.getElementById('tbSla').innerHTML=s.length?s.map(function(d,i){
+  return '<tr onclick="openM('+d.i+')"><td>'+(i+1)+'</td><td class="subj">'+esc(d.subject)+'</td>'+
+   '<td>'+esc(d.owner)+'</td><td><b style="color:#b81e1e">'+d.days+'</b></td>'+
+   '<td><button class="ico" onclick="event.stopPropagation();openM('+d.i+')">👁</button></td></tr>';
+ }).join(''):'<tr><td colspan="5" class="empty">ไม่มีงานที่ใช้เวลาเกิน 120 วัน</td></tr>';
 }
 function renderKPI(){
- const n=DATA.length,done=DATA.filter(d=>d.done).length,run=n-done;
- const urg=DATA.filter(d=>d.urgent).length,sla=DATA.filter(d=>d.slaBreach).length;
- const fin=DATA.filter(d=>d.done),avg=fin.length?Math.round(fin.reduce((s,d)=>s+d.days,0)/fin.length):0;
- const onT=fin.filter(d=>d.days<=30).length,rate=n?done/n*100:0,otr=fin.length?onT/fin.length*100:0;
- const cpl=n?DATA.filter(d=>d.file&&d.dSub&&d.dApp).length/n*100:0;
- const K=(c,l,v,s,dec,suf)=>`<div class="kpi ${c}"><div class="lb">${l}</div>
-  <div class="vl"><span data-n="${v}" data-dec="${dec||0}" data-suf="${suf||''}">0</span></div><div class="sb">${s}</div></div>`;
+ var n=DATA.length,done=DATA.filter(function(d){return d.done;}).length,run=n-done;
+ var urg=DATA.filter(function(d){return d.urgent;}).length;
+ var sla=DATA.filter(function(d){return d.slaBreach;}).length;
+ var fin=DATA.filter(function(d){return d.done;});
+ var sum=0;fin.forEach(function(d){sum+=d.days;});
+ var avg=fin.length?Math.round(sum/fin.length):0;
+ var onT=fin.filter(function(d){return d.days<=30;}).length;
+ var rate=n?done/n*100:0, otr=fin.length?onT/fin.length*100:0;
+ var cplN=DATA.filter(function(d){return d.file&&d.dSub&&d.dApp;}).length;
+ var cpl=n?cplN/n*100:0;
+ function K(c,l,v,s,dec,suf){
+  return '<div class="kpi '+c+'"><div class="lb">'+l+'</div><div class="vl">'+
+   '<span data-n="'+v+'" data-dec="'+(dec||0)+'" data-suf="'+(suf||'')+'">0</span></div>'+
+   '<div class="sb">'+s+'</div></div>';}
  document.getElementById('kpiMain').innerHTML=
   K('','บันทึกข้อความทั้งหมด',n,'เรื่องในระบบติดตาม')+
-  K('g','ดำเนินการสำเร็จ',done,`อัตราความสำเร็จ ${nf(rate,2)}%`)+
+  K('g','ดำเนินการสำเร็จ',done,'อัตราความสำเร็จ '+nf(rate,2)+'%')+
   K('','อยู่ระหว่างดำเนินการ',run,'ต้องกำกับติดตามต่อเนื่อง')+
-  K('d','ควรติดตามเร่งด่วน',urg,`ค้าง ≥ ${URGENT_DAY} วัน ยังไม่แล้วเสร็จ`)+
+  K('d','ควรติดตามเร่งด่วน',urg,'ค้าง ≥ '+URGENT_DAY+' วัน ยังไม่แล้วเสร็จ')+
   K('','ระยะเวลาเฉลี่ย',avg,'วัน/เรื่อง (เฉพาะที่แล้วเสร็จ)')+
-  K('w','เสร็จภายใน 30 วัน',otr,`${onT} จาก ${fin.length} เรื่อง`,1,'%')+
+  K('w','เสร็จภายใน 30 วัน',otr,onT+' จาก '+fin.length+' เรื่อง',1,'%')+
   K('w','งานเสร็จเกิน SLA 120 วัน',sla,'ควรทบทวนกระบวนการ')+
   K('p','ความครบถ้วนของข้อมูล',cpl,'มีลิงก์ไฟล์ + วันที่ครบ',0,'%');
 }
 function greenCalc(){
- const n=DATA.length,sheets=n*PAPER,co2=sheets*CO2,mins=n*MINS,hrs=mins/60;
- const vTime=hrs*LABOR_RATE,vPaper=sheets*PAPER_COST;
- return {n,sheets,co2,mins,hrs,vTime,vPaper,total:vTime+vPaper};
+ var n=DATA.length,sheets=n*PAPER,co2=sheets*CO2,mins=n*MINS,hrs=mins/60;
+ var vTime=hrs*LABOR_RATE,vPaper=sheets*PAPER_COST;
+ return {n:n,sheets:sheets,co2:co2,mins:mins,hrs:hrs,vTime:vTime,vPaper:vPaper,total:vTime+vPaper};
 }
 function renderGreen(){
- const g=greenCalc();
- const K=(cl,l,v,s,dec,suf)=>`<div class="kpi ${cl}"><div class="lb">${l}</div>
-  <div class="vl"><span data-n="${v}" data-dec="${dec||0}" data-suf="${suf||''}">0</span></div><div class="sb">${s}</div></div>`;
+ var g=greenCalc();
+ function K(cl,l,v,s,dec,suf){
+  return '<div class="kpi '+cl+'"><div class="lb">'+l+'</div><div class="vl">'+
+   '<span data-n="'+v+'" data-dec="'+(dec||0)+'" data-suf="'+(suf||'')+'">0</span></div>'+
+   '<div class="sb">'+s+'</div></div>';}
  document.getElementById('kpiGreen').innerHTML=
   K('g','📄 ลดการใช้กระดาษสะสม',g.sheets,'แผ่น (เรื่อง × 4)')+
   K('g','🌍 ลดการปล่อยคาร์บอน',g.co2,'kgCO₂e จากการพิมพ์เอกสาร',2)+
-  K('','⏱ เวลาให้บริการที่ลดลง',g.mins,`นาที ≈ ${nf(g.hrs,2)} ชั่วโมง`)+
+  K('','⏱ เวลาให้บริการที่ลดลง',g.mins,'นาที ≈ '+nf(g.hrs,2)+' ชั่วโมง')+
   K('p','💰 มูลค่ารวมที่ประหยัดได้',g.total,'บาท (เวลา + กระดาษ)');
- document.getElementById('valBoxes').innerHTML=`
-  <div class="vbox"><div class="t">มูลค่าจากเวลาที่ประหยัด</div>
-   <div class="n"><span data-n="${g.vTime}">0</span> <small>บาท</small></div>
-   <div class="f">${nf(g.hrs,2)} ชม. × ${LABOR_RATE} บาท/ชม.</div></div>
-  <div class="vbox gr"><div class="t">มูลค่าจากกระดาษที่ลดใช้</div>
-   <div class="n"><span data-n="${g.vPaper}">0</span> <small>บาท</small></div>
-   <div class="f">${nf(g.sheets)} แผ่น × ${PAPER_COST} บาท/แผ่น</div></div>
-  <div class="vbox tot"><div class="t">มูลค่ารวมสะสม</div>
-   <div class="n"><span data-n="${g.total}">0</span> <small>บาท</small></div>
-   <div class="f">รวมทั้งสองรายการ</div></div>`;
- const p1=g.total?g.vTime/g.total*100:0,p2=g.total?g.vPaper/g.total*100:0;
- setTimeout(()=>{const f1=document.getElementById('bf1');
+ document.getElementById('valBoxes').innerHTML=
+  '<div class="vbox"><div class="t">มูลค่าจากเวลาที่ประหยัด</div>'+
+   '<div class="n"><span data-n="'+g.vTime+'">0</span> <small>บาท</small></div>'+
+   '<div class="f">'+nf(g.hrs,2)+' ชม. × '+LABOR_RATE+' บาท/ชม.</div></div>'+
+  '<div class="vbox gr"><div class="t">มูลค่าจากกระดาษที่ลดใช้</div>'+
+   '<div class="n"><span data-n="'+g.vPaper+'">0</span> <small>บาท</small></div>'+
+   '<div class="f">'+nf(g.sheets)+' แผ่น × '+PAPER_COST+' บาท/แผ่น</div></div>'+
+  '<div class="vbox tot"><div class="t">มูลค่ารวมสะสม</div>'+
+   '<div class="n"><span data-n="'+g.total+'">0</span> <small>บาท</small></div>'+
+   '<div class="f">รวมทั้งสองรายการ</div></div>';
+ var p1=g.total?g.vTime/g.total*100:0,p2=g.total?g.vPaper/g.total*100:0;
+ setTimeout(function(){
+  var f1=document.getElementById('bf1');
   f1.style.width=p1+'%';f1.textContent=nf(g.vTime)+' บาท';
   document.getElementById('bf2').style.width=p2+'%';},250);
  document.getElementById('valLg').innerHTML=
-  `<span><i style="background:linear-gradient(90deg,#0b63e5,#22b8ff)"></i>เวลาที่ประหยัด ${nf(g.vTime)} บาท (${nf(p1,1)}%)</span>
-   <span><i style="background:linear-gradient(90deg,#0e9f6e,#31d0aa)"></i>กระดาษที่ลดใช้ ${nf(g.vPaper)} บาท (${nf(p2,1)}%)</span>`;
- const months=new Set(DATA.filter(d=>d.dSub).map(d=>d.dSub.getFullYear()+'-'+d.dSub.getMonth())).size||1;
+  '<span><i style="background:linear-gradient(90deg,#0b63e5,#22b8ff)"></i>เวลาที่ประหยัด '+nf(g.vTime)+' บาท ('+nf(p1,1)+'%)</span>'+
+  '<span><i style="background:linear-gradient(90deg,#0e9f6e,#31d0aa)"></i>กระดาษที่ลดใช้ '+nf(g.vPaper)+' บาท ('+nf(p2,1)+'%)</span>';
+ var mset={};DATA.forEach(function(d){if(d.dSub)mset[d.dSub.getFullYear()+'-'+d.dSub.getMonth()]=1;});
+ var months=Object.keys(mset).length||1;
  document.getElementById('valFoot').textContent=
-  `· เฉลี่ย ${nf(g.total/months)} บาท/เดือน · เทียบเท่าเวลาทำงาน ${nf(g.hrs/7,1)} วันทำงาน (7 ชม./วัน) · คิดเป็น ${nf(g.total/(g.n||1))} บาท/เรื่อง`;
- document.getElementById('tbGreen').innerHTML=`
-  <tr><td>ลดการใช้กระดาษ (แผ่น)</td><td>จำนวนเรื่อง × 4 = ${g.n} × 4</td><td><b>${nf(g.sheets)} แผ่น</b></td></tr>
-  <tr><td>ลดการปล่อยคาร์บอน (kgCO₂e)</td><td>จำนวนเรื่อง × 4 × 0.0086 = ${g.n} × 4 × 0.0086</td><td><b>${nf(g.co2,4)} kgCO₂e</b></td></tr>
-  <tr><td>เวลาให้บริการลดลง (นาที)</td><td>จำนวนเรื่อง × 45 = ${g.n} × 45</td><td><b>${nf(g.mins)} นาที (${nf(g.hrs,2)} ชม.)</b></td></tr>
-  <tr><td>มูลค่าจากเวลาที่ประหยัด (บาท)</td><td>เวลาที่ลดได้สะสม (ชม.) × 300 = ${nf(g.hrs,2)} × 300</td><td><b>${nf(g.vTime)} บาท</b></td></tr>
-  <tr><td>มูลค่าจากกระดาษที่ลดใช้ (บาท)</td><td>กระดาษที่ลดใช้ (แผ่น) × 3 = ${nf(g.sheets)} × 3</td><td><b>${nf(g.vPaper)} บาท</b></td></tr>
-  <tr style="background:var(--soft2)"><td><b>มูลค่ารวมสะสม (บาท)</b></td><td>มูลค่าเวลา + มูลค่ากระดาษ</td><td><b style="color:var(--purple)">${nf(g.total)} บาท</b></td></tr>`;
+  '· เฉลี่ย '+nf(g.total/months)+' บาท/เดือน · เทียบเท่าเวลาทำงาน '+nf(g.hrs/7,1)+
+  ' วันทำงาน (7 ชม./วัน) · คิดเป็น '+nf(g.total/(g.n||1))+' บาท/เรื่อง';
+ document.getElementById('tbGreen').innerHTML=
+  '<tr><td>ลดการใช้กระดาษ (แผ่น)</td><td>จำนวนเรื่อง × 4 = '+g.n+' × 4</td><td><b>'+nf(g.sheets)+' แผ่น</b></td></tr>'+
+  '<tr><td>ลดการปล่อยคาร์บอน (kgCO₂e)</td><td>จำนวนเรื่อง × 4 × 0.0086 = '+g.n+' × 4 × 0.0086</td><td><b>'+nf(g.co2,4)+' kgCO₂e</b></td></tr>'+
+  '<tr><td>เวลาให้บริการลดลง (นาที)</td><td>จำนวนเรื่อง × 45 = '+g.n+' × 45</td><td><b>'+nf(g.mins)+' นาที ('+nf(g.hrs,2)+' ชม.)</b></td></tr>'+
+  '<tr><td>มูลค่าจากเวลาที่ประหยัด (บาท)</td><td>เวลาที่ลดได้สะสม (ชม.) × 300 = '+nf(g.hrs,2)+' × 300</td><td><b>'+nf(g.vTime)+' บาท</b></td></tr>'+
+  '<tr><td>มูลค่าจากกระดาษที่ลดใช้ (บาท)</td><td>กระดาษที่ลดใช้ (แผ่น) × 3 = '+nf(g.sheets)+' × 3</td><td><b>'+nf(g.vPaper)+' บาท</b></td></tr>'+
+  '<tr style="background:var(--soft2)"><td><b>มูลค่ารวมสะสม (บาท)</b></td><td>มูลค่าเวลา + มูลค่ากระดาษ</td><td><b style="color:var(--purple)">'+nf(g.total)+' บาท</b></td></tr>';
 }
 
 /* ================= CHARTS ================= */
 function renderCharts(){
- const mk=(id,cfg)=>{if(charts[id])charts[id].destroy();const el=document.getElementById(id);if(el)charts[id]=new Chart(el,cfg);};
- const F={family:'Sarabun'};
- const grad=(ctx,c1,c2)=>{const g=ctx.createLinearGradient(0,0,0,240);g.addColorStop(0,c1);g.addColorStop(1,c2);return g;};
- const mo={};
- DATA.filter(d=>d.dSub).sort((a,b)=>a.dSub-b.dSub).forEach(d=>{
-  const k=d.dSub.getFullYear()+'-'+String(d.dSub.getMonth()+1).padStart(2,'0');mo[k]=(mo[k]||0)+1;});
- const mkeys=Object.keys(mo),
-  labels=mkeys.map(k=>{const p=k.split('-');return THMON[+p[1]-1]+' '+String(+p[0]+543).slice(-2);});
- const cntArr=mkeys.map(k=>mo[k]);
- const peak=cntArr.length?Math.max.apply(null,cntArr):0,last=cntArr.length-1;
+ function mk(id,cfg){
+  if(charts[id])charts[id].destroy();
+  var el=document.getElementById(id);if(el)charts[id]=new Chart(el,cfg);}
+ var F={family:'Sarabun'};
+ function grad(ctx,c1,c2){var g=ctx.createLinearGradient(0,0,0,240);
+  g.addColorStop(0,c1);g.addColorStop(1,c2);return g;}
 
- mk('c5',{type:'bar',data:{labels,datasets:[{label:'จำนวนเรื่อง',data:cntArr,borderRadius:9,
-  backgroundColor:cntArr.map((v,i)=>i===last?'#12c26a':(v===peak?'#f5a524':'#2f8ef4'))}]},
-  options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+' เรื่อง'}}},
-   scales:{y:{ticks:{precision:0,font:F},grid:{color:'#eef2f9'}},x:{ticks:{font:{size:11,family:'Sarabun'}},grid:{display:false}}},
+ var mo={};
+ DATA.filter(function(d){return d.dSub;}).sort(function(a,b){return a.dSub-b.dSub;}).forEach(function(d){
+  var k=d.dSub.getFullYear()+'-'+String(d.dSub.getMonth()+1);
+  if(String(d.dSub.getMonth()+1).length<2)k=d.dSub.getFullYear()+'-0'+(d.dSub.getMonth()+1);
+  mo[k]=(mo[k]||0)+1;});
+ var mkeys=Object.keys(mo).sort();
+ var labels=mkeys.map(function(k){var p=k.split('-');
+  return THMON[+p[1]-1]+' '+String(+p[0]+543).slice(-2);});
+ var cntArr=mkeys.map(function(k){return mo[k];});
+ var peak=cntArr.length?Math.max.apply(null,cntArr):0, last=cntArr.length-1;
+
+ mk('c5',{type:'bar',data:{labels:labels,datasets:[{label:'จำนวนเรื่อง',data:cntArr,borderRadius:9,
+  backgroundColor:cntArr.map(function(v,i){return i===last?'#12c26a':(v===peak?'#f5a524':'#2f8ef4');})}]},
+  options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.parsed.y+' เรื่อง';}}}},
+   scales:{y:{ticks:{precision:0,font:F},grid:{color:'#eef2f9'}},
+    x:{ticks:{font:{size:11,family:'Sarabun'}},grid:{display:false}}},
    animation:{duration:1100,easing:'easeOutQuart'}}});
 
- const st={};DATA.forEach(d=>st[d.status]=(st[d.status]||0)+1);
- mk('c1',{type:'doughnut',data:{labels:Object.keys(st),datasets:[{data:Object.values(st),
+ var st={};DATA.forEach(function(d){st[d.status]=(st[d.status]||0)+1;});
+ mk('c1',{type:'doughnut',data:{labels:Object.keys(st),datasets:[{data:Object.keys(st).map(function(k){return st[k];}),
   backgroundColor:['#0e9f6e','#0b63e5','#f5a524','#6d5efc','#22b8ff'],borderWidth:3,borderColor:'#fff'}]},
   options:{cutout:'62%',plugins:{legend:{position:'bottom',labels:{font:F,padding:14,usePointStyle:true}}},
    animation:{animateRotate:true,duration:1100}}});
 
- const ow={};DATA.forEach(d=>ow[d.owner]=(ow[d.owner]||0)+1);
- mk('c2',{type:'bar',data:{labels:Object.keys(ow),datasets:[{label:'จำนวนเรื่อง',data:Object.values(ow),
-  backgroundColor:c=>grad(c.chart.ctx,'#0b63e5','#22b8ff'),borderRadius:8}]},
+ var ow={};DATA.forEach(function(d){ow[d.owner]=(ow[d.owner]||0)+1;});
+ mk('c2',{type:'bar',data:{labels:Object.keys(ow),datasets:[{label:'จำนวนเรื่อง',
+  data:Object.keys(ow).map(function(k){return ow[k];}),
+  backgroundColor:function(c){return grad(c.chart.ctx,'#0b63e5','#22b8ff');},borderRadius:8}]},
   options:{indexAxis:'y',plugins:{legend:{display:false}},
-   scales:{x:{ticks:{precision:0,font:F},grid:{color:'#eef2f9'}},y:{ticks:{font:{size:11,family:'Sarabun'}},grid:{display:false}}},
+   scales:{x:{ticks:{precision:0,font:F},grid:{color:'#eef2f9'}},
+    y:{ticks:{font:{size:11,family:'Sarabun'}},grid:{display:false}}},
    animation:{duration:1100}}});
 
- const bins=['< 15','15–29','30–59','60–89','90–119','≥ 120'],cnt=[0,0,0,0,0,0];
- DATA.filter(d=>d.done).forEach(d=>{const v=d.days;cnt[v<15?0:v<30?1:v<60?2:v<90?3:v<120?4:5]++;});
+ var bins=['< 15','15–29','30–59','60–89','90–119','≥ 120'],cnt=[0,0,0,0,0,0];
+ DATA.filter(function(d){return d.done;}).forEach(function(d){var v=d.days;
+  cnt[v<15?0:v<30?1:v<60?2:v<90?3:v<120?4:5]++;});
  mk('c4',{type:'bar',data:{labels:bins,datasets:[{label:'จำนวนเรื่องที่แล้วเสร็จ',data:cnt,
   backgroundColor:['#12c26a','#5bd0a0','#22b8ff','#f5a524','#ff8a5c','#e0322c'],borderRadius:9}]},
-  options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y+' เรื่อง'}}},
-   scales:{y:{ticks:{precision:0,font:F},grid:{color:'#eef2f9'}},x:{ticks:{font:F},grid:{display:false},
-    title:{display:true,text:'ช่วงระยะเวลาดำเนินงาน (วัน)',font:F,color:'#6b7893'}}},
+  options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.parsed.y+' เรื่อง';}}}},
+   scales:{y:{ticks:{precision:0,font:F},grid:{color:'#eef2f9'}},
+    x:{ticks:{font:F},grid:{display:false},
+     title:{display:true,text:'ช่วงระยะเวลาดำเนินงาน (วัน)',font:F,color:'#6b7893'}}},
    animation:{duration:1100}}});
 
- const vT=[],vP=[],cum=[];let acc=0;
- cntArr.forEach(c=>{const t=c*(MINS/60)*LABOR_RATE,p=c*PAPER*PAPER_COST;
+ var vT=[],vP=[],cum=[],acc=0;
+ cntArr.forEach(function(c){
+  var t=c*(MINS/60)*LABOR_RATE, p=c*PAPER*PAPER_COST;
   vT.push(t);vP.push(p);acc+=t+p;cum.push(acc);});
- mk('c3',{type:'bar',data:{labels,datasets:[
+ mk('c3',{type:'bar',data:{labels:labels,datasets:[
   {type:'line',label:'มูลค่าสะสมรวม (บาท)',data:cum,yAxisID:'y1',borderColor:'#6d5efc',
    backgroundColor:'rgba(109,94,252,.12)',borderWidth:3,fill:true,tension:.38,pointRadius:4,
    pointBackgroundColor:'#fff',pointBorderColor:'#6d5efc',pointBorderWidth:2,order:0},
-  {label:'มูลค่าจากเวลาที่ประหยัด (บาท/เดือน)',data:vT,backgroundColor:c=>grad(c.chart.ctx,'#0b63e5','#22b8ff'),
-   borderRadius:7,stack:'v',order:1},
-  {label:'มูลค่าจากกระดาษที่ลดใช้ (บาท/เดือน)',data:vP,backgroundColor:c=>grad(c.chart.ctx,'#0e9f6e','#31d0aa'),
-   borderRadius:7,stack:'v',order:1}]},
+  {label:'มูลค่าจากเวลาที่ประหยัด (บาท/เดือน)',data:vT,
+   backgroundColor:function(c){return grad(c.chart.ctx,'#0b63e5','#22b8ff');},borderRadius:7,stack:'v',order:1},
+  {label:'มูลค่าจากกระดาษที่ลดใช้ (บาท/เดือน)',data:vP,
+   backgroundColor:function(c){return grad(c.chart.ctx,'#0e9f6e','#31d0aa');},borderRadius:7,stack:'v',order:1}]},
   options:{interaction:{mode:'index',intersect:false},
    plugins:{legend:{labels:{font:F,usePointStyle:true,padding:14}},
-    tooltip:{callbacks:{label:c=>c.dataset.label+': '+nf(c.parsed.y)+' บาท'}}},
+    tooltip:{callbacks:{label:function(c){return c.dataset.label+': '+nf(c.parsed.y)+' บาท';}}}},
    scales:{
     y:{stacked:true,position:'left',title:{display:true,text:'มูลค่ารายเดือน (บาท)',font:F,color:'#6b7893'},
-     ticks:{font:F,callback:v=>nf(v)},grid:{color:'#eef2f9'}},
+     ticks:{font:F,callback:function(v){return nf(v);}},grid:{color:'#eef2f9'}},
     y1:{position:'right',title:{display:true,text:'มูลค่าสะสม (บาท)',font:F,color:'#6d5efc'},
-     ticks:{font:F,callback:v=>nf(v)},grid:{display:false}},
+     ticks:{font:F,callback:function(v){return nf(v);}},grid:{display:false}},
     x:{stacked:true,ticks:{font:{size:11,family:'Sarabun'}},grid:{display:false}}},
    animation:{duration:1200,easing:'easeOutQuart'}}});
 }
 
 /* ================= MODAL ================= */
 function openM(i){
- const d=DATA.find(x=>x.i===i);if(!d)return;curr=d;prevOn=false;
+ var d=null;DATA.forEach(function(x){if(x.i===i)d=x;});
+ if(!d)return;curr=d;prevOn=false;
  document.getElementById('mPrev').innerHTML='';
  document.getElementById('mTitle').textContent=d.subject;
- const row=(k,v)=>`<dt>${k}</dt><dd>${v}</dd>`;
- const vDoc=(MINS/60)*LABOR_RATE+PAPER*PAPER_COST;
+ function row(k,v){return '<dt>'+k+'</dt><dd>'+v+'</dd>';}
+ var vDoc=(MINS/60)*LABOR_RATE+PAPER*PAPER_COST;
  document.getElementById('mBody').innerHTML=
   row('เลขที่รายการ','#'+d.no)+row('เรื่อง',esc(d.subject))+
-  row('ประเภทบันทึก',`<span class="badge ${d.type==='ภายใน'?'b-run':'b-15'}">${esc(d.type)}</span>`)+
+  row('ประเภทบันทึก','<span class="badge '+(d.type==='ภายใน'?'b-run':'b-15')+'">'+esc(d.type)+'</span>')+
   row('ผู้รับผิดชอบ',esc(d.owner))+row('วันที่เสนอเรื่อง',fmt(d.dSub))+row('วันที่อนุมัติ',fmt(d.dApp))+
-  row('วันที่งานสำเร็จ',fmt(d.dDone))+row('ระยะเวลา (วัน)',`<b>${d.days}</b> วัน`)+
+  row('วันที่งานสำเร็จ',fmt(d.dDone))+row('ระยะเวลา (วัน)','<b>'+d.days+'</b> วัน')+
   row('สถานะ',bStatus(d))+row('ระดับแจ้งเตือน',bAlert(d))+
-  row('มูลค่าที่ประหยัดได้',`<b style="color:var(--purple)">${nf(vDoc)} บาท</b> <span style="font-weight:400;color:var(--muted);font-size:12px">(เวลา ${nf((MINS/60)*LABOR_RATE)} + กระดาษ ${nf(PAPER*PAPER_COST)})</span>`)+
+  row('มูลค่าที่ประหยัดได้','<b style="color:var(--purple)">'+nf(vDoc)+' บาท</b> '+
+   '<span style="font-weight:400;color:var(--muted);font-size:12px">(เวลา '+nf((MINS/60)*LABOR_RATE)+
+   ' + กระดาษ '+nf(PAPER*PAPER_COST)+')</span>')+
   row('หมายเหตุ',esc(d.note))+
-  row('ลิงก์ไฟล์',d.file?`<a href="${esc(d.file)}" target="_blank" style="color:var(--blue);word-break:break-all">${esc(d.file.slice(0,54))}…</a>`:'—');
- const steps=[{n:'เสนอเรื่อง',dt:d.dSub,ok:!!d.dSub},{n:'อนุมัติ',dt:d.dApp,ok:!!d.dApp},
+  row('ลิงก์ไฟล์',d.file?'<a href="'+esc(d.file)+'" target="_blank" style="color:var(--blue);word-break:break-all">'+
+   esc(d.file.slice(0,54))+'…</a>':'—');
+ var steps=[{n:'เสนอเรื่อง',dt:d.dSub,ok:!!d.dSub},{n:'อนุมัติ',dt:d.dApp,ok:!!d.dApp},
   {n:'ดำเนินการ',dt:null,ok:!!d.dApp},{n:'แล้วเสร็จ',dt:d.dDone,ok:d.done}];
- document.getElementById('mSteps').innerHTML=steps.map((s,k)=>{
-  const now=!s.ok&&k>0&&steps[k-1].ok;
-  return `<div class="step ${s.ok?'done':''} ${now?'now':''}"><div class="cir">${s.ok?'✓':k+1}</div>
-   <p>${s.n}</p><small>${s.dt?fmt(s.dt):(s.ok?'ดำเนินการแล้ว':'รอ')}</small></div>`;}).join('');
+ document.getElementById('mSteps').innerHTML=steps.map(function(s,k){
+  var now=(!s.ok&&k>0&&steps[k-1].ok);
+  return '<div class="step '+(s.ok?'done':'')+' '+(now?'now':'')+'">'+
+   '<div class="cir">'+(s.ok?'✓':(k+1))+'</div><p>'+s.n+'</p>'+
+   '<small>'+(s.dt?fmt(s.dt):(s.ok?'ดำเนินการแล้ว':'รอ'))+'</small></div>';}).join('');
  document.getElementById('btnOpen').href=d.file||'#';
  document.getElementById('btnDl').href=dlLink(d.file);
- document.getElementById('ov').classList.add('on');switchQR('file');
+ document.getElementById('ov').classList.add('on');
+ switchQR('file');
 }
 function switchQR(mode){
  curMode=mode;
  document.getElementById('qtF').classList.toggle('on',mode==='file');
  document.getElementById('qtT').classList.toggle('on',mode==='track');
- const val=mode==='file'?(curr.file||SHEET_URL):SHEET_URL;
- document.getElementById('qrHint').textContent=mode==='file'?'สแกนเพื่อเปิดไฟล์บันทึกข้อความ':'สแกนเพื่อติดตามสถานะแบบเรียลไทม์';
- const box=document.getElementById('qr');box.innerHTML='';
- try{new QRCode(box,{text:val,width:190,height:190,colorDark:'#0b63e5',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});}
- catch(e){box.innerHTML=`<img src="https://api.qrserver.com/v1/create-qr-code/?size=190x190&color=0b63e5&data=${encodeURIComponent(val)}">`;}
+ var val=(mode==='file')?(curr.file||SHEET_URL):SHEET_URL;
+ document.getElementById('qrHint').textContent=(mode==='file')
+  ?'สแกนเพื่อเปิดไฟล์บันทึกข้อความ':'สแกนเพื่อติดตามสถานะแบบเรียลไทม์';
+ var box=document.getElementById('qr');box.innerHTML='';
+ try{new QRCode(box,{text:val,width:190,height:190,colorDark:'#0b63e5',colorLight:'#ffffff',
+  correctLevel:QRCode.CorrectLevel.M});}
+ catch(e){box.innerHTML='<img src="https://api.qrserver.com/v1/create-qr-code/?size=190x190&color=0b63e5&data='+
+  encodeURIComponent(val)+'">';}
 }
 function dlQR(){
- const cv=document.querySelector('#qr canvas'),im=document.querySelector('#qr img');
- const a=document.createElement('a');
+ var cv=document.querySelector('#qr canvas'),im=document.querySelector('#qr img');
+ var a=document.createElement('a');
  a.download='QR_'+(curr.subject||'doc').slice(0,32).replace(/[\\/:*?"<>|]/g,'')+'.png';
- if(cv){a.href=cv.toDataURL('image/png');a.click();}else if(im)window.open(im.src,'_blank');
+ if(cv){a.href=cv.toDataURL('image/png');a.click();}
+ else if(im){window.open(im.src,'_blank');}
 }
 function togglePrev(){
- const el=document.getElementById('mPrev'),u=prevLink(curr.file);prevOn=!prevOn;
- el.innerHTML=(prevOn&&u)?`<b style="font-size:13.5px">📑 พรีวิวเอกสาร</b><iframe src="${u}" allow="autoplay"></iframe>`
-  :(prevOn?'<p style="color:var(--muted);font-size:12.5px">ไม่พบไฟล์ที่พรีวิวได้</p>':'');
+ var el=document.getElementById('mPrev'),u=prevLink(curr.file);prevOn=!prevOn;
+ if(prevOn&&u){el.innerHTML='<b style="font-size:13.5px">📑 พรีวิวเอกสาร</b><iframe src="'+u+'" allow="autoplay"></iframe>';}
+ else if(prevOn){el.innerHTML='<p style="color:var(--muted);font-size:12.5px">ไม่พบไฟล์ที่พรีวิวได้</p>';}
+ else{el.innerHTML='';}
 }
-function copyLink(){const v=curMode==='file'?(curr.file||SHEET_URL):SHEET_URL;
- navigator.clipboard.writeText(v).then(()=>alert('คัดลอกลิงก์แล้ว ✔')).catch(()=>prompt('คัดลอกลิงก์นี้:',v));}
+function copyLink(){
+ var v=(curMode==='file')?(curr.file||SHEET_URL):SHEET_URL;
+ if(navigator.clipboard){navigator.clipboard.writeText(v).then(function(){alert('คัดลอกลิงก์แล้ว ✔');})
+  .catch(function(){prompt('คัดลอกลิงก์นี้:',v);});}
+ else{prompt('คัดลอกลิงก์นี้:',v);}
+}
 function closeM(){document.getElementById('ov').classList.remove('on');document.getElementById('mPrev').innerHTML='';}
 
 /* ================= EXPORT ================= */
 function exportCSV(){
- const vDoc=(MINS/60)*LABOR_RATE+PAPER*PAPER_COST;
- const h=['ลำดับ','เรื่อง','ประเภท','ผู้รับผิดชอบ','วันที่เสนอ','วันที่อนุมัติ','วันที่สำเร็จ','ระยะเวลา(วัน)',
+ var vDoc=(MINS/60)*LABOR_RATE+PAPER*PAPER_COST;
+ var h=['ลำดับ','เรื่อง','ประเภท','ผู้รับผิดชอบ','วันที่เสนอ','วันที่อนุมัติ','วันที่สำเร็จ','ระยะเวลา(วัน)',
   'สถานะ','ระดับแจ้งเตือน','มูลค่าที่ประหยัด(บาท)','หมายเหตุ','ลิงก์ไฟล์'];
- const rows=VIEW.map(d=>[d.no,d.subject,d.type,d.owner,fmt(d.dSub),fmt(d.dApp),fmt(d.dDone),d.days,d.status,
-  d.urgent?'ควรติดตามเร่งด่วน':d.done?(d.slaBreach?'เสร็จเกิน SLA':'อยู่ในเกณฑ์'):TIERS.find(t=>t.k===d.tier).l,
-  vDoc,d.note,d.file]);
- const csv='\uFEFF'+[h].concat(rows).map(r=>r.map(c=>'"'+String(c==null?'':c).replace(/"/g,'""')+'"').join(',')).join('\n');
- const a=document.createElement('a');
+ var rows=VIEW.map(function(d){
+  var lvl;
+  if(d.urgent)lvl='ควรติดตามเร่งด่วน';
+  else if(d.done)lvl=d.slaBreach?'เสร็จเกิน SLA':'อยู่ในเกณฑ์';
+  else{lvl='ปกติ';TIERS.forEach(function(t){if(t.k===d.tier)lvl=t.l;});}
+  return [d.no,d.subject,d.type,d.owner,fmt(d.dSub),fmt(d.dApp),fmt(d.dDone),d.days,d.status,lvl,vDoc,d.note,d.file];
+ });
+ var all=[h].concat(rows);
+ var csv='\uFEFF'+all.map(function(r){
+  return r.map(function(c){return '"'+String(c==null?'':c).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
+ var a=document.createElement('a');
  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
- a.download='รายงานบันทึกข้อความ_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
+ a.download='รายงานบันทึกข้อความ_'+new Date().toISOString().slice(0,10)+'.csv';
+ a.click();
 }
 
 /* ================= UI BEHAVIOR ================= */
-const io=new IntersectionObserver(es=>es.forEach(e=>{
- if(e.isIntersecting){e.target.classList.add('in');animateNums(e.target);}}),{threshold:.12});
-function observeAll(){document.querySelectorAll('.rv,.kgrid,.hstat').forEach(el=>io.observe(el));}
+var io=new IntersectionObserver(function(es){
+ es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');animateNums(e.target);}});
+},{threshold:.12});
+function observeAll(){document.querySelectorAll('.rv,.kgrid,.hstat').forEach(function(el){io.observe(el);});}
 
-const secs=['s1','s2','s3','s4'],links=[].slice.call(document.querySelectorAll('#navin a[href^="#"]'));
+var secs=['s1','s2','s3','s4'];
+var links=[].slice.call(document.querySelectorAll('#navin a[href^="#"]'));
 window.addEventListener('scroll',function(){
- const sc=window.scrollY,h=document.body.scrollHeight-innerHeight;
+ var sc=window.scrollY,h=document.body.scrollHeight-window.innerHeight;
  document.getElementById('prog').style.width=(h>0?sc/h*100:0)+'%';
  document.getElementById('topBtn').classList.toggle('on',sc>420);
- let cur=0;secs.forEach(function(id,i){const el=document.getElementById(id);
+ var cur=0;
+ secs.forEach(function(id,i){var el=document.getElementById(id);
   if(el&&el.getBoundingClientRect().top<=150)cur=i;});
  links.forEach(function(a,i){a.classList.toggle('on',i===cur);});
 },{passive:true});
@@ -876,7 +970,9 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeM();});
 loadLocal();
 setSrc('local','ข้อมูลสำรองในไฟล์ ('+DATA.length+' รายการ)','');
 observeAll();
-setTimeout(function(){document.querySelectorAll('.rv').forEach(function(el){el.classList.add('in');});animateNums();},250);
+setTimeout(function(){
+ document.querySelectorAll('.rv').forEach(function(el){el.classList.add('in');});
+ animateNums();},250);
 loadLive(false);
 setInterval(function(){loadLive(false);},300000);
 </script>
