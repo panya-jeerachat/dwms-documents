@@ -196,6 +196,37 @@ tbody tr:hover{background:var(--soft)}
 .ov{position:fixed;inset:0;background:rgba(10,22,45,.62);backdrop-filter:blur(4px);display:none;
  place-items:center;z-index:400;padding:18px}
 .ov.on{display:grid}
+/* ---- ทางเข้าผู้ดูแล ---- */
+.adm-grp{display:inline-flex}
+.adm-grp .btn:first-child{border-radius:11px 0 0 11px}
+.adm-caret{border-radius:0 11px 11px 0!important;padding-left:10px!important;padding-right:10px!important;border-left:1px solid rgba(11,99,229,.18)!important}
+.admov{position:fixed;inset:0;z-index:400;background:rgba(10,22,45,.55);backdrop-filter:blur(4px);display:none;place-items:center;padding:18px}
+.admov.on{display:grid}
+.admbox{background:#fff;border-radius:22px;width:min(470px,100%);padding:26px 26px 20px;box-shadow:0 30px 80px rgba(0,0,0,.3);position:relative;animation:admIn .22s ease}
+@keyframes admIn{from{opacity:0;transform:translateY(10px) scale(.98)}}
+.admbox h3{font-size:19px;font-weight:800;color:var(--blue-dk);display:flex;gap:8px;align-items:center}
+.admbox .lead{color:var(--muted);font-size:13px;margin:8px 0 16px;line-height:1.6}
+.admx{position:absolute;top:14px;right:16px;border:0;background:none;font-size:18px;color:var(--muted);cursor:pointer;width:32px;height:32px;border-radius:50%}
+.admx:hover{background:var(--soft)}
+.admopt{display:block;width:100%;text-align:left;border:1.5px solid var(--line);background:var(--soft2);border-radius:14px;padding:13px 15px;margin-bottom:11px;
+ cursor:pointer;font-family:inherit;transition:.2s;position:relative}
+.admopt:hover,.admopt:focus-visible{border-color:var(--blue);background:var(--soft);outline:0;transform:translateY(-1px)}
+.admopt b{display:block;font-size:14.5px;color:var(--ink);margin-bottom:4px}
+.admopt span{display:block;font-size:12.5px;color:var(--muted);line-height:1.55}
+.admopt.cur{border-color:var(--blue)}
+.admopt.cur::after{content:"ใช้อยู่";position:absolute;top:12px;right:12px;font-size:11px;font-weight:700;color:#fff;background:var(--blue);padding:2px 9px;border-radius:999px}
+.admfoot{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px;margin-top:6px;line-height:1.6}
+.admframe{position:fixed;inset:0;z-index:450;background:#f3f5fb;display:none;flex-direction:column}
+.admframe.on{display:flex}
+.admbar{display:flex;align-items:center;gap:10px;padding:8px 14px;background:linear-gradient(135deg,var(--blue-dk),var(--blue));color:#fff;font-size:13.5px}
+.admbar span{opacity:.8;font-size:12.5px}.admbar .grow{flex:1}
+.admbar button{border:0;background:rgba(255,255,255,.16);color:#fff;font-family:inherit;font-weight:700;padding:7px 14px;border-radius:10px;cursor:pointer}
+.admbar button:hover{background:rgba(255,255,255,.28)}
+#admHost{flex:1;position:relative}#admHost iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.admload{position:absolute;inset:0;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;color:var(--muted);text-align:center;padding:20px}
+.admload b{color:var(--ink);font-size:16px}
+.admspin{width:30px;height:30px;border:3px solid var(--blue);border-right-color:transparent;border-radius:50%;animation:admSp .7s linear infinite}
+@keyframes admSp{to{transform:rotate(360deg)}}
 .modal{background:#fff;border-radius:22px;max-width:1010px;width:100%;max-height:93vh;overflow-y:auto;animation:up .34s}
 @keyframes up{from{transform:translateY(30px) scale(.97);opacity:0}to{transform:none;opacity:1}}
 .mh{background:linear-gradient(135deg,var(--blue-dk),var(--blue) 55%,var(--blue-lt));color:#fff;
@@ -291,7 +322,7 @@ tbody tr:hover{background:var(--soft)}
    <div class="src local" id="srcTag"><span class="dot"></span><span id="srcTxt">กำลังตรวจสอบ…</span></div>
    <button class="btn btn-g" onclick="loadLive(true)">🔄 ดึงข้อมูลสด</button>
    <button class="btn btn-g" onclick="window.print()">🖨 พิมพ์รายงาน</button>
-   <a class="btn btn-w" id="lnkAdmin" target="_blank" rel="noopener">🔐 ผู้ดูแลระบบ</a>
+   <span class="adm-grp"><button class="btn btn-w" onclick="openAdmin()">🔐 ผู้ดูแลระบบ</button><button class="btn btn-w adm-caret" onclick="openAdminChooser()" title="เปลี่ยนวิธีเข้าสู่ระบบ" aria-label="เลือกวิธีเข้าสู่ระบบผู้ดูแล">▾</button></span>
   </div>
  </div>
  <div class="hstat" id="heroStat"></div>
@@ -412,6 +443,25 @@ tbody tr:hover{background:var(--soft)}
 <button class="top-btn" id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <!-- ============ MODAL ============ -->
+<div class="admov" id="admOv" onclick="if(event.target===this)closeAdminChooser()" role="dialog" aria-modal="true" aria-labelledby="admTitle">
+ <div class="admbox">
+  <button class="admx" onclick="closeAdminChooser()" aria-label="ปิด">✕</button>
+  <h3 id="admTitle">🔐 เข้าสู่ระบบผู้ดูแล</h3>
+  <p class="lead">เลือกวิธีที่ใช้ได้กับเครื่องนี้ ระบบจะจำไว้ให้ ครั้งต่อไปกดปุ่มเดียวเข้าได้เลย (เปลี่ยนภายหลังได้ที่ปุ่ม ▾ ข้างปุ่มผู้ดูแลระบบ)</p>
+  <button class="admopt" id="admOpt_msu" onclick="chooseAdmin('msu')">
+   <b>🏛 เข้าด้วยบัญชี @msu.ac.th</b>
+   <span>สำหรับเครื่องที่ลงชื่อเข้าใช้ Google ด้วยอีเมลมหาวิทยาลัยอยู่แล้ว และลงชื่อไว้บัญชีเดียว — เปิดหน้าผู้ดูแลในแท็บใหม่</span></button>
+  <button class="admopt" id="admOpt_free" onclick="chooseAdmin('free')">
+   <b>🌐 เข้าแบบไม่ผูกบัญชี Google</b>
+   <span>ใช้เมื่อวิธีแรกขึ้นหน้าข้อผิดพลาดหรือปฏิเสธสิทธิ์ หรือ Chrome ลงชื่อ Google ไว้หลายบัญชี / ไม่ได้ลงชื่อด้วยอีเมลมหาวิทยาลัย — เปิดหน้าผู้ดูแลบนหน้านี้</span></button>
+  <p class="admfoot">ทั้งสองวิธีเข้าหน้าเดียวกัน และต้องกรอกชื่อผู้ใช้/รหัสผ่านของระบบเหมือนกัน ต่างกันแค่วิธีที่เบราว์เซอร์ติดต่อ Google ถ้ากดแล้วขึ้นข้อผิดพลาด ให้กลับมาเลือกอีกวิธีได้ทันที</p>
+ </div>
+</div>
+<div class="admframe" id="admFrame" role="dialog" aria-modal="true" aria-label="หน้าผู้ดูแลระบบ">
+ <div class="admbar"><b>🔐 ผู้ดูแลระบบ</b><span>เชื่อมต่อแบบไม่ผูกบัญชี Google</span><div class="grow"></div>
+  <button onclick="closeAdminFrame()">✕ ปิด กลับหน้า Dashboard</button></div>
+ <div id="admHost"></div>
+</div>
 <div class="ov" id="ov" onclick="if(event.target===this)closeM()">
  <div class="modal"><div class="mh"><button class="x" onclick="closeM()">✕</button><h2 id="mTitle"></h2></div>
   <div class="mb"><div><dl class="dl" id="mBody"></dl>
@@ -440,7 +490,43 @@ var LABOR_RATE=300;   /* บาท/ชั่วโมง */
 var PAPER_COST=3;     /* บาท/แผ่น */
 var TIERS=[{k:'120',d:120,l:'เกิน 120 วัน'},{k:'90',d:90,l:'เกิน 90 วัน'},{k:'60',d:60,l:'เกิน 60 วัน'},
  {k:'30',d:30,l:'เกิน 30 วัน'},{k:'15',d:15,l:'เกิน 15 วัน'},{k:'normal',d:0,l:'ปกติ (< 15 วัน)'}];
-document.getElementById('lnkAdmin').href=WEBAPP_URL;
+/* ===== ทางเข้าผู้ดูแล =====
+   msu  : เปิด URL /exec ในแท็บใหม่ (ต้องลงชื่อ Google บัญชีเดียว)
+   free : ขอหน้าผู้ดูแลจาก Apps Script โดยไม่ส่งคุกกี้บัญชี Google แล้วแสดงซ้อนบนหน้านี้
+          — ใช้ได้แม้ Chrome ลงชื่อ Google ไว้หลายบัญชี */
+function admMode(v){try{if(v===undefined)return localStorage.getItem('dwms_admin_mode');localStorage.setItem('dwms_admin_mode',v);}catch(e){return null;}}
+function openAdmin(){var m=admMode();if(m==='msu')goAdminMsu();else if(m==='free')goAdminFree();else openAdminChooser();}
+function openAdminChooser(){
+ var m=admMode();
+ ['msu','free'].forEach(function(k){document.getElementById('admOpt_'+k).classList.toggle('cur',m===k);});
+ document.getElementById('admOv').classList.add('on');
+ setTimeout(function(){document.getElementById('admOpt_'+(m==='free'?'free':'msu')).focus();},50);
+}
+function closeAdminChooser(){document.getElementById('admOv').classList.remove('on');}
+function chooseAdmin(m){admMode(m);closeAdminChooser();if(m==='msu')goAdminMsu();else goAdminFree();}
+function goAdminMsu(){window.open(WEBAPP_URL,'_blank','noopener');}
+function goAdminFree(){
+ var fr=document.getElementById('admFrame'),host=document.getElementById('admHost');
+ fr.classList.add('on');document.body.style.overflow='hidden';
+ if(host.querySelector('iframe'))return;                       /* เปิดค้างไว้แล้ว */
+ host.innerHTML='<div class="admload"><div class="admspin"></div>กำลังเปิดหน้าผู้ดูแล…</div>';
+ fetch(WEBAPP_URL+'?api=ui&_='+Date.now(),{cache:'no-store',credentials:'omit'})
+  .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+  .then(function(j){
+   if(!j||!j.ok||!j.html)throw new Error(j&&j.error||'ระบบตอบกลับผิดรูปแบบ');
+   var f=document.createElement('iframe');f.title='หน้าผู้ดูแลระบบ';f.srcdoc=j.html;
+   host.innerHTML='';host.appendChild(f);
+  }).catch(function(e){
+   host.innerHTML='<div class="admload"><b>เปิดหน้าผู้ดูแลไม่สำเร็จ</b><span>'+esc(e.message)+'</span>'+
+    '<span>ตรวจว่า Deploy เวอร์ชันล่าสุดแล้ว และตั้ง Who has access เป็น Anyone</span>'+
+    '<button class="btn btn-p" onclick="document.getElementById(\'admHost\').innerHTML=\'\';goAdminFree()">ลองอีกครั้ง</button></div>';
+  });
+}
+function closeAdminFrame(){
+ document.getElementById('admFrame').classList.remove('on');document.body.style.overflow='';
+ loadLive(false);                                              /* กลับมาแล้วโหลดข้อมูลล่าสุด */
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAdminChooser();});
 
 /* ========= ข้อมูลสำรอง (ใช้เมื่อดึงสดไม่ได้) ========= */
 var FB_COLS=['วันที่','ไฟล์','เรื่อง','วันที่อนุมัติ','ระยะเวลา (วัน)','สถานะ','วันที่งานสำเร็จ','ผู้รับผิดชอบ','ประเภทบันทึกข้อความ','หมายเหตุ'];
