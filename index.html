@@ -196,26 +196,6 @@ tbody tr:hover{background:var(--soft)}
 .ov{position:fixed;inset:0;background:rgba(10,22,45,.62);backdrop-filter:blur(4px);display:none;
  place-items:center;z-index:400;padding:18px}
 .ov.on{display:grid}
-/* ---- ทางเข้าผู้ดูแล ---- */
-.adm-grp{display:inline-flex}
-.adm-grp .btn:first-child{border-radius:11px 0 0 11px}
-.adm-caret{border-radius:0 11px 11px 0!important;padding:9px 10px!important;border-left:1px solid var(--line)!important}
-.admov{position:fixed;inset:0;z-index:400;background:rgba(10,22,45,.55);backdrop-filter:blur(4px);display:none;place-items:center;padding:18px}
-.admov.on{display:grid}
-.admbox{background:#fff;border-radius:22px;width:min(470px,100%);padding:26px 26px 20px;box-shadow:0 30px 80px rgba(0,0,0,.3);position:relative;animation:admIn .22s ease}
-@keyframes admIn{from{opacity:0;transform:translateY(10px) scale(.98)}}
-.admbox h3{font-size:19px;font-weight:800;color:var(--blue-dk);display:flex;gap:8px;align-items:center}
-.admbox .lead{color:var(--muted);font-size:13px;margin:8px 0 16px;line-height:1.6}
-.admx{position:absolute;top:14px;right:16px;border:0;background:none;font-size:18px;color:var(--muted);cursor:pointer;width:32px;height:32px;border-radius:50%}
-.admx:hover{background:var(--soft)}
-.admopt{display:block;width:100%;text-align:left;border:1.5px solid var(--line);background:var(--soft2);border-radius:14px;padding:13px 15px;margin-bottom:11px;
- cursor:pointer;font-family:inherit;transition:.2s;position:relative}
-.admopt:hover,.admopt:focus-visible{border-color:var(--blue);background:var(--soft);outline:0;transform:translateY(-1px)}
-.admopt b{display:block;font-size:14.5px;color:var(--ink);margin-bottom:4px}
-.admopt span{display:block;font-size:12.5px;color:var(--muted);line-height:1.55}
-.admopt.cur{border-color:var(--blue)}
-.admopt.cur::after{content:"ใช้อยู่";position:absolute;top:12px;right:12px;font-size:11px;font-weight:700;color:#fff;background:var(--blue);padding:2px 9px;border-radius:999px}
-.admfoot{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px;margin-top:6px;line-height:1.6}
 .modal{background:#fff;border-radius:22px;max-width:1010px;width:100%;max-height:93vh;overflow-y:auto;animation:up .34s}
 @keyframes up{from{transform:translateY(30px) scale(.97);opacity:0}to{transform:none;opacity:1}}
 .mh{background:linear-gradient(135deg,var(--blue-dk),var(--blue) 55%,var(--blue-lt));color:#fff;
@@ -311,8 +291,7 @@ tbody tr:hover{background:var(--soft)}
    <div class="src local" id="srcTag"><span class="dot"></span><span id="srcTxt">กำลังตรวจสอบ…</span></div>
    <button class="btn btn-g" onclick="loadLive(true)">🔄 ดึงข้อมูลสด</button>
    <button class="btn btn-g" onclick="window.print()">🖨 พิมพ์รายงาน</button>
-   <a class="btn btn-w" id="lnkSheet" target="_blank">📄 เปิดชีตต้นทาง</a>
-   <span class="adm-grp"><button class="btn btn-w" id="btnAdmin" onclick="openAdmin()">🔐 ผู้ดูแลระบบ</button><button class="btn btn-w adm-caret" onclick="openAdminChooser()" title="เปลี่ยนวิธีเข้าสู่ระบบ" aria-label="เลือกวิธีเข้าสู่ระบบผู้ดูแล">▾</button></span>
+   <a class="btn btn-w" id="lnkAdmin" target="_blank" rel="noopener">🔐 ผู้ดูแลระบบ</a>
   </div>
  </div>
  <div class="hstat" id="heroStat"></div>
@@ -433,34 +412,18 @@ tbody tr:hover{background:var(--soft)}
 <button class="top-btn" id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <!-- ============ MODAL ============ -->
-<div class="admov" id="admOv" onclick="if(event.target===this)closeAdminChooser()" role="dialog" aria-modal="true" aria-labelledby="admTitle">
- <div class="admbox">
-  <button class="admx" onclick="closeAdminChooser()" aria-label="ปิด">✕</button>
-  <h3 id="admTitle">🔐 เข้าสู่ระบบผู้ดูแล</h3>
-  <p class="lead">เลือกวิธีที่ใช้ได้กับเครื่องนี้ ระบบจะจำไว้ให้ ครั้งต่อไปกดปุ่มเดียวเข้าได้เลย (เปลี่ยนภายหลังได้ที่ปุ่ม ▾ ข้างปุ่มผู้ดูแลระบบ)</p>
-  <button class="admopt" id="admOpt_msu" onclick="chooseAdmin('msu')">
-   <b>🏛 เข้าด้วยบัญชี @msu.ac.th</b>
-   <span>สำหรับเครื่องที่ลงชื่อเข้าใช้ Google ด้วยอีเมลมหาวิทยาลัยอยู่แล้ว และลงชื่อไว้บัญชีเดียว</span></button>
-  <button class="admopt" id="admOpt_free" onclick="chooseAdmin('free')">
-   <b>🌐 เข้าแบบไม่ผูกบัญชี Google</b>
-   <span>ใช้เมื่อวิธีแรกขึ้นหน้าข้อผิดพลาดหรือปฏิเสธสิทธิ์ หรือ Chrome ลงชื่อ Google ไว้หลายบัญชี / ไม่ได้ลงชื่อด้วยอีเมลมหาวิทยาลัย</span></button>
-  <p class="admfoot">ทั้งสองวิธีเข้าหน้าเดียวกัน และใช้ชื่อผู้ใช้/รหัสผ่านของระบบเหมือนกัน ต่างกันแค่เส้นทางที่เบราว์เซอร์ใช้ติดต่อเซิร์ฟเวอร์ ถ้ากดแล้วขึ้นข้อผิดพลาด ให้กลับมาเลือกอีกวิธีได้ทันที</p>
- </div>
-</div>
 <div class="ov" id="ov" onclick="if(event.target===this)closeM()">
  <div class="modal"><div class="mh"><button class="x" onclick="closeM()">✕</button><h2 id="mTitle"></h2></div>
   <div class="mb"><div><dl class="dl" id="mBody"></dl>
     <div class="tl"><b style="font-size:13.5px">🧭 ขั้นตอนการดำเนินงาน</b><div class="steps" id="mSteps"></div></div>
     <div class="prev" id="mPrev"></div></div>
-   <div><div class="qrbox"><div class="qrtabs">
-     <button class="on" id="qtF" onclick="switchQR('file')">📄 ไฟล์บันทึก</button>
-     <button id="qtT" onclick="switchQR('track')">📡 ติดตามสด</button></div>
+   <div><div class="qrbox"><div class="qrtabs"><button class="on" style="cursor:default">📱 ติดตามสถานะเรื่องนี้</button></div>
     <div id="qr"></div><p style="font-size:11.5px;color:var(--muted);margin-top:10px" id="qrHint"></p></div>
     <div style="display:flex;flex-direction:column;gap:8px;margin-top:14px">
      <a id="btnOpen" class="btn btn-p" style="justify-content:center" target="_blank">👁 เปิดดูไฟล์</a>
      <a id="btnDl" class="btn btn-o" style="justify-content:center" target="_blank">⬇ ดาวน์โหลดไฟล์</a>
      <button class="btn btn-o" style="justify-content:center" onclick="dlQR()">🖼 บันทึก QR เป็นรูป</button>
-     <button class="btn btn-o" style="justify-content:center" onclick="copyLink()">🔗 คัดลอกลิงก์</button>
+     <button class="btn btn-o" style="justify-content:center" onclick="copyLink()">🔗 คัดลอกลิงก์ติดตามสถานะ</button>
      <button class="btn btn-o" style="justify-content:center" onclick="togglePrev()">📑 พรีวิวเอกสาร</button>
     </div></div></div></div>
 </div>
@@ -468,32 +431,16 @@ tbody tr:hover{background:var(--soft)}
 <script>
 /* ================= CONFIG ================= */
 var SHEET_ID='1qTTLdfwnMaDyomcaGcc_DbiAqbLHTjTFPeZWi5NlaBk',GID='0';
-var SHEET_URL='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/edit?gid='+GID+'#gid='+GID;
-/* ===== ทางเข้าหน้าผู้ดูแล ===== */
-var ADMIN_URL='https://script.google.com/macros/s/AKfycbwlwNLXiJD35wG9khK4gs9bOUY2jIKUhBtWZtrBpBRaBfW4HNY18T2wcglpJEfeGEV1/exec';
-var ADMIN_DOMAIN='msu.ac.th';  /* วิธีที่ 1: เปิดผ่าน URL ของโดเมน ให้ Google ใช้บัญชี @msu.ac.th — ใส่ '' ถ้าโปรเจกต์สร้างด้วย Gmail */
-var ADMIN_PAGE='admin.html';   /* วิธีที่ 2: ไฟล์ admin.html ที่วางไว้โฟลเดอร์เดียวกับ index.html (ไม่ผูกบัญชี Google) */
+/* ★ URL /exec ของ Apps Script (ระบบผู้ดูแล) — ใช้ 3 อย่าง: ดึงข้อมูล (?api=public), QR ติดตามสถานะ (?track=เลขที่รับ), ปุ่มผู้ดูแลระบบ
+   หน้านี้ไม่ลิงก์ไปที่ Google Sheet แล้ว จึงตั้งชีตเป็น "จำกัด" (ส่วนตัว) ได้ */
+var WEBAPP_URL='https://script.google.com/macros/s/AKfycbwlwNLXiJD35wG9khK4gs9bOUY2jIKUhBtWZtrBpBRaBfW4HNY18T2wcglpJEfeGEV1/exec';
+function trackUrl(d){return d&&d.rid?WEBAPP_URL+'?track='+encodeURIComponent(d.rid):'';}
 var PAPER=4, CO2=0.0086, MINS=45, URGENT_DAY=60;
 var LABOR_RATE=300;   /* บาท/ชั่วโมง */
 var PAPER_COST=3;     /* บาท/แผ่น */
 var TIERS=[{k:'120',d:120,l:'เกิน 120 วัน'},{k:'90',d:90,l:'เกิน 90 วัน'},{k:'60',d:60,l:'เกิน 60 วัน'},
  {k:'30',d:30,l:'เกิน 30 วัน'},{k:'15',d:15,l:'เกิน 15 วัน'},{k:'normal',d:0,l:'ปกติ (< 15 วัน)'}];
-document.getElementById('lnkSheet').href=SHEET_URL;
-function adminUrl(mode){
- if(mode==='free')return ADMIN_PAGE;
- return ADMIN_DOMAIN?ADMIN_URL.replace('/macros/s/','/a/macros/'+ADMIN_DOMAIN+'/s/'):ADMIN_URL;
-}
-function admMode(v){try{if(v===undefined)return localStorage.getItem('dwms_admin_mode');localStorage.setItem('dwms_admin_mode',v);}catch(e){return null;}}
-function openAdmin(){var m=admMode();if(m==='msu'||m==='free')window.open(adminUrl(m),'_blank','noopener');else openAdminChooser();}
-function openAdminChooser(){
- var m=admMode();
- ['msu','free'].forEach(function(k){document.getElementById('admOpt_'+k).classList.toggle('cur',m===k);});
- document.getElementById('admOv').classList.add('on');
- setTimeout(function(){document.getElementById('admOpt_'+(m==='free'?'free':'msu')).focus();},50);
-}
-function closeAdminChooser(){document.getElementById('admOv').classList.remove('on');}
-function chooseAdmin(m){admMode(m);closeAdminChooser();window.open(adminUrl(m),'_blank','noopener');}
-document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAdminChooser();});
+document.getElementById('lnkAdmin').href=WEBAPP_URL;
 
 /* ========= ข้อมูลสำรอง (ใช้เมื่อดึงสดไม่ได้) ========= */
 var FB_COLS=['วันที่','ไฟล์','เรื่อง','วันที่อนุมัติ','ระยะเวลา (วัน)','สถานะ','วันที่งานสำเร็จ','ผู้รับผิดชอบ','ประเภทบันทึกข้อความ','หมายเหตุ'];
@@ -573,7 +520,7 @@ function animateNums(scope){
 }
 
 /* ================= BUILD ================= */
-/* ไฟล์แนบอยู่คนละคอลัมน์ (ไฟล์ / ไฟล์แนบ 1–3) — เก็บเป็นรายการแยก ไม่ต่อ URL รวมกัน */
+/* ไฟล์แนบอยู่คนละคอลัมน์ (ไฟล์ / ไฟล์แนบ 1–3) — แสดงแยกกัน ไม่ต่อ URL รวมกัน */
 function fileList(o){
  var out=[],seen={};
  ['ไฟล์','ไฟล์แนบ 1','ไฟล์แนบ 2','ไฟล์แนบ 3'].forEach(function(c,i){
@@ -625,7 +572,22 @@ function loadLocal(){
  DATA=build(FALLBACK.map(function(r){var o={};FB_COLS.forEach(function(c,j){o[c]=r[j];});return o;}));
  initFilters();render();
 }
+/* ดึงข้อมูลผ่าน Apps Script (ชีตเป็นส่วนตัวได้) — ถ้าไม่สำเร็จจึงลองอ่านชีตตรง (ต้องแชร์ชีตแบบมีลิงก์) */
+function loadApi(){
+ return fetch(WEBAPP_URL+'?api=public&_='+Date.now(),{cache:'no-store',credentials:'omit'}).then(function(res){
+  if(!res.ok)throw new Error('HTTP '+res.status);return res.json();
+ }).then(function(j){
+  if(!j||!j.ok)throw new Error(j&&j.error||'ระบบตอบกลับผิดรูปแบบ');
+  var objs=j.rows.map(function(r){var o={};j.cols.forEach(function(c,k){o[c]=r[k];});return o;});
+  var built=build(objs);if(!built.length)throw new Error('ไม่มีข้อมูล');
+  DATA=built;initFilters();render();
+  setSrc('live','ข้อมูลสด · อัปเดต '+new Date().toLocaleTimeString('th-TH'),'');
+ });
+}
 function loadLive(manual){
+ loadApi().catch(function(){loadSheet(manual);});
+}
+function loadSheet(manual){
  var url='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:json&gid='+GID+'&headers=1&_='+Date.now();
  fetch(url,{cache:'no-store'}).then(function(res){
   if(!res.ok)throw new Error('HTTP '+res.status);
@@ -964,19 +926,16 @@ function openM(i){
  document.getElementById('btnOpen').href=d.file||'#';
  document.getElementById('btnDl').href=dlLink(d.file);
  document.getElementById('ov').classList.add('on');
- switchQR('file');
+ switchQR();
 }
-function switchQR(mode){
- curMode=mode;
- document.getElementById('qtF').classList.toggle('on',mode==='file');
- document.getElementById('qtT').classList.toggle('on',mode==='track');
- var val=(mode==='file')?(curr.file||SHEET_URL):SHEET_URL;
- document.getElementById('qrHint').textContent=(mode==='file')
-  ?'สแกนเพื่อเปิดไฟล์บันทึกข้อความ':'สแกนเพื่อติดตามสถานะแบบเรียลไทม์';
- var box=document.getElementById('qr');box.innerHTML='';
+/* QR สำหรับสมาร์ทโฟน: เปิดหน้าติดตามสถานะของเรื่องนี้ (ไม่ใช่ไฟล์ และไม่ใช่ Google Sheet) */
+function switchQR(){
+ var val=trackUrl(curr),box=document.getElementById('qr');box.innerHTML='';
+ document.getElementById('qrHint').textContent=val?'สแกนด้วยสมาร์ทโฟนเพื่อติดตามสถานะเรื่องนี้':'เรื่องนี้ยังไม่มีเลขที่รับ จึงยังสร้าง QR ติดตามไม่ได้';
+ if(!val)return;
  try{new QRCode(box,{text:val,width:190,height:190,colorDark:'#0b63e5',colorLight:'#ffffff',
   correctLevel:QRCode.CorrectLevel.M});}
- catch(e){box.innerHTML='<img src="https://api.qrserver.com/v1/create-qr-code/?size=190x190&color=0b63e5&data='+
+ catch(e){box.innerHTML='<img alt="QR ติดตามสถานะ" src="https://api.qrserver.com/v1/create-qr-code/?size=190x190&color=0b63e5&data='+
   encodeURIComponent(val)+'">';}
 }
 function dlQR(){
@@ -993,7 +952,7 @@ function togglePrev(){
  else{el.innerHTML='';}
 }
 function copyLink(){
- var v=(curMode==='file')?(curr.file||SHEET_URL):SHEET_URL;
+ var v=trackUrl(curr);if(!v){alert('เรื่องนี้ยังไม่มีเลขที่รับ');return;}
  if(navigator.clipboard){navigator.clipboard.writeText(v).then(function(){alert('คัดลอกลิงก์แล้ว ✔');})
   .catch(function(){prompt('คัดลอกลิงก์นี้:',v);});}
  else{prompt('คัดลอกลิงก์นี้:',v);}
@@ -1004,14 +963,14 @@ function closeM(){document.getElementById('ov').classList.remove('on');document.
 function exportCSV(){
  var vDoc=(MINS/60)*LABOR_RATE+PAPER*PAPER_COST;
  var h=['ลำดับ','เรื่อง','ประเภท','ผู้รับผิดชอบ','วันที่เสนอ','วันที่อนุมัติ','วันที่สำเร็จ','ระยะเวลา(วัน)',
-  'สถานะ','ระดับแจ้งเตือน','มูลค่าที่ประหยัด(บาท)','หมายเหตุ','ลิงก์ไฟล์หลัก','ไฟล์แนบ 1','ไฟล์แนบ 2','ไฟล์แนบ 3'];
+  'สถานะ','ระดับแจ้งเตือน','มูลค่าที่ประหยัด(บาท)','หมายเหตุ','ลิงก์ไฟล์หลัก','ไฟล์แนบ 1','ไฟล์แนบ 2','ไฟล์แนบ 3','เลขที่รับ'];
  var rows=VIEW.map(function(d){
   var lvl;
   if(d.urgent)lvl='ควรติดตามเร่งด่วน';
   else if(d.done)lvl=d.slaBreach?'เสร็จเกิน SLA':'อยู่ในเกณฑ์';
   else{lvl='ปกติ';TIERS.forEach(function(t){if(t.k===d.tier)lvl=t.l;});}
   var ex=d.files.filter(function(f){return !f.primary;}).map(function(f){return f.url;});
-  return [d.no,d.subject,d.type,d.owner,fmt(d.dSub),fmt(d.dApp),fmt(d.dDone),d.days,d.status,lvl,vDoc,d.note,d.file,ex[0]||'',ex[1]||'',ex[2]||''];
+  return [d.no,d.subject,d.type,d.owner,fmt(d.dSub),fmt(d.dApp),fmt(d.dDone),d.days,d.status,lvl,vDoc,d.note,d.file,ex[0]||'',ex[1]||'',ex[2]||'',d.rid||''];
  });
  var all=[h].concat(rows);
  var csv='\uFEFF'+all.map(function(r){
