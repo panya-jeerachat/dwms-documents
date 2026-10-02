@@ -196,6 +196,26 @@ tbody tr:hover{background:var(--soft)}
 .ov{position:fixed;inset:0;background:rgba(10,22,45,.62);backdrop-filter:blur(4px);display:none;
  place-items:center;z-index:400;padding:18px}
 .ov.on{display:grid}
+/* ---- ทางเข้าผู้ดูแล ---- */
+.adm-grp{display:inline-flex}
+.adm-grp .btn:first-child{border-radius:11px 0 0 11px}
+.adm-caret{border-radius:0 11px 11px 0!important;padding:9px 10px!important;border-left:1px solid var(--line)!important}
+.admov{position:fixed;inset:0;z-index:400;background:rgba(10,22,45,.55);backdrop-filter:blur(4px);display:none;place-items:center;padding:18px}
+.admov.on{display:grid}
+.admbox{background:#fff;border-radius:22px;width:min(470px,100%);padding:26px 26px 20px;box-shadow:0 30px 80px rgba(0,0,0,.3);position:relative;animation:admIn .22s ease}
+@keyframes admIn{from{opacity:0;transform:translateY(10px) scale(.98)}}
+.admbox h3{font-size:19px;font-weight:800;color:var(--blue-dk);display:flex;gap:8px;align-items:center}
+.admbox .lead{color:var(--muted);font-size:13px;margin:8px 0 16px;line-height:1.6}
+.admx{position:absolute;top:14px;right:16px;border:0;background:none;font-size:18px;color:var(--muted);cursor:pointer;width:32px;height:32px;border-radius:50%}
+.admx:hover{background:var(--soft)}
+.admopt{display:block;width:100%;text-align:left;border:1.5px solid var(--line);background:var(--soft2);border-radius:14px;padding:13px 15px;margin-bottom:11px;
+ cursor:pointer;font-family:inherit;transition:.2s;position:relative}
+.admopt:hover,.admopt:focus-visible{border-color:var(--blue);background:var(--soft);outline:0;transform:translateY(-1px)}
+.admopt b{display:block;font-size:14.5px;color:var(--ink);margin-bottom:4px}
+.admopt span{display:block;font-size:12.5px;color:var(--muted);line-height:1.55}
+.admopt.cur{border-color:var(--blue)}
+.admopt.cur::after{content:"ใช้อยู่";position:absolute;top:12px;right:12px;font-size:11px;font-weight:700;color:#fff;background:var(--blue);padding:2px 9px;border-radius:999px}
+.admfoot{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px;margin-top:6px;line-height:1.6}
 .modal{background:#fff;border-radius:22px;max-width:1010px;width:100%;max-height:93vh;overflow-y:auto;animation:up .34s}
 @keyframes up{from{transform:translateY(30px) scale(.97);opacity:0}to{transform:none;opacity:1}}
 .mh{background:linear-gradient(135deg,var(--blue-dk),var(--blue) 55%,var(--blue-lt));color:#fff;
@@ -292,6 +312,7 @@ tbody tr:hover{background:var(--soft)}
    <button class="btn btn-g" onclick="loadLive(true)">🔄 ดึงข้อมูลสด</button>
    <button class="btn btn-g" onclick="window.print()">🖨 พิมพ์รายงาน</button>
    <a class="btn btn-w" id="lnkSheet" target="_blank">📄 เปิดชีตต้นทาง</a>
+   <span class="adm-grp"><button class="btn btn-w" id="btnAdmin" onclick="openAdmin()">🔐 ผู้ดูแลระบบ</button><button class="btn btn-w adm-caret" onclick="openAdminChooser()" title="เปลี่ยนวิธีเข้าสู่ระบบ" aria-label="เลือกวิธีเข้าสู่ระบบผู้ดูแล">▾</button></span>
   </div>
  </div>
  <div class="hstat" id="heroStat"></div>
@@ -412,6 +433,20 @@ tbody tr:hover{background:var(--soft)}
 <button class="top-btn" id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <!-- ============ MODAL ============ -->
+<div class="admov" id="admOv" onclick="if(event.target===this)closeAdminChooser()" role="dialog" aria-modal="true" aria-labelledby="admTitle">
+ <div class="admbox">
+  <button class="admx" onclick="closeAdminChooser()" aria-label="ปิด">✕</button>
+  <h3 id="admTitle">🔐 เข้าสู่ระบบผู้ดูแล</h3>
+  <p class="lead">เลือกวิธีที่ใช้ได้กับเครื่องนี้ ระบบจะจำไว้ให้ ครั้งต่อไปกดปุ่มเดียวเข้าได้เลย (เปลี่ยนภายหลังได้ที่ปุ่ม ▾ ข้างปุ่มผู้ดูแลระบบ)</p>
+  <button class="admopt" id="admOpt_msu" onclick="chooseAdmin('msu')">
+   <b>🏛 เข้าด้วยบัญชี @msu.ac.th</b>
+   <span>สำหรับเครื่องที่ลงชื่อเข้าใช้ Google ด้วยอีเมลมหาวิทยาลัยอยู่แล้ว และลงชื่อไว้บัญชีเดียว</span></button>
+  <button class="admopt" id="admOpt_free" onclick="chooseAdmin('free')">
+   <b>🌐 เข้าแบบไม่ผูกบัญชี Google</b>
+   <span>ใช้เมื่อวิธีแรกขึ้นหน้าข้อผิดพลาดหรือปฏิเสธสิทธิ์ หรือ Chrome ลงชื่อ Google ไว้หลายบัญชี / ไม่ได้ลงชื่อด้วยอีเมลมหาวิทยาลัย</span></button>
+  <p class="admfoot">ทั้งสองวิธีเข้าหน้าเดียวกัน และใช้ชื่อผู้ใช้/รหัสผ่านของระบบเหมือนกัน ต่างกันแค่เส้นทางที่เบราว์เซอร์ใช้ติดต่อเซิร์ฟเวอร์ ถ้ากดแล้วขึ้นข้อผิดพลาด ให้กลับมาเลือกอีกวิธีได้ทันที</p>
+ </div>
+</div>
 <div class="ov" id="ov" onclick="if(event.target===this)closeM()">
  <div class="modal"><div class="mh"><button class="x" onclick="closeM()">✕</button><h2 id="mTitle"></h2></div>
   <div class="mb"><div><dl class="dl" id="mBody"></dl>
@@ -434,12 +469,31 @@ tbody tr:hover{background:var(--soft)}
 /* ================= CONFIG ================= */
 var SHEET_ID='1qTTLdfwnMaDyomcaGcc_DbiAqbLHTjTFPeZWi5NlaBk',GID='0';
 var SHEET_URL='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/edit?gid='+GID+'#gid='+GID;
+/* ===== ทางเข้าหน้าผู้ดูแล ===== */
+var ADMIN_URL='https://script.google.com/macros/s/AKfycbwlwNLXiJD35wG9khK4gs9bOUY2jIKUhBtWZtrBpBRaBfW4HNY18T2wcglpJEfeGEV1/exec';
+var ADMIN_DOMAIN='msu.ac.th';  /* วิธีที่ 1: เปิดผ่าน URL ของโดเมน ให้ Google ใช้บัญชี @msu.ac.th — ใส่ '' ถ้าโปรเจกต์สร้างด้วย Gmail */
+var ADMIN_PAGE='admin.html';   /* วิธีที่ 2: ไฟล์ admin.html ที่วางไว้โฟลเดอร์เดียวกับ index.html (ไม่ผูกบัญชี Google) */
 var PAPER=4, CO2=0.0086, MINS=45, URGENT_DAY=60;
 var LABOR_RATE=300;   /* บาท/ชั่วโมง */
 var PAPER_COST=3;     /* บาท/แผ่น */
 var TIERS=[{k:'120',d:120,l:'เกิน 120 วัน'},{k:'90',d:90,l:'เกิน 90 วัน'},{k:'60',d:60,l:'เกิน 60 วัน'},
  {k:'30',d:30,l:'เกิน 30 วัน'},{k:'15',d:15,l:'เกิน 15 วัน'},{k:'normal',d:0,l:'ปกติ (< 15 วัน)'}];
 document.getElementById('lnkSheet').href=SHEET_URL;
+function adminUrl(mode){
+ if(mode==='free')return ADMIN_PAGE;
+ return ADMIN_DOMAIN?ADMIN_URL.replace('/macros/s/','/a/macros/'+ADMIN_DOMAIN+'/s/'):ADMIN_URL;
+}
+function admMode(v){try{if(v===undefined)return localStorage.getItem('dwms_admin_mode');localStorage.setItem('dwms_admin_mode',v);}catch(e){return null;}}
+function openAdmin(){var m=admMode();if(m==='msu'||m==='free')window.open(adminUrl(m),'_blank','noopener');else openAdminChooser();}
+function openAdminChooser(){
+ var m=admMode();
+ ['msu','free'].forEach(function(k){document.getElementById('admOpt_'+k).classList.toggle('cur',m===k);});
+ document.getElementById('admOv').classList.add('on');
+ setTimeout(function(){document.getElementById('admOpt_'+(m==='free'?'free':'msu')).focus();},50);
+}
+function closeAdminChooser(){document.getElementById('admOv').classList.remove('on');}
+function chooseAdmin(m){admMode(m);closeAdminChooser();window.open(adminUrl(m),'_blank','noopener');}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAdminChooser();});
 
 /* ========= ข้อมูลสำรอง (ใช้เมื่อดึงสดไม่ได้) ========= */
 var FB_COLS=['วันที่','ไฟล์','เรื่อง','วันที่อนุมัติ','ระยะเวลา (วัน)','สถานะ','วันที่งานสำเร็จ','ผู้รับผิดชอบ','ประเภทบันทึกข้อความ','หมายเหตุ'];
@@ -497,9 +551,11 @@ function parseDate(v){
 }
 function fmt(d){return d?d.toLocaleDateString('th-TH',{day:'2-digit',month:'short',year:'numeric'}):'—';}
 function diffD(a,b){return Math.max(0,Math.round((b-a)/86400000));}
-function driveId(u){var m=String(u||'').match(/[-\w]{25,}/);return m?m[0]:null;}
+/* ไฟล์มีสองแหล่ง: Google Drive (ข้อมูลเดิม) และ eng.msu.ac.th/dwms/data (อัปโหลดจากหน้าผู้ดูแล) */
+function driveId(u){u=String(u||'');if(!/google\.com/.test(u))return null;var m=u.match(/[-\w]{25,}/);return m?m[0]:null;}
 function dlLink(u){var id=driveId(u);return id?'https://drive.google.com/uc?export=download&id='+id:(u||'#');}
-function prevLink(u){var id=driveId(u);return id?'https://drive.google.com/file/d/'+id+'/preview':null;}
+function prevLink(u){var id=driveId(u);if(id)return 'https://drive.google.com/file/d/'+id+'/preview';
+ return /\.(pdf|png|jpe?g|gif|webp)(\?|$)/i.test(String(u||''))?u:null;}
 var THMON=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
 
 function countUp(el,to,dec,suffix){
@@ -517,6 +573,18 @@ function animateNums(scope){
 }
 
 /* ================= BUILD ================= */
+/* ไฟล์แนบอยู่คนละคอลัมน์ (ไฟล์ / ไฟล์แนบ 1–3) — เก็บเป็นรายการแยก ไม่ต่อ URL รวมกัน */
+function fileList(o){
+ var out=[],seen={};
+ ['ไฟล์','ไฟล์แนบ 1','ไฟล์แนบ 2','ไฟล์แนบ 3'].forEach(function(c,i){
+  var u=String(o[c]==null?'':o[c]).trim();
+  if(!/^https?:\/\//i.test(u)||seen[u])return;seen[u]=1;
+  out.push({url:u,label:i===0?'ไฟล์หลัก':c,primary:i===0});
+ });
+ return out;
+}
+function fileName(u){var x=String(u||'').split('?')[0].split('/').pop();try{x=decodeURIComponent(x);}catch(e){}
+ return /^(view|preview|edit)$/.test(x)||!x?'เอกสารใน Google Drive':x;}
 function build(rows){
  var today=new Date();today.setHours(0,0,0,0);
  var out=[];
@@ -526,6 +594,7 @@ function build(rows){
   var dSub=parseDate(o['วันที่']),dApp=parseDate(o['วันที่อนุมัติ']),dDone=parseDate(o['วันที่งานสำเร็จ']);
   var status=clean(o['สถานะ'])||'ไม่ระบุ';
   var done=/สำเร็จ|เสร็จ/.test(status)&&!/ไม่/.test(status);
+  var closed=done||/ยกเลิก|ไม่อนุมัติ/.test(status);   /* ปิดเรื่องแล้ว ไม่นับเป็นเรื่องค้าง */
   var sdRaw=String(o['ระยะเวลา (วัน)']==null?'':o['ระยะเวลา (วัน)']);
   var sd=Number(sdRaw.replace(/[^\d.-]/g,''));
   var base=dApp||dSub, days;
@@ -533,12 +602,13 @@ function build(rows){
   else if(done){days=(base&&dDone)?diffD(base,dDone):0;}
   else{days=base?diffD(base,today):0;}
   var tier='normal';
-  if(!done){for(var t=0;t<TIERS.length;t++){if(days>=TIERS[t].d){tier=TIERS[t].k;break;}}}
+  if(!closed){for(var t=0;t<TIERS.length;t++){if(days>=TIERS[t].d){tier=TIERS[t].k;break;}}}
   out.push({i:out.length+1,no:out.length+1,subject:subject||'(ไม่ระบุเรื่อง)',file:file,
    dSub:dSub,dApp:dApp,dDone:dDone,status:status,done:done,
    type:clean(o['ประเภทบันทึกข้อความ'])||'ไม่ระบุ',owner:clean(o['ผู้รับผิดชอบ'])||'ไม่ระบุ',
    note:clean(o['หมายเหตุ'])||'-',days:days,tier:tier,
-   urgent:(!done&&days>=URGENT_DAY),slaBreach:(done&&days>=120)});
+   files:fileList(o),rid:clean(o['เลขที่รับ']),docNo:clean(o['เลขที่หนังสือ']),stage:clean(o['ขั้นตอนปัจจุบัน']),
+   urgent:(!closed&&days>=URGENT_DAY),slaBreach:(done&&days>=120)});
  });
  return out;
 }
@@ -607,7 +677,7 @@ function applyFilter(){
   ow=document.getElementById('fOwner').value,al=document.getElementById('fAlert').value,
   so=document.getElementById('fSort').value;
  var v=DATA.filter(function(d){
-  if(q&&(d.subject+d.owner+d.note+d.type).toLowerCase().indexOf(q)<0)return false;
+  if(q&&(d.subject+d.owner+d.note+d.type+' '+(d.rid||'')+' '+(d.docNo||'')).toLowerCase().indexOf(q)<0)return false;
   if(st&&d.status!==st)return false;
   if(ty&&d.type!==ty)return false;
   if(ow&&d.owner!==ow)return false;
@@ -866,7 +936,8 @@ function openM(i){
  function row(k,v){return '<dt>'+k+'</dt><dd>'+v+'</dd>';}
  var vDoc=(MINS/60)*LABOR_RATE+PAPER*PAPER_COST;
  document.getElementById('mBody').innerHTML=
-  row('เลขที่รายการ','#'+d.no)+row('เรื่อง',esc(d.subject))+
+  row('เลขที่รายการ','#'+d.no+(d.rid?' · เลขที่รับ '+esc(d.rid):''))+row('เรื่อง',esc(d.subject))+
+  (d.stage?row('ขั้นตอนปัจจุบัน',esc(d.stage)):'')+(d.docNo?row('เลขที่หนังสือ',esc(d.docNo)):'')+
   row('ประเภทบันทึก','<span class="badge '+(d.type==='ภายใน'?'b-run':'b-15')+'">'+esc(d.type)+'</span>')+
   row('ผู้รับผิดชอบ',esc(d.owner))+row('วันที่เสนอเรื่อง',fmt(d.dSub))+row('วันที่อนุมัติ',fmt(d.dApp))+
   row('วันที่งานสำเร็จ',fmt(d.dDone))+row('ระยะเวลา (วัน)','<b>'+d.days+'</b> วัน')+
@@ -875,8 +946,14 @@ function openM(i){
    '<span style="font-weight:400;color:var(--muted);font-size:12px">(เวลา '+nf((MINS/60)*LABOR_RATE)+
    ' + กระดาษ '+nf(PAPER*PAPER_COST)+')</span>')+
   row('หมายเหตุ',esc(d.note))+
-  row('ลิงก์ไฟล์',d.file?'<a href="'+esc(d.file)+'" target="_blank" style="color:var(--blue);word-break:break-all">'+
-   esc(d.file.slice(0,54))+'…</a>':'—');
+  row('ไฟล์แนบ ('+d.files.length+')',d.files.length?d.files.map(function(f){
+   return '<div style="padding:8px 10px;margin:0 0 6px;border:1px solid var(--line);border-radius:10px;background:var(--soft2)">'+
+    '<b style="font-size:12px;color:var(--blue)">'+esc(f.label)+'</b>'+
+    '<div style="font-weight:600;word-break:break-word">'+esc(fileName(f.url))+'</div>'+
+    '<div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">'+
+     '<a class="btn btn-o" style="padding:5px 11px" href="'+esc(f.url)+'" target="_blank" rel="noopener">📄 เปิด</a>'+
+     '<a class="btn btn-o" style="padding:5px 11px" href="'+esc(dlLink(f.url))+'" target="_blank" rel="noopener">⬇ ดาวน์โหลด</a></div></div>';
+  }).join(''):'—');
  var steps=[{n:'เสนอเรื่อง',dt:d.dSub,ok:!!d.dSub},{n:'อนุมัติ',dt:d.dApp,ok:!!d.dApp},
   {n:'ดำเนินการ',dt:null,ok:!!d.dApp},{n:'แล้วเสร็จ',dt:d.dDone,ok:d.done}];
  document.getElementById('mSteps').innerHTML=steps.map(function(s,k){
@@ -927,13 +1004,14 @@ function closeM(){document.getElementById('ov').classList.remove('on');document.
 function exportCSV(){
  var vDoc=(MINS/60)*LABOR_RATE+PAPER*PAPER_COST;
  var h=['ลำดับ','เรื่อง','ประเภท','ผู้รับผิดชอบ','วันที่เสนอ','วันที่อนุมัติ','วันที่สำเร็จ','ระยะเวลา(วัน)',
-  'สถานะ','ระดับแจ้งเตือน','มูลค่าที่ประหยัด(บาท)','หมายเหตุ','ลิงก์ไฟล์'];
+  'สถานะ','ระดับแจ้งเตือน','มูลค่าที่ประหยัด(บาท)','หมายเหตุ','ลิงก์ไฟล์หลัก','ไฟล์แนบ 1','ไฟล์แนบ 2','ไฟล์แนบ 3'];
  var rows=VIEW.map(function(d){
   var lvl;
   if(d.urgent)lvl='ควรติดตามเร่งด่วน';
   else if(d.done)lvl=d.slaBreach?'เสร็จเกิน SLA':'อยู่ในเกณฑ์';
   else{lvl='ปกติ';TIERS.forEach(function(t){if(t.k===d.tier)lvl=t.l;});}
-  return [d.no,d.subject,d.type,d.owner,fmt(d.dSub),fmt(d.dApp),fmt(d.dDone),d.days,d.status,lvl,vDoc,d.note,d.file];
+  var ex=d.files.filter(function(f){return !f.primary;}).map(function(f){return f.url;});
+  return [d.no,d.subject,d.type,d.owner,fmt(d.dSub),fmt(d.dApp),fmt(d.dDone),d.days,d.status,lvl,vDoc,d.note,d.file,ex[0]||'',ex[1]||'',ex[2]||''];
  });
  var all=[h].concat(rows);
  var csv='\uFEFF'+all.map(function(r){
