@@ -197,9 +197,6 @@ tbody tr:hover{background:var(--soft)}
  place-items:center;z-index:400;padding:18px}
 .ov.on{display:grid}
 /* ---- ทางเข้าผู้ดูแล ---- */
-.adm-grp{display:inline-flex}
-.adm-grp .btn:first-child{border-radius:11px 0 0 11px}
-.adm-caret{border-radius:0 11px 11px 0!important;padding-left:10px!important;padding-right:10px!important;border-left:1px solid rgba(11,99,229,.18)!important}
 .admov{position:fixed;inset:0;z-index:400;background:rgba(10,22,45,.55);backdrop-filter:blur(4px);display:none;place-items:center;padding:18px}
 .admov.on{display:grid}
 .admbox{background:#fff;border-radius:22px;width:min(470px,100%);padding:26px 26px 20px;box-shadow:0 30px 80px rgba(0,0,0,.3);position:relative;animation:admIn .22s ease}
@@ -214,7 +211,7 @@ tbody tr:hover{background:var(--soft)}
 .admopt b{display:block;font-size:14.5px;color:var(--ink);margin-bottom:4px}
 .admopt span{display:block;font-size:12.5px;color:var(--muted);line-height:1.55}
 .admopt.cur{border-color:var(--blue)}
-.admopt.cur::after{content:"ใช้อยู่";position:absolute;top:12px;right:12px;font-size:11px;font-weight:700;color:#fff;background:var(--blue);padding:2px 9px;border-radius:999px}
+.admopt.cur::after{content:"ใช้ล่าสุด";position:absolute;top:12px;right:12px;font-size:11px;font-weight:700;color:#fff;background:var(--blue);padding:2px 9px;border-radius:999px}
 .admfoot{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px;margin-top:6px;line-height:1.6}
 .admframe{position:fixed;inset:0;z-index:450;background:#f3f5fb;display:none;flex-direction:column}
 .admframe.on{display:flex}
@@ -322,7 +319,7 @@ tbody tr:hover{background:var(--soft)}
    <div class="src local" id="srcTag"><span class="dot"></span><span id="srcTxt">กำลังตรวจสอบ…</span></div>
    <button class="btn btn-g" onclick="loadLive(true)">🔄 ดึงข้อมูลสด</button>
    <button class="btn btn-g" onclick="window.print()">🖨 พิมพ์รายงาน</button>
-   <span class="adm-grp"><button class="btn btn-w" onclick="openAdmin()">🔐 ผู้ดูแลระบบ</button><button class="btn btn-w adm-caret" onclick="openAdminChooser()" title="เปลี่ยนวิธีเข้าสู่ระบบ" aria-label="เลือกวิธีเข้าสู่ระบบผู้ดูแล">▾</button></span>
+   <button class="btn btn-w" onclick="openAdminChooser()" aria-haspopup="dialog">🔐 ผู้ดูแลระบบ</button>
   </div>
  </div>
  <div class="hstat" id="heroStat"></div>
@@ -447,7 +444,7 @@ tbody tr:hover{background:var(--soft)}
  <div class="admbox">
   <button class="admx" onclick="closeAdminChooser()" aria-label="ปิด">✕</button>
   <h3 id="admTitle">🔐 เข้าสู่ระบบผู้ดูแล</h3>
-  <p class="lead">เลือกวิธีที่ใช้ได้กับเครื่องนี้ ระบบจะจำไว้ให้ ครั้งต่อไปกดปุ่มเดียวเข้าได้เลย (เปลี่ยนภายหลังได้ที่ปุ่ม ▾ ข้างปุ่มผู้ดูแลระบบ)</p>
+  <p class="lead">เลือกวิธีที่ใช้ได้กับเครื่องนี้ วิธีที่ใช้ครั้งล่าสุดจะมีป้าย “ใช้ล่าสุด” ให้เห็น</p>
   <button class="admopt" id="admOpt_msu" onclick="chooseAdmin('msu')">
    <b>🏛 เข้าด้วยบัญชี @msu.ac.th</b>
    <span>สำหรับเครื่องที่ลงชื่อเข้าใช้ Google ด้วยอีเมลมหาวิทยาลัยอยู่แล้ว และลงชื่อไว้บัญชีเดียว — เปิดหน้าผู้ดูแลในแท็บใหม่</span></button>
@@ -495,7 +492,6 @@ var TIERS=[{k:'120',d:120,l:'เกิน 120 วัน'},{k:'90',d:90,l:'เก
    free : ขอหน้าผู้ดูแลจาก Apps Script โดยไม่ส่งคุกกี้บัญชี Google แล้วแสดงซ้อนบนหน้านี้
           — ใช้ได้แม้ Chrome ลงชื่อ Google ไว้หลายบัญชี */
 function admMode(v){try{if(v===undefined)return localStorage.getItem('dwms_admin_mode');localStorage.setItem('dwms_admin_mode',v);}catch(e){return null;}}
-function openAdmin(){var m=admMode();if(m==='msu')goAdminMsu();else if(m==='free')goAdminFree();else openAdminChooser();}
 function openAdminChooser(){
  var m=admMode();
  ['msu','free'].forEach(function(k){document.getElementById('admOpt_'+k).classList.toggle('cur',m===k);});
