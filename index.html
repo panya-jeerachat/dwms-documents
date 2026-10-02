@@ -500,7 +500,11 @@ function openAdminChooser(){
 }
 function closeAdminChooser(){document.getElementById('admOv').classList.remove('on');}
 function chooseAdmin(m){admMode(m);closeAdminChooser();if(m==='msu')goAdminMsu();else goAdminFree();}
-function goAdminMsu(){window.open(WEBAPP_URL,'_blank','noopener');}
+/* ลิงก์แบบโดเมน /a/macros/msu.ac.th/ บอก Google ให้ใช้บัญชี @msu.ac.th (ไม่ใช่บัญชีลำดับที่ 1, 2 … ของ Chrome)
+   ถ้าเครื่องนั้นยังไม่ได้ลงชื่อ @msu.ac.th Google จะขึ้นหน้าให้ลงชื่อด้วยบัญชีมหาวิทยาลัย แทนหน้า "unable to open the file" */
+var MSU_DOMAIN='msu.ac.th';
+function msuUrl(){return MSU_DOMAIN?WEBAPP_URL.replace('/macros/s/','/a/macros/'+MSU_DOMAIN+'/s/'):WEBAPP_URL;}
+function goAdminMsu(){window.open(msuUrl(),'_blank','noopener');}
 function goAdminFree(){
  var fr=document.getElementById('admFrame'),host=document.getElementById('admHost');
  fr.classList.add('on');document.body.style.overflow='hidden';
