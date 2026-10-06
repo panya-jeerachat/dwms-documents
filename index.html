@@ -640,7 +640,7 @@ function build(rows){
    dSub:dSub,dApp:dApp,dDone:dDone,status:status,done:done,
    type:clean(o['ประเภทบันทึกข้อความ'])||'ไม่ระบุ',owner:clean(o['ผู้รับผิดชอบ'])||'ไม่ระบุ',
    note:clean(o['หมายเหตุ'])||'-',days:days,tier:tier,
-   files:fileList(o),rid:clean(o['เลขที่รับ']),docNo:clean(o['เลขที่หนังสือ']),stage:clean(o['ขั้นตอนปัจจุบัน']),
+   files:fileList(o),rid:clean(o['เลขที่รับ']),
    urgent:(!closed&&days>=URGENT_DAY),slaBreach:(done&&days>=120)});
  });
  return out;
@@ -725,7 +725,7 @@ function applyFilter(){
   ow=document.getElementById('fOwner').value,al=document.getElementById('fAlert').value,
   so=document.getElementById('fSort').value;
  var v=DATA.filter(function(d){
-  if(q&&(d.subject+d.owner+d.note+d.type+' '+(d.rid||'')+' '+(d.docNo||'')).toLowerCase().indexOf(q)<0)return false;
+  if(q&&(d.subject+d.owner+d.note+d.type+' '+(d.rid||'')).toLowerCase().indexOf(q)<0)return false;
   if(st&&d.status!==st)return false;
   if(ty&&d.type!==ty)return false;
   if(ow&&d.owner!==ow)return false;
@@ -985,7 +985,7 @@ function openM(i){
  var vDoc=(MINS/60)*LABOR_RATE+PAPER*PAPER_COST;
  document.getElementById('mBody').innerHTML=
   row('เลขที่รายการ','#'+d.no+(d.rid?' · เลขที่รับ '+esc(d.rid):''))+row('เรื่อง',esc(d.subject))+
-  (d.stage?row('ขั้นตอนปัจจุบัน',esc(d.stage)):'')+(d.docNo?row('เลขที่หนังสือ',esc(d.docNo)):'')+
+
   row('ประเภทบันทึก','<span class="badge '+(d.type==='ภายใน'?'b-run':'b-15')+'">'+esc(d.type)+'</span>')+
   row('ผู้รับผิดชอบ',esc(d.owner))+row('วันที่เสนอเรื่อง',fmt(d.dSub))+row('วันที่อนุมัติ',fmt(d.dApp))+
   row('วันที่งานสำเร็จ',fmt(d.dDone))+row('ระยะเวลา (วัน)','<b>'+d.days+'</b> วัน')+
@@ -1003,7 +1003,7 @@ function openM(i){
      '<a class="btn btn-o" style="padding:5px 11px" href="'+esc(dlLink(f.url))+'" target="_blank" rel="noopener">⬇ ดาวน์โหลด</a></div></div>';
   }).join(''):'—');
  var steps=[{n:'เสนอเรื่อง',dt:d.dSub,ok:!!d.dSub},{n:'อนุมัติ',dt:d.dApp,ok:!!d.dApp},
-  {n:'ดำเนินการ',dt:null,ok:!!d.dApp},{n:'แล้วเสร็จ',dt:d.dDone,ok:d.done}];
+  {n:'ดำเนินการ',dt:null,ok:d.done||/ดำเนิน/.test(d.status)},{n:'แล้วเสร็จ',dt:d.dDone,ok:d.done}];
  document.getElementById('mSteps').innerHTML=steps.map(function(s,k){
   var now=(!s.ok&&k>0&&steps[k-1].ok);
   return '<div class="step '+(s.ok?'done':'')+' '+(now?'now':'')+'">'+
