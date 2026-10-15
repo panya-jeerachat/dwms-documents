@@ -258,6 +258,81 @@ tbody tr:hover{background:var(--soft)}
 .prev{margin-top:17px;border-top:1px solid var(--line);padding-top:15px}
 .prev iframe{width:100%;height:430px;border:1px solid var(--line);border-radius:13px;background:#fafcff}
 .chgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+/* ---- KPI charts: 2x2 กะทัดรัด ---- */
+.kc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:16px}
+.kc{display:flex;flex-direction:column;margin-bottom:0}
+.kc-h{display:flex;align-items:flex-start;gap:8px}.kc-h h3{flex:1;margin-bottom:4px}
+.kc-i{border:1.5px solid var(--line);background:var(--soft2);color:var(--blue);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:14px;font-weight:700;flex-shrink:0}
+.kc-i:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+.kc-say{font-size:13px;color:var(--ink);background:linear-gradient(90deg,var(--soft),transparent);border-left:3px solid var(--blue);padding:7px 10px;border-radius:0 10px 10px 0;margin:4px 0 10px;line-height:1.55;min-height:36px}
+.kc-say b{color:var(--blue-dk)}
+.kc-box{position:relative;height:240px}
+.kc-hint{font-size:11.5px;color:var(--muted);margin-top:8px}
+@media(max-width:900px){.kc-grid{grid-template-columns:1fr}.kc-box{height:220px}}
+/* ---- popup รายชื่อเรื่อง ---- */
+.dd{position:fixed;inset:0;z-index:420;background:rgba(10,22,45,.55);backdrop-filter:blur(4px);display:none;place-items:center;padding:16px}
+.dd.on{display:grid}
+.ddbox{background:#fff;border-radius:20px;width:min(760px,100%);max-height:calc(100vh - 32px);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.3);animation:admIn .22s ease}
+.ddh{display:flex;gap:12px;align-items:flex-start;padding:18px 20px;color:#fff;background:linear-gradient(135deg,var(--c1,#083f9c),var(--c2,#22b8ff))}
+.ddh>div{flex:1}.ddh small{opacity:.85;font-size:12px}.ddh h3{font-size:18px;line-height:1.4}
+.ddx{border:0;background:rgba(255,255,255,.2);color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:15px;flex-shrink:0}
+.ddb{padding:14px 20px 18px;overflow-y:auto}
+.ddb .ddsum{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.ddb .ddsum span{background:var(--soft);color:var(--blue-dk);border-radius:999px;padding:4px 11px;font-size:12.5px;font-weight:700}
+.ddb p.ddtxt{font-size:13.5px;line-height:1.7;color:var(--ink);margin-bottom:10px}
+.ddrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;cursor:pointer;transition:.15s;background:var(--soft2)}
+.ddrow:hover,.ddrow:focus-visible{border-color:var(--blue);background:var(--soft);outline:0}
+.ddrow b{font-size:13.5px;line-height:1.45}.ddrow small{color:var(--muted);font-size:12px;grid-column:1}
+.ddrow .dd-d{grid-row:1/3;grid-column:2;text-align:right;font-weight:800;font-size:18px;color:var(--c,var(--blue));align-self:center;line-height:1.1}
+.ddrow .dd-d small{display:block;font-weight:400;font-size:11px}
+/* ---- 3D เส้นทางงาน 4 ขั้น ---- */
+.flow3d{position:relative;border-radius:var(--r);overflow:hidden;margin-bottom:22px;color:#fff;padding:20px 22px 16px;
+ background:radial-gradient(60% 80% at 15% 10%,rgba(245,165,36,.35),transparent 60%),radial-gradient(50% 70% at 90% 90%,rgba(18,194,106,.32),transparent 60%),
+  radial-gradient(45% 60% at 60% 20%,rgba(34,184,255,.3),transparent 60%),linear-gradient(135deg,#0a1b45,#14205e 45%,#2a0f4f);box-shadow:var(--sh2)}
+.flow3d::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.07) 50%,transparent 70%);background-size:250% 100%;animation:f3sheen 7s linear infinite;pointer-events:none}
+@keyframes f3sheen{from{background-position:120% 0}to{background-position:-120% 0}}
+.f3-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;position:relative;z-index:2}
+.f3-head h2{font-size:18px;font-weight:800}.f3-head p{opacity:.8;font-size:12.5px;margin-top:3px}
+.f3-total{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:8px 14px;font-size:12px;text-align:right}
+.f3-total b{display:block;font-size:22px;line-height:1.1}
+.f3-scene{position:relative;height:300px;perspective:1100px;perspective-origin:50% 0%;margin-top:4px}
+.f3-floor{position:absolute;left:4%;right:4%;top:-30px;height:400px;transform-style:preserve-3d;transform:rotateX(58deg);
+ background:radial-gradient(closest-side,rgba(255,255,255,.07),transparent),
+  repeating-linear-gradient(0deg,rgba(255,255,255,.07) 0 1px,transparent 1px 40px),repeating-linear-gradient(90deg,rgba(255,255,255,.07) 0 1px,transparent 1px 40px);
+ border-radius:24px}
+.f3-path{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.f3-line{fill:none;stroke:rgba(255,255,255,.18);stroke-width:7;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.f3-flow{fill:none;stroke:url(#none);stroke:#fff;stroke-opacity:.75;stroke-width:3;stroke-dasharray:3 14;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;animation:f3dash 1.6s linear infinite}
+@keyframes f3dash{to{stroke-dashoffset:-34}}
+.f3-st{position:absolute;width:0;height:0;transform-style:preserve-3d;border:0;background:none;padding:0;cursor:pointer;color:#fff;font-family:inherit}
+.f3-pad{position:absolute;width:120px;height:120px;left:-60px;top:-60px;border-radius:50%;background:radial-gradient(circle,var(--c) 0,transparent 68%);opacity:.55;animation:f3pulse 2.6s ease-in-out infinite}
+@keyframes f3pulse{50%{transform:scale(1.25);opacity:.25}}
+.f3-box{position:absolute;width:56px;height:56px;left:-28px;top:-28px;transform-style:preserve-3d;transition:transform .3s}
+.f3-box>i{position:absolute;display:block}
+.f3-box .t{inset:0;transform:translateZ(var(--h));background:linear-gradient(135deg,#fff,var(--c));border-radius:4px;box-shadow:0 0 22px var(--c)}
+.f3-box .f{left:0;top:56px;width:56px;height:var(--h);transform-origin:top;transform:rotateX(90deg);background:linear-gradient(0deg,var(--c),var(--c2))}
+.f3-box .r{left:56px;top:0;width:var(--h);height:56px;transform-origin:left;transform:rotateY(-90deg);background:linear-gradient(90deg,var(--c2),rgba(0,0,0,.35)),var(--c)}
+.f3-box .l{left:calc(-1 * var(--h));top:0;width:var(--h);height:56px;transform-origin:right;transform:rotateY(90deg);background:var(--c2);filter:brightness(.8)}
+.f3-st:hover .f3-box,.f3-st:focus-visible .f3-box{transform:translateZ(8px) scale(1.06)}
+.f3-st:focus-visible{outline:0}
+.f3-lab{position:absolute;left:0;top:0;transform:translate(-50%,-50%) translateZ(calc(var(--h) + 52px)) rotateX(-58deg);white-space:nowrap;text-align:center;pointer-events:none}
+.f3-lab b{display:block;font-size:26px;font-weight:800;line-height:1;text-shadow:0 3px 14px rgba(0,0,0,.45)}
+.f3-lab span{display:inline-block;margin-top:4px;font-size:12.5px;font-weight:700;background:var(--c);padding:3px 11px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.f3-doc{position:absolute;left:12%;top:36%;width:0;height:0;transform-style:preserve-3d;animation:f3move 10s cubic-bezier(.6,0,.4,1) infinite}
+.f3-docin{position:absolute;width:34px;height:44px;left:-17px;top:-22px;background:#fff;border-radius:6px;box-shadow:0 10px 24px rgba(0,0,0,.35);
+ transform:translateZ(46px) rotateX(-58deg);animation:f3bob 1.2s ease-in-out infinite;padding:9px 7px;display:flex;flex-direction:column;gap:5px}
+.f3-docin i{display:block;height:3px;border-radius:2px;background:#14205e}.f3-docin i:nth-child(2){width:70%}.f3-docin i:nth-child(3){width:85%;background:#f5a524}
+@keyframes f3bob{50%{transform:translateZ(58px) rotateX(-58deg)}}
+@keyframes f3move{0%,8%{left:12%;top:36%}25%,33%{left:37%;top:70%}50%,58%{left:63%;top:36%}75%,92%{left:88%;top:70%}100%{left:12%;top:36%}}
+.f3-legend{position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:2px}
+.f3-legend button{text-align:left;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;border-radius:14px;padding:10px 12px;cursor:pointer;font-family:inherit;transition:.2s;border-top:3px solid var(--c)}
+.f3-legend button:hover{background:rgba(255,255,255,.16);transform:translateY(-2px)}
+.f3-legend b{font-size:13.5px}.f3-legend small{display:block;opacity:.78;font-size:11.5px;line-height:1.45;margin-top:2px}
+@media(max-width:760px){.f3-scene{height:230px}.f3-floor{height:300px;left:0;right:0}.f3-box{transform:scale(.8)}.f3-lab b{font-size:20px}.f3-legend{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.flow3d.narrow .f3-lab span{font-size:10.5px;padding:2px 8px}.flow3d.narrow .f3-lab b{font-size:18px}
+.flow3d.narrow .f3-doc{animation-name:f3moveM}
+@keyframes f3moveM{0%,8%{left:20%;top:34%}25%,33%{left:40%;top:70%}50%,58%{left:60%;top:34%}75%,92%{left:80%;top:70%}100%{left:20%;top:34%}}
+@media (prefers-reduced-motion:reduce){.f3-doc,.f3-docin,.f3-pad,.f3-flow,.flow3d::after{animation:none!important}}
 @media(max-width:880px){.chgrid{grid-template-columns:1fr}}
 .empty{text-align:center;padding:46px;color:var(--muted)}
 .top-btn{position:fixed;right:22px;bottom:22px;width:46px;height:46px;border-radius:50%;border:0;cursor:pointer;
@@ -338,6 +413,25 @@ tbody tr:hover{background:var(--soft)}
 <div class="wrap">
  <div class="note" id="noteBox"></div>
 
+ <!-- ===== เส้นทางงาน 4 ขั้น (3D) ===== -->
+ <section class="flow3d rv" id="flow3d" aria-labelledby="f3Title">
+  <div class="f3-head">
+   <div><h2 id="f3Title">🧭 เส้นทางการกำกับติดตาม 4 ขั้น</h2>
+    <p>ความสูงของแต่ละเสา = จำนวนเรื่องที่ <b>อยู่ในขั้นนั้นตอนนี้</b> · คลิกเสาเพื่อดูรายชื่อเรื่อง</p></div>
+   <div class="f3-total" id="f3Total"></div>
+  </div>
+  <div class="f3-scene" id="f3Scene">
+   <div class="f3-floor" id="f3Floor">
+    <svg class="f3-path" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+     <polyline points="12,36 37,70 63,36 88,70" class="f3-line"/>
+     <polyline points="12,36 37,70 63,36 88,70" class="f3-flow"/>
+    </svg>
+    <div class="f3-doc" aria-hidden="true"><div class="f3-docin"><i></i><i></i><i></i></div></div>
+   </div>
+  </div>
+  <div class="f3-legend" id="f3Legend"></div>
+ </section>
+
  <!-- ===== 1. ทะเบียนเอกสาร ===== -->
  <section class="sec" id="s1">
   <div class="sech"><div class="num">1</div><h2>ทะเบียนเอกสาร</h2>
@@ -383,13 +477,20 @@ tbody tr:hover{background:var(--soft)}
   <div class="sech"><div class="num">3</div><h2>แดชบอร์ด KPI</h2>
    <p>ตัวชี้วัดประสิทธิภาพการดำเนินงาน ปริมาณงาน และคุณภาพการให้บริการ</p></div>
   <div class="kgrid rv" id="kpiMain"></div>
-  <div class="card rv"><h3>📈 แนวโน้มปริมาณงานรายเดือน<span class="hint">ส้ม = เดือนสูงสุด · เขียว = เดือนล่าสุด</span></h3>
-   <canvas id="c5" height="110"></canvas></div>
-  <div class="chgrid">
-   <div class="card rv"><h3>สัดส่วนสถานะดำเนินการ</h3><canvas id="c1" height="212"></canvas></div>
-   <div class="card rv"><h3>ปริมาณงานแยกตามผู้รับผิดชอบ</h3><canvas id="c2" height="212"></canvas></div>
+  <div class="kc-grid">
+   <div class="card rv kc"><div class="kc-h"><h3>📈 แนวโน้มปริมาณงานรายเดือน</h3><button class="kc-i" onclick="chartInfo('c5')" aria-label="วิธีอ่านกราฟนี้">ⓘ</button></div>
+    <p class="kc-say" id="say_c5"></p><div class="kc-box"><canvas id="c5"></canvas></div>
+    <p class="kc-hint">🟠 เดือนสูงสุด · 🟢 เดือนล่าสุด · เส้นประ = ค่าเฉลี่ย · คลิกแท่งเพื่อดูรายชื่อเรื่อง</p></div>
+   <div class="card rv kc"><div class="kc-h"><h3>🧭 สัดส่วนสถานะ 4 ขั้น</h3><button class="kc-i" onclick="chartInfo('c1')" aria-label="วิธีอ่านกราฟนี้">ⓘ</button></div>
+    <p class="kc-say" id="say_c1"></p><div class="kc-box"><canvas id="c1"></canvas></div>
+    <p class="kc-hint">คลิกส่วนของวงกลม หรือชื่อขั้นด้านล่าง เพื่อดูรายชื่อเรื่อง</p></div>
+   <div class="card rv kc"><div class="kc-h"><h3>👥 ปริมาณงานแยกตามผู้รับผิดชอบ</h3><button class="kc-i" onclick="chartInfo('c2')" aria-label="วิธีอ่านกราฟนี้">ⓘ</button></div>
+    <p class="kc-say" id="say_c2"></p><div class="kc-box"><canvas id="c2"></canvas></div>
+    <p class="kc-hint">เรียงจากมากไปน้อย · ส่วนสีเข้ม = แล้วเสร็จ · ส่วนสีอ่อน = ยังไม่เสร็จ · คลิกแถบเพื่อดูรายชื่อ</p></div>
+   <div class="card rv kc"><div class="kc-h"><h3>⏱ ระยะเวลาดำเนินงาน (SLA) ของงานที่แล้วเสร็จ</h3><button class="kc-i" onclick="chartInfo('c4')" aria-label="วิธีอ่านกราฟนี้">ⓘ</button></div>
+    <p class="kc-say" id="say_c4"></p><div class="kc-box"><canvas id="c4"></canvas></div>
+    <p class="kc-hint">🟢 เร็ว · 🔵 ปกติ · 🟠 นาน · 🔴 เกินเกณฑ์ 120 วัน · คลิกแท่งเพื่อดูรายชื่อเรื่อง</p></div>
   </div>
-  <div class="card rv"><h3>การกระจายระยะเวลาดำเนินงาน (SLA) ของงานที่แล้วเสร็จ</h3><canvas id="c4" height="110"></canvas></div>
  </section>
 
  <!-- ===== 4. GREEN OFFICE ===== -->
@@ -440,6 +541,11 @@ tbody tr:hover{background:var(--soft)}
 <button class="top-btn" id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <!-- ============ MODAL ============ -->
+<div class="dd" id="dd" onclick="if(event.target===this)closeDD()" role="dialog" aria-modal="true" aria-labelledby="ddTitle">
+ <div class="ddbox"><div class="ddh" id="ddHead"><div><small id="ddKicker"></small><h3 id="ddTitle"></h3></div>
+  <button class="ddx" onclick="closeDD()" aria-label="ปิด">✕</button></div>
+  <div class="ddb" id="ddBody"></div></div>
+</div>
 <div class="admov" id="admOv" onclick="if(event.target===this)closeAdminChooser()" role="dialog" aria-modal="true" aria-labelledby="admTitle">
  <div class="admbox">
   <button class="admx" onclick="closeAdminChooser()" aria-label="ปิด">✕</button>
@@ -748,7 +854,7 @@ function applyFilter(){
 /* ================= RENDER ================= */
 function render(){
  VIEW=applyFilter();
- renderHero();renderTable();renderChips();renderAlert();renderKPI();renderGreen();renderCharts();
+ renderHero();renderTable();renderChips();renderAlert();renderKPI();renderGreen();renderCharts();renderFlow3d();
  document.querySelectorAll('[data-n]').forEach(function(e){e.removeAttribute('data-done');});
  setTimeout(function(){animateNums();},60);
 }
@@ -898,6 +1004,88 @@ function renderGreen(){
   '<tr style="background:var(--soft2)"><td><b>มูลค่ารวมสะสม (บาท)</b></td><td>มูลค่าเวลา + มูลค่ากระดาษ</td><td><b style="color:var(--purple)">'+nf(g.total)+' บาท</b></td></tr>';
 }
 
+/* ================= 4 ขั้น / POPUP / ปลั๊กอินกราฟ ================= */
+var STEPDEF=[
+ {n:1,label:'เสนอเรื่อง',c:'#f5a524',c2:'#b86e00',desc:'ส่งบันทึกข้อความเข้าระบบ รอผู้บริหารพิจารณา'},
+ {n:2,label:'อนุมัติ',c:'#6d5efc',c2:'#3d2fc4',desc:'ผู้บริหารอนุมัติแล้ว รอเริ่มดำเนินการ'},
+ {n:3,label:'ดำเนินการ',c:'#22b8ff',c2:'#0b63e5',desc:'หน่วยงานผู้รับผิดชอบกำลังดำเนินการ'},
+ {n:4,label:'แล้วเสร็จ',c:'#12c26a',c2:'#0b8a4a',desc:'ดำเนินการเสร็จสิ้น ปิดเรื่องแล้ว'}];
+function stepOfD(d){if(d.done)return 4;if(/ดำเนิน/.test(d.status))return 3;if(d.dApp||/อนุมัติแล้ว/.test(d.status))return 2;return 1;}
+function say(id,html){var el=document.getElementById('say_'+id);if(el)el.innerHTML=html;}
+function hoverPtr(e,el){var t=e.native&&e.native.target;if(t)t.style.cursor=el.length?'pointer':'default';}
+/* ตัวเลขบนแท่งกราฟ */
+var VALS={id:'vals',afterDatasetsDraw:function(ch,a,o){if(!o||!o.on)return;var ctx=ch.ctx;
+ ch.data.datasets.forEach(function(ds,di){if(ds.type==='line')return;var m=ch.getDatasetMeta(di);if(m.hidden)return;
+  m.data.forEach(function(el,i){var v=ds.data[i];if(!v)return;ctx.save();ctx.font='700 11.5px Sarabun';ctx.fillStyle='#24324f';ctx.textAlign='center';ctx.textBaseline='bottom';
+   ctx.fillText(v+(o.pct?' ('+Math.round(v/o.pct*100)+'%)':''),el.x,el.y-3);ctx.restore();});});}};
+/* ผลรวมท้ายแถบ (กราฟแนวนอนแบบซ้อน) */
+var TOTALS={id:'totals',afterDatasetsDraw:function(ch,a,o){if(!o||!o.on)return;var ctx=ch.ctx,last=ch.getDatasetMeta(ch.data.datasets.length-1);
+ last.data.forEach(function(el,i){var t=0;ch.data.datasets.forEach(function(ds){t+=ds.data[i]||0;});if(!t)return;
+  ctx.save();ctx.font='700 11.5px Sarabun';ctx.fillStyle='#24324f';ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText(t,el.x+5,el.y);ctx.restore();});}};
+/* ตัวเลขกลางวงกลม */
+var CENTER={id:'center',afterDraw:function(ch,a,o){if(!o)return;var m=ch.getDatasetMeta(0);if(!m.data[0])return;var x=m.data[0].x,y=m.data[0].y,ctx=ch.ctx;
+ ctx.save();ctx.textAlign='center';ctx.fillStyle='#152036';ctx.font='800 26px Sarabun';ctx.textBaseline='bottom';ctx.fillText(o.top,x,y+6);
+ ctx.font='12px Sarabun';ctx.fillStyle='#6b7893';ctx.textBaseline='top';ctx.fillText(o.bottom,x,y+8);ctx.restore();}};
+
+/* popup รายชื่อเรื่อง — คลิกเรื่องเพื่อดูรายละเอียดเต็ม */
+function openDD(o){
+ var list=(o.list||[]).slice().sort(function(a,b){return (b.dSub||0)-(a.dSub||0);});
+ var head=document.getElementById('ddHead');head.style.setProperty('--c1',o.c1||'#083f9c');head.style.setProperty('--c2',o.c2||'#22b8ff');
+ document.getElementById('ddKicker').textContent=o.kicker||'';document.getElementById('ddTitle').textContent=o.title||'';
+ var body='';
+ if(o.text)body+='<p class="ddtxt">'+o.text+'</p>';
+ if(o.list){
+  var done=list.filter(function(d){return d.done;}).length,avg=list.length?list.reduce(function(a,d){return a+d.days;},0)/list.length:0;
+  body+='<div class="ddsum"><span>'+list.length+' เรื่อง</span><span>แล้วเสร็จ '+done+'</span><span>ยังไม่เสร็จ '+(list.length-done)+'</span>'+(list.length?'<span>เฉลี่ย '+nf(avg,1)+' วัน</span>':'')+'</div>';
+  body+=list.length?list.map(function(d){var st=STEPDEF[stepOfD(d)-1];
+   return '<div class="ddrow" tabindex="0" data-i="'+d.i+'" style="--c:'+st.c2+'"><b>'+esc(d.subject)+'</b>'+
+    '<small>'+esc(d.owner||'ไม่ระบุ')+' · เสนอ '+fmt(d.dSub)+' · <span style="color:'+st.c2+';font-weight:700">'+st.n+'. '+st.label+'</span></small>'+
+    '<span class="dd-d">'+d.days+'<small>วัน</small></span></div>';}).join(''):'<p class="ddtxt">ไม่มีเรื่องในกลุ่มนี้</p>';
+  body+='<p style="font-size:11.5px;color:var(--muted);margin-top:6px">คลิกเรื่องเพื่อดูรายละเอียด ไฟล์ และ QR ติดตามสถานะ</p>';
+ }
+ var b=document.getElementById('ddBody');b.innerHTML=body;b.scrollTop=0;
+ b.querySelectorAll('.ddrow').forEach(function(r){var go=function(){closeDD();openM(+r.dataset.i);};r.onclick=go;
+  r.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}};});
+ document.getElementById('dd').classList.add('on');
+}
+var f3T;window.addEventListener('resize',function(){clearTimeout(f3T);f3T=setTimeout(function(){if(typeof DATA!=='undefined'&&DATA.length)renderFlow3d();},200);});
+function closeDD(){document.getElementById('dd').classList.remove('on');}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeDD();});
+function openStep(n){var st=STEPDEF[n-1];
+ openDD({kicker:'ขั้นที่ '+n+' จาก 4 · '+st.desc,title:'เรื่องที่อยู่ในขั้น “'+st.label+'”',c1:st.c2,c2:st.c,list:DATA.filter(function(d){return stepOfD(d)===n;})});}
+
+var CHART_INFO={
+ c5:['แนวโน้มปริมาณงานรายเดือน','แต่ละแท่งคือจำนวนบันทึกข้อความที่ <b>เสนอเข้ามาในเดือนนั้น</b> (นับจากวันที่เสนอเรื่อง) แท่งสีส้มคือเดือนที่มีงานมากที่สุด แท่งสีเขียวคือเดือนล่าสุด เส้นประสีม่วงคือค่าเฉลี่ยต่อเดือน — แท่งที่สูงกว่าเส้นประแปลว่าเดือนนั้นงานเข้ามากกว่าปกติ'],
+ c1:['สัดส่วนสถานะ 4 ขั้น','แสดงว่าเรื่องทั้งหมด <b>อยู่ที่ขั้นไหนตอนนี้</b> ตามขั้นตอน เสนอเรื่อง → อนุมัติ → ดำเนินการ → แล้วเสร็จ ตัวเลขกลางวงคือจำนวนเรื่องทั้งหมด ส่วนสีเขียวยิ่งใหญ่แปลว่างานปิดได้มาก ส่วนสีอื่นคืองานที่ยังต้องติดตาม'],
+ c2:['ปริมาณงานแยกตามผู้รับผิดชอบ','แต่ละแถบคือจำนวนเรื่องของผู้รับผิดชอบนั้น <b>เรียงจากมากไปน้อย</b> ส่วนสีน้ำเงินเข้มคือเรื่องที่แล้วเสร็จ ส่วนสีฟ้าอ่อนคือเรื่องที่ยังไม่เสร็จ ตัวเลขท้ายแถบคือจำนวนรวม — ใช้ดูว่าภาระงานกระจุกอยู่ที่หน่วยงานใด'],
+ c4:['ระยะเวลาดำเนินงาน (SLA)','นับเฉพาะ <b>งานที่แล้วเสร็จ</b> ว่าใช้เวลากี่วันตั้งแต่เสนอเรื่องจนเสร็จ แล้วจัดเป็นช่วง ตัวเลขบนแท่งคือจำนวนเรื่องและสัดส่วน ยิ่งแท่งด้านซ้าย (สีเขียว) สูง แปลว่างานส่วนใหญ่เสร็จเร็ว แท่งสีแดงคือเรื่องที่ใช้เวลาเกินเกณฑ์ 120 วัน']};
+function chartInfo(id){var x=CHART_INFO[id];openDD({kicker:'วิธีอ่านกราฟ',title:x[0],text:x[1]+'<br><br>💡 คลิกแท่งหรือส่วนของกราฟ เพื่อดูรายชื่อเรื่องในกลุ่มนั้น'});}
+
+/* ================= 3D เส้นทางงาน 4 ขั้น ================= */
+var F3POS=[[12,36],[37,70],[63,36],[88,70]],F3POS_M=[[20,34],[40,70],[60,34],[80,70]];
+function renderFlow3d(){
+ var floor=document.getElementById('f3Floor');if(!floor)return;
+ var narrow=window.innerWidth<760;floor.parentNode.parentNode.classList.toggle('narrow',narrow);
+ var POS=narrow?F3POS_M:F3POS;
+ floor.querySelectorAll('.f3-st').forEach(function(x){x.remove();});
+ var sc=[0,0,0,0,0];DATA.forEach(function(d){sc[stepOfD(d)]++;});
+ var mx=Math.max(1,sc[1],sc[2],sc[3],sc[4]);
+ STEPDEF.forEach(function(st,i){
+  var h=Math.round(18+sc[st.n]/mx*120);
+  var b=document.createElement('button');b.className='f3-st';b.type='button';
+  b.style.cssText='left:'+POS[i][0]+'%;top:'+POS[i][1]+'%;--c:'+st.c+';--c2:'+st.c2+';--h:'+h+'px';
+  b.setAttribute('aria-label','ขั้นที่ '+st.n+' '+st.label+' '+sc[st.n]+' เรื่อง — ดูรายชื่อ');
+  b.innerHTML='<span class="f3-pad"></span><span class="f3-box"><i class="l"></i><i class="r"></i><i class="f"></i><i class="t"></i></span>'+
+   '<span class="f3-lab"><b>'+sc[st.n]+'</b><span>'+st.n+' · '+st.label+'</span></span>';
+  b.onclick=function(){openStep(st.n);};
+  floor.appendChild(b);
+ });
+ var open=DATA.length-sc[4];
+ document.getElementById('f3Total').innerHTML='<b>'+open+'</b>เรื่องที่ยังต้องติดตาม<br>จากทั้งหมด '+DATA.length+' เรื่อง';
+ document.getElementById('f3Legend').innerHTML=STEPDEF.map(function(st){
+  return '<button type="button" style="--c:'+st.c+'" onclick="openStep('+st.n+')"><b>'+st.n+'. '+st.label+' · '+sc[st.n]+' เรื่อง</b><small>'+st.desc+'</small></button>';}).join('');
+}
+
 /* ================= CHARTS ================= */
 function renderCharts(){
  function mk(id,cfg){
@@ -918,38 +1106,73 @@ function renderCharts(){
  var cntArr=mkeys.map(function(k){return mo[k];});
  var peak=cntArr.length?Math.max.apply(null,cntArr):0, last=cntArr.length-1;
 
- mk('c5',{type:'bar',data:{labels:labels,datasets:[{label:'จำนวนเรื่อง',data:cntArr,borderRadius:9,
-  backgroundColor:cntArr.map(function(v,i){return i===last?'#12c26a':(v===peak?'#f5a524':'#2f8ef4');})}]},
-  options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.parsed.y+' เรื่อง';}}}},
-   scales:{y:{ticks:{precision:0,font:F},grid:{color:'#eef2f9'}},
-    x:{ticks:{font:{size:11,family:'Sarabun'}},grid:{display:false}}},
-   animation:{duration:1100,easing:'easeOutQuart'}}});
+ /* ---- 1) แนวโน้มรายเดือน ---- */
+ var monthKey=function(d){return d.dSub.getFullYear()+'-'+('0'+(d.dSub.getMonth()+1)).slice(-2);};
+ var tot=cntArr.reduce(function(a,b){return a+b;},0),avg=cntArr.length?tot/cntArr.length:0;
+ var pk=cntArr.indexOf(peak);
+ say('c5',cntArr.length?'รวม <b>'+tot+' เรื่อง</b> ใน '+cntArr.length+' เดือน · เฉลี่ย <b>'+nf(avg,1)+' เรื่อง/เดือน</b> · มากที่สุด <b>'+labels[pk]+' ('+peak+' เรื่อง)</b> · เดือนล่าสุด '+labels[last]+' '+cntArr[last]+' เรื่อง':'ยังไม่มีข้อมูล');
+ mk('c5',{type:'bar',data:{labels:labels,datasets:[
+   {label:'จำนวนเรื่อง',data:cntArr,borderRadius:7,maxBarThickness:34,
+    backgroundColor:cntArr.map(function(v,i){return i===last?'#12c26a':(v===peak?'#f5a524':'#2f8ef4');})},
+   {type:'line',label:'ค่าเฉลี่ย',data:cntArr.map(function(){return avg;}),borderColor:'#6d5efc',borderDash:[6,5],borderWidth:2,pointRadius:0}]},
+  plugins:[VALS],options:{maintainAspectRatio:false,layout:{padding:{top:16}},
+   plugins:{vals:{on:true},legend:{display:false},tooltip:{callbacks:{label:function(c){return c.dataset.type==='line'?'ค่าเฉลี่ย '+nf(c.parsed.y,1)+' เรื่อง/เดือน':c.parsed.y+' เรื่อง ('+nf(c.parsed.y/(tot||1)*100,0)+'% ของทั้งหมด)';}}}},
+   scales:{y:{beginAtZero:true,ticks:{precision:0,font:F},grid:{color:'#eef2f9'}},x:{ticks:{font:{size:11,family:'Sarabun'}},grid:{display:false}}},
+   onHover:hoverPtr,onClick:function(e,el){if(!el.length||el[0].datasetIndex!==0)return;var k=mkeys[el[0].index];
+    openDD({kicker:'แนวโน้มปริมาณงานรายเดือน',title:'เรื่องที่เสนอในเดือน '+labels[el[0].index],c1:'#0b63e5',c2:'#22b8ff',
+     list:DATA.filter(function(d){return d.dSub&&monthKey(d)===k;})});},
+   animation:{duration:900,easing:'easeOutQuart'}}});
 
- var st={};DATA.forEach(function(d){st[d.status]=(st[d.status]||0)+1;});
- mk('c1',{type:'doughnut',data:{labels:Object.keys(st),datasets:[{data:Object.keys(st).map(function(k){return st[k];}),
-  backgroundColor:['#0e9f6e','#0b63e5','#f5a524','#6d5efc','#22b8ff'],borderWidth:3,borderColor:'#fff'}]},
-  options:{cutout:'62%',plugins:{legend:{position:'bottom',labels:{font:F,padding:14,usePointStyle:true}}},
-   animation:{animateRotate:true,duration:1100}}});
+ /* ---- 2) สัดส่วน 4 ขั้น ---- */
+ var sc=[0,0,0,0,0];DATA.forEach(function(d){sc[stepOfD(d)]++;});
+ var all=DATA.length||1;
+ say('c1',DATA.length?'แล้วเสร็จ <b>'+sc[4]+' จาก '+DATA.length+' เรื่อง ('+nf(sc[4]/all*100,0)+'%)</b> · ยังไม่เสร็จ <b>'+(DATA.length-sc[4])+' เรื่อง</b> (เสนอ '+sc[1]+' · อนุมัติ '+sc[2]+' · ดำเนินการ '+sc[3]+')':'ยังไม่มีข้อมูล');
+ mk('c1',{type:'doughnut',data:{labels:STEPDEF.map(function(x){return x.n+'. '+x.label;}),
+   datasets:[{data:[sc[1],sc[2],sc[3],sc[4]],backgroundColor:STEPDEF.map(function(x){return x.c;}),borderWidth:3,borderColor:'#fff',hoverOffset:10}]},
+  plugins:[CENTER],options:{maintainAspectRatio:false,cutout:'64%',
+   plugins:{center:{top:DATA.length,bottom:'เรื่องทั้งหมด'},
+    legend:{position:'right',labels:{font:F,padding:12,usePointStyle:true,generateLabels:function(ch){return ch.data.labels.map(function(l,i){
+     var v=ch.data.datasets[0].data[i];return {text:l+'  '+v+' ('+nf(v/all*100,0)+'%)',fillStyle:ch.data.datasets[0].backgroundColor[i],strokeStyle:'#fff',pointStyle:'circle',index:i,hidden:false};});}},
+     onClick:function(e,item){openStep(item.index+1);}},
+    tooltip:{callbacks:{label:function(c){return ' '+c.parsed+' เรื่อง ('+nf(c.parsed/all*100,1)+'%)';}}}},
+   onHover:hoverPtr,onClick:function(e,el){if(el.length)openStep(el[0].index+1);},animation:{animateRotate:true,duration:900}}});
 
- var ow={};DATA.forEach(function(d){ow[d.owner]=(ow[d.owner]||0)+1;});
- mk('c2',{type:'bar',data:{labels:Object.keys(ow),datasets:[{label:'จำนวนเรื่อง',
-  data:Object.keys(ow).map(function(k){return ow[k];}),
-  backgroundColor:function(c){return grad(c.chart.ctx,'#0b63e5','#22b8ff');},borderRadius:8}]},
-  options:{indexAxis:'y',plugins:{legend:{display:false}},
-   scales:{x:{ticks:{precision:0,font:F},grid:{color:'#eef2f9'}},
-    y:{ticks:{font:{size:11,family:'Sarabun'}},grid:{display:false}}},
-   animation:{duration:1100}}});
+ /* ---- 3) ผู้รับผิดชอบ (แล้วเสร็จ / ยังไม่เสร็จ) ---- */
+ var ow={};DATA.forEach(function(d){var k=d.owner||'ไม่ระบุ';ow[k]=ow[k]||{t:0,done:0};ow[k].t++;if(d.done)ow[k].done++;});
+ var on=Object.keys(ow).sort(function(a,b){return ow[b].t-ow[a].t;});
+ var TOPN=7,names=on.slice(0,TOPN),rest=on.slice(TOPN);
+ if(rest.length){var o={t:0,done:0};rest.forEach(function(k){o.t+=ow[k].t;o.done+=ow[k].done;});ow['อื่น ๆ ('+rest.length+')']=o;names.push('อื่น ๆ ('+rest.length+')');}
+ var top=on[0];
+ say('c2',on.length?'<b>'+esc(top)+'</b> รับผิดชอบมากที่สุด <b>'+ow[top].t+' เรื่อง ('+nf(ow[top].t/all*100,0)+'%)</b> · แล้วเสร็จ '+ow[top].done+' · ทั้งหมด '+on.length+' ผู้รับผิดชอบ':'ยังไม่มีข้อมูล');
+ mk('c2',{type:'bar',data:{labels:names,datasets:[
+   {label:'แล้วเสร็จ',data:names.map(function(k){return ow[k].done;}),backgroundColor:'#0b63e5',borderRadius:6,stack:'s',maxBarThickness:22},
+   {label:'ยังไม่เสร็จ',data:names.map(function(k){return ow[k].t-ow[k].done;}),backgroundColor:'#9fd3ff',borderRadius:6,stack:'s',maxBarThickness:22}]},
+  plugins:[TOTALS],options:{indexAxis:'y',maintainAspectRatio:false,layout:{padding:{right:26}},
+   plugins:{totals:{on:true},legend:{position:'top',align:'end',labels:{font:F,boxWidth:12,usePointStyle:true}},
+    tooltip:{callbacks:{title:function(c){return names[c[0].dataIndex];},footer:function(c){var k=names[c[0].dataIndex];return 'รวม '+ow[k].t+' เรื่อง';}}}},
+   scales:{x:{stacked:true,beginAtZero:true,ticks:{precision:0,font:F},grid:{color:'#eef2f9'}},
+    y:{stacked:true,ticks:{font:{size:11.5,family:'Sarabun'},callback:function(v){var t=names[v];return t.length>22?t.slice(0,21)+'…':t;}},grid:{display:false}}},
+   onHover:hoverPtr,onClick:function(e,el){if(!el.length)return;var k=names[el[0].index],isRest=/^อื่น ๆ \(/.test(k);
+    openDD({kicker:'ปริมาณงานแยกตามผู้รับผิดชอบ',title:k,c1:'#083f9c',c2:'#0b63e5',
+     list:DATA.filter(function(d){var o=d.owner||'ไม่ระบุ';return isRest?rest.indexOf(o)>=0:o===k;})});},
+   animation:{duration:900}}});
 
- var bins=['< 15','15–29','30–59','60–89','90–119','≥ 120'],cnt=[0,0,0,0,0,0];
- DATA.filter(function(d){return d.done;}).forEach(function(d){var v=d.days;
-  cnt[v<15?0:v<30?1:v<60?2:v<90?3:v<120?4:5]++;});
- mk('c4',{type:'bar',data:{labels:bins,datasets:[{label:'จำนวนเรื่องที่แล้วเสร็จ',data:cnt,
-  backgroundColor:['#12c26a','#5bd0a0','#22b8ff','#f5a524','#ff8a5c','#e0322c'],borderRadius:9}]},
-  options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.parsed.y+' เรื่อง';}}}},
-   scales:{y:{ticks:{precision:0,font:F},grid:{color:'#eef2f9'}},
-    x:{ticks:{font:F},grid:{display:false},
-     title:{display:true,text:'ช่วงระยะเวลาดำเนินงาน (วัน)',font:F,color:'#6b7893'}}},
-   animation:{duration:1100}}});
+ /* ---- 4) SLA ของงานที่แล้วเสร็จ ---- */
+ var bins=['< 15 วัน','15–29','30–59','60–89','90–119','≥ 120 วัน'],cnt=[0,0,0,0,0,0];
+ var binOf=function(v){return v<15?0:v<30?1:v<60?2:v<90?3:v<120?4:5;};
+ var dn=DATA.filter(function(d){return d.done;});dn.forEach(function(d){cnt[binOf(d.days)]++;});
+ var nd=dn.length||1,fast=cnt[0],avgD=dn.length?dn.reduce(function(a,d){return a+d.days;},0)/dn.length:0;
+ say('c4',dn.length?'งานที่แล้วเสร็จ <b>'+dn.length+' เรื่อง</b> · เสร็จภายใน 15 วัน <b>'+fast+' เรื่อง ('+nf(fast/nd*100,0)+'%)</b> · เฉลี่ย <b>'+nf(avgD,1)+' วัน/เรื่อง</b>'+(cnt[5]?' · เกินเกณฑ์ 120 วัน '+cnt[5]+' เรื่อง':' · ไม่มีเรื่องเกินเกณฑ์ 120 วัน'):'ยังไม่มีงานที่แล้วเสร็จ');
+ mk('c4',{type:'bar',data:{labels:bins,datasets:[{label:'จำนวนเรื่องที่แล้วเสร็จ',data:cnt,maxBarThickness:46,
+   backgroundColor:['#12c26a','#5bd0a0','#22b8ff','#f5a524','#ff8a5c','#e0322c'],borderRadius:7}]},
+  plugins:[VALS],options:{maintainAspectRatio:false,layout:{padding:{top:16}},
+   plugins:{vals:{on:true,pct:nd},legend:{display:false},tooltip:{callbacks:{label:function(c){return c.parsed.y+' เรื่อง ('+nf(c.parsed.y/nd*100,1)+'% ของงานที่เสร็จ)';}}}},
+   scales:{y:{beginAtZero:true,ticks:{precision:0,font:F},grid:{color:'#eef2f9'}},
+    x:{ticks:{font:F},grid:{display:false},title:{display:true,text:'ใช้เวลาตั้งแต่เสนอเรื่องจนแล้วเสร็จ (วัน)',font:F,color:'#6b7893'}}},
+   onHover:hoverPtr,onClick:function(e,el){if(!el.length)return;var bi=el[0].index;
+    openDD({kicker:'ระยะเวลาดำเนินงาน (SLA)',title:'งานที่แล้วเสร็จโดยใช้เวลา '+bins[bi],c1:'#0e7a52',c2:['#12c26a','#5bd0a0','#22b8ff','#f5a524','#ff8a5c','#e0322c'][bi],
+     list:dn.filter(function(d){return binOf(d.days)===bi;})});},
+   animation:{duration:900}}});
 
  var vT=[],vP=[],cum=[],acc=0;
  cntArr.forEach(function(c){
