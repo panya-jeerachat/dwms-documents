@@ -413,24 +413,6 @@ tbody tr:hover{background:var(--soft)}
 <div class="wrap">
  <div class="note" id="noteBox"></div>
 
- <!-- ===== เส้นทางงาน 4 ขั้น (3D) ===== -->
- <section class="flow3d rv" id="flow3d" aria-labelledby="f3Title">
-  <div class="f3-head">
-   <div><h2 id="f3Title">🧭 เส้นทางการกำกับติดตาม 4 ขั้น</h2>
-    <p>ความสูงของแต่ละเสา = จำนวนเรื่องที่ <b>อยู่ในขั้นนั้นตอนนี้</b> · คลิกเสาเพื่อดูรายชื่อเรื่อง</p></div>
-   <div class="f3-total" id="f3Total"></div>
-  </div>
-  <div class="f3-scene" id="f3Scene">
-   <div class="f3-floor" id="f3Floor">
-    <svg class="f3-path" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-     <polyline points="12,36 37,70 63,36 88,70" class="f3-line"/>
-     <polyline points="12,36 37,70 63,36 88,70" class="f3-flow"/>
-    </svg>
-    <div class="f3-doc" aria-hidden="true"><div class="f3-docin"><i></i><i></i><i></i></div></div>
-   </div>
-  </div>
-  <div class="f3-legend" id="f3Legend"></div>
- </section>
 
  <!-- ===== 1. ทะเบียนเอกสาร ===== -->
  <section class="sec" id="s1">
@@ -455,7 +437,25 @@ tbody tr:hover{background:var(--soft)}
     <th>ผู้รับผิดชอบ</th><th>วันที่เสนอ</th><th>วันที่อนุมัติ</th><th>วันที่สำเร็จ</th><th>ระยะเวลา</th>
     <th>สถานะ</th><th>แจ้งเตือน</th><th style="width:114px">จัดการ</th></tr></thead>
     <tbody id="tb"></tbody></table></div></div>
- </section>
+  <!-- ===== เส้นทางงาน 4 ขั้น (3D) ===== -->
+   <section class="flow3d rv" id="flow3d" aria-labelledby="f3Title">
+    <div class="f3-head">
+     <div><h2 id="f3Title">🧭 เส้นทางการกำกับติดตาม 4 ขั้น</h2>
+      <p>ความสูงของแต่ละเสา = จำนวนเรื่องที่ <b>อยู่ในขั้นนั้นตอนนี้</b> · คลิกเสาเพื่อดูรายชื่อเรื่อง</p></div>
+     <div class="f3-total" id="f3Total"></div>
+    </div>
+    <div class="f3-scene" id="f3Scene">
+     <div class="f3-floor" id="f3Floor">
+      <svg class="f3-path" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+       <polyline points="12,36 37,70 63,36 88,70" class="f3-line"/>
+       <polyline points="12,36 37,70 63,36 88,70" class="f3-flow"/>
+      </svg>
+      <div class="f3-doc" aria-hidden="true"><div class="f3-docin"><i></i><i></i><i></i></div></div>
+     </div>
+    </div>
+    <div class="f3-legend" id="f3Legend"></div>
+   </section>
+   </section>
 
  <!-- ===== 2. ศูนย์แจ้งเตือน ===== -->
  <section class="sec" id="s2">
