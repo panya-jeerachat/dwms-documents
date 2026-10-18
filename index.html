@@ -285,54 +285,57 @@ tbody tr:hover{background:var(--soft)}
 .ddrow b{font-size:13.5px;line-height:1.45}.ddrow small{color:var(--muted);font-size:12px;grid-column:1}
 .ddrow .dd-d{grid-row:1/3;grid-column:2;text-align:right;font-weight:800;font-size:18px;color:var(--c,var(--blue));align-self:center;line-height:1.1}
 .ddrow .dd-d small{display:block;font-weight:400;font-size:11px}
-/* ---- 3D เส้นทางงาน 4 ขั้น ---- */
-.flow3d{position:relative;border-radius:var(--r);overflow:hidden;margin-bottom:22px;color:#fff;padding:20px 22px 16px;
- background:radial-gradient(60% 80% at 15% 10%,rgba(245,165,36,.35),transparent 60%),radial-gradient(50% 70% at 90% 90%,rgba(18,194,106,.32),transparent 60%),
-  radial-gradient(45% 60% at 60% 20%,rgba(34,184,255,.3),transparent 60%),linear-gradient(135deg,#0a1b45,#14205e 45%,#2a0f4f);box-shadow:var(--sh2)}
-.flow3d::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.07) 50%,transparent 70%);background-size:250% 100%;animation:f3sheen 7s linear infinite;pointer-events:none}
-@keyframes f3sheen{from{background-position:120% 0}to{background-position:-120% 0}}
-.f3-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;position:relative;z-index:2}
-.f3-head h2{font-size:18px;font-weight:800}.f3-head p{opacity:.8;font-size:12.5px;margin-top:3px}
-.f3-total{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:8px 14px;font-size:12px;text-align:right}
-.f3-total b{display:block;font-size:22px;line-height:1.1}
-.f3-scene{position:relative;height:300px;perspective:1100px;perspective-origin:50% 0%;margin-top:4px}
-.f3-floor{position:absolute;left:4%;right:4%;top:-30px;height:400px;transform-style:preserve-3d;transform:rotateX(58deg);
- background:radial-gradient(closest-side,rgba(255,255,255,.07),transparent),
-  repeating-linear-gradient(0deg,rgba(255,255,255,.07) 0 1px,transparent 1px 40px),repeating-linear-gradient(90deg,rgba(255,255,255,.07) 0 1px,transparent 1px 40px);
- border-radius:24px}
-.f3-path{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.f3-line{fill:none;stroke:rgba(255,255,255,.18);stroke-width:7;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
-.f3-flow{fill:none;stroke:url(#none);stroke:#fff;stroke-opacity:.75;stroke-width:3;stroke-dasharray:3 14;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke;animation:f3dash 1.6s linear infinite}
-@keyframes f3dash{to{stroke-dashoffset:-34}}
-.f3-st{position:absolute;width:0;height:0;transform-style:preserve-3d;border:0;background:none;padding:0;cursor:pointer;color:#fff;font-family:inherit}
-.f3-pad{position:absolute;width:120px;height:120px;left:-60px;top:-60px;border-radius:50%;background:radial-gradient(circle,var(--c) 0,transparent 68%);opacity:.55;animation:f3pulse 2.6s ease-in-out infinite}
-@keyframes f3pulse{50%{transform:scale(1.25);opacity:.25}}
-.f3-box{position:absolute;width:56px;height:56px;left:-28px;top:-28px;transform-style:preserve-3d;transition:transform .3s}
-.f3-box>i{position:absolute;display:block}
-.f3-box .t{inset:0;transform:translateZ(var(--h));background:linear-gradient(135deg,#fff,var(--c));border-radius:4px;box-shadow:0 0 22px var(--c)}
-.f3-box .f{left:0;top:56px;width:56px;height:var(--h);transform-origin:top;transform:rotateX(90deg);background:linear-gradient(0deg,var(--c),var(--c2))}
-.f3-box .r{left:56px;top:0;width:var(--h);height:56px;transform-origin:left;transform:rotateY(-90deg);background:linear-gradient(90deg,var(--c2),rgba(0,0,0,.35)),var(--c)}
-.f3-box .l{left:calc(-1 * var(--h));top:0;width:var(--h);height:56px;transform-origin:right;transform:rotateY(90deg);background:var(--c2);filter:brightness(.8)}
-.f3-st:hover .f3-box,.f3-st:focus-visible .f3-box{transform:translateZ(8px) scale(1.06)}
-.f3-st:focus-visible{outline:0}
-.f3-lab{position:absolute;left:0;top:0;transform:translate(-50%,-50%) translateZ(calc(var(--h) + 52px)) rotateX(-58deg);white-space:nowrap;text-align:center;pointer-events:none}
-.f3-lab b{display:block;font-size:26px;font-weight:800;line-height:1;text-shadow:0 3px 14px rgba(0,0,0,.45)}
-.f3-lab span{display:inline-block;margin-top:4px;font-size:12.5px;font-weight:700;background:var(--c);padding:3px 11px;border-radius:999px;box-shadow:0 4px 14px rgba(0,0,0,.25)}
-.f3-doc{position:absolute;left:12%;top:36%;width:0;height:0;transform-style:preserve-3d;animation:f3move 10s cubic-bezier(.6,0,.4,1) infinite}
-.f3-docin{position:absolute;width:34px;height:44px;left:-17px;top:-22px;background:#fff;border-radius:6px;box-shadow:0 10px 24px rgba(0,0,0,.35);
- transform:translateZ(46px) rotateX(-58deg);animation:f3bob 1.2s ease-in-out infinite;padding:9px 7px;display:flex;flex-direction:column;gap:5px}
-.f3-docin i{display:block;height:3px;border-radius:2px;background:#14205e}.f3-docin i:nth-child(2){width:70%}.f3-docin i:nth-child(3){width:85%;background:#f5a524}
-@keyframes f3bob{50%{transform:translateZ(58px) rotateX(-58deg)}}
-@keyframes f3move{0%,8%{left:12%;top:36%}25%,33%{left:37%;top:70%}50%,58%{left:63%;top:36%}75%,92%{left:88%;top:70%}100%{left:12%;top:36%}}
-.f3-legend{position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:2px}
-.f3-legend button{text-align:left;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);color:#fff;border-radius:14px;padding:10px 12px;cursor:pointer;font-family:inherit;transition:.2s;border-top:3px solid var(--c)}
-.f3-legend button:hover{background:rgba(255,255,255,.16);transform:translateY(-2px)}
-.f3-legend b{font-size:13.5px}.f3-legend small{display:block;opacity:.78;font-size:11.5px;line-height:1.45;margin-top:2px}
-@media(max-width:760px){.f3-scene{height:230px}.f3-floor{height:300px;left:0;right:0}.f3-box{transform:scale(.8)}.f3-lab b{font-size:20px}.f3-legend{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.flow3d.narrow .f3-lab span{font-size:10.5px;padding:2px 8px}.flow3d.narrow .f3-lab b{font-size:18px}
-.flow3d.narrow .f3-doc{animation-name:f3moveM}
-@keyframes f3moveM{0%,8%{left:20%;top:34%}25%,33%{left:40%;top:70%}50%,58%{left:60%;top:34%}75%,92%{left:80%;top:70%}100%{left:20%;top:34%}}
-@media (prefers-reduced-motion:reduce){.f3-doc,.f3-docin,.f3-pad,.f3-flow,.flow3d::after{animation:none!important}}
+/* ---- เส้นทางการกำกับติดตาม 4 ขั้น ---- */
+.fl2{background:#fff;border-radius:var(--r);box-shadow:var(--sh);padding:20px 22px 16px;margin-bottom:22px;border:1px solid var(--line)}
+.fl2-head{display:flex;gap:14px;align-items:center}
+.fl2-ico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:22px;background:linear-gradient(135deg,#0b63e5,#22b8ff);box-shadow:0 6px 16px rgba(11,99,229,.3);flex-shrink:0}
+.fl2-head h2{font-size:19px;font-weight:800;color:var(--ink)}.fl2-head p{font-size:12.5px;color:var(--muted);margin-top:2px}
+.fl2-chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.fl2-chips span{display:inline-flex;align-items:center;gap:7px;background:var(--soft2);border:1px solid var(--line);border-radius:999px;padding:6px 13px;font-size:12.5px;color:var(--muted)}
+.fl2-chips span::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--c)}
+.fl2-chips b{color:var(--ink);font-size:14px}
+.fl2-board{position:relative;border-radius:18px;padding:22px 14px 0;overflow:hidden;
+ background:linear-gradient(180deg,#f4f8ff 0%,#eef4ff 60%,#e6eefc 100%);border:1px solid var(--line)}
+.fl2-board::after{content:"";position:absolute;left:0;right:0;bottom:0;height:70px;pointer-events:none;
+ background:repeating-linear-gradient(90deg,rgba(11,99,229,.06) 0 1px,transparent 1px 34px)}
+.fl2-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;position:relative;z-index:2}
+.fl2-card{position:relative;background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:20px 14px 12px;text-align:center;cursor:pointer;
+ font-family:inherit;color:var(--ink);transition:transform .3s,box-shadow .3s,border-color .3s;box-shadow:0 4px 14px rgba(20,40,90,.06)}
+.fl2-card:hover,.fl2-card:focus-visible{transform:translateY(-3px);border-color:var(--c);outline:0;box-shadow:0 10px 26px rgba(20,40,90,.12)}
+.fl2-card.on{border-color:var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 22%,transparent),0 12px 28px rgba(20,40,90,.14);transform:translateY(-4px)}
+.fl2-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--c);color:#fff;font-size:12px;font-weight:800;padding:3px 12px;border-radius:999px;white-space:nowrap;box-shadow:0 4px 10px color-mix(in srgb,var(--c) 40%,transparent)}
+.fl2-card h4{font-size:15px;font-weight:800;margin-top:2px}
+.fl2-card .sub{font-size:11.5px;color:var(--muted);margin-top:2px;min-height:17px}
+.fl2-card .big{font-size:28px;font-weight:800;color:var(--c);margin-top:8px;line-height:1.1}
+.fl2-card .big small{font-size:13px;font-weight:700;margin-left:4px}
+.fl2-card .ln{font-size:12px;color:var(--ink);margin-top:3px;line-height:1.5}
+.fl2-card .ln.m{color:var(--muted)}
+.fl2-card .more{display:inline-block;margin-top:10px;font-size:12.5px;font-weight:700;color:var(--c);text-decoration:underline;text-underline-offset:3px}
+.fl2-stage{height:200px}
+.fl2-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible}
+.fl2-cube{position:absolute;width:0;height:0;z-index:3;cursor:pointer;border:0;background:none;padding:0}
+.fl2-cube .wrap{position:absolute;left:-34px;top:-78px;width:68px;height:68px;perspective:560px;animation:flFloat 3.4s ease-in-out infinite;animation-delay:calc(var(--i) * -.8s)}
+.fl2-cube .cb{position:absolute;inset:0;transform-style:preserve-3d;transform:rotateX(-24deg) rotateY(-36deg);transition:transform .5s}
+.fl2-cube:hover .cb,.fl2-cube.on .cb{transform:rotateX(-24deg) rotateY(-36deg) scale(1.12)}
+.fl2-cube .fc{position:absolute;width:56px;height:56px;left:6px;top:6px;display:grid;place-items:center;font-size:26px;font-weight:800;color:#fff;
+ border-radius:5px;text-shadow:0 2px 6px rgba(0,0,0,.25);backface-visibility:hidden}
+.fl2-cube .front{transform:translateZ(28px);background:linear-gradient(160deg,var(--c),var(--c2))}
+.fl2-cube .right{transform:rotateY(90deg) translateZ(28px);background:linear-gradient(160deg,var(--c2),color-mix(in srgb,var(--c2) 70%,#000))}
+.fl2-cube .top{transform:rotateX(90deg) translateZ(28px);background:linear-gradient(135deg,#fff,var(--c) 70%)}
+.fl2-cube .left{transform:rotateY(-90deg) translateZ(28px);background:var(--c2)}
+.fl2-cube .shadow{position:absolute;left:-30px;top:-8px;width:60px;height:14px;border-radius:50%;background:radial-gradient(closest-side,rgba(20,40,90,.28),transparent);animation:flShadow 3.4s ease-in-out infinite;animation-delay:calc(var(--i) * -.8s)}
+.fl2-cube.on .shadow{background:radial-gradient(closest-side,color-mix(in srgb,var(--c) 55%,transparent),transparent)}
+@keyframes flFloat{50%{transform:translateY(-9px)}}
+@keyframes flShadow{50%{transform:scale(.8);opacity:.6}}
+.fl2-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;font-size:12.5px;color:var(--muted)}
+.fl2-foot span{display:inline-flex;align-items:center;gap:8px}
+.fl2-ring{display:inline-block;width:12px;height:12px;border-radius:50%;border:3px solid #ff5470;background:#fff}
+.fl2-foot button{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:7px 15px;font-family:inherit;font-weight:700;font-size:12.5px;color:var(--ink);cursor:pointer}
+.fl2-foot button:hover{border-color:var(--blue);color:var(--blue)}
+.fl2.paused .fl2-cube .wrap,.fl2.paused .fl2-cube .shadow{animation-play-state:paused}
+@media(max-width:860px){.fl2-cards{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:22px}.fl2-stage,.fl2-svg,#flCubes{display:none}.fl2-board{padding-bottom:16px}}
+@media (prefers-reduced-motion:reduce){.fl2-cube .wrap,.fl2-cube .shadow{animation:none}}
+
 @media(max-width:880px){.chgrid{grid-template-columns:1fr}}
 .empty{text-align:center;padding:46px;color:var(--muted)}
 .top-btn{position:fixed;right:22px;bottom:22px;width:46px;height:46px;border-radius:50%;border:0;cursor:pointer;
@@ -437,24 +440,21 @@ tbody tr:hover{background:var(--soft)}
     <th>ผู้รับผิดชอบ</th><th>วันที่เสนอ</th><th>วันที่อนุมัติ</th><th>วันที่สำเร็จ</th><th>ระยะเวลา</th>
     <th>สถานะ</th><th>แจ้งเตือน</th><th style="width:114px">จัดการ</th></tr></thead>
     <tbody id="tb"></tbody></table></div></div>
-  <!-- ===== เส้นทางงาน 4 ขั้น (3D) ===== -->
-   <section class="flow3d rv" id="flow3d" aria-labelledby="f3Title">
-    <div class="f3-head">
-     <div><h2 id="f3Title">🧭 เส้นทางการกำกับติดตาม 4 ขั้น</h2>
-      <p>ความสูงของแต่ละเสา = จำนวนเรื่องที่ <b>อยู่ในขั้นนั้นตอนนี้</b> · คลิกเสาเพื่อดูรายชื่อเรื่อง</p></div>
-     <div class="f3-total" id="f3Total"></div>
-    </div>
-    <div class="f3-scene" id="f3Scene">
-     <div class="f3-floor" id="f3Floor">
-      <svg class="f3-path" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-       <polyline points="12,36 37,70 63,36 88,70" class="f3-line"/>
-       <polyline points="12,36 37,70 63,36 88,70" class="f3-flow"/>
-      </svg>
-      <div class="f3-doc" aria-hidden="true"><div class="f3-docin"><i></i><i></i><i></i></div></div>
-     </div>
-    </div>
-    <div class="f3-legend" id="f3Legend"></div>
-   </section>
+  <!-- ===== เส้นทางการกำกับติดตาม 4 ขั้น ===== -->
+  <section class="fl2 rv" id="flow3d" aria-labelledby="flTitle">
+   <div class="fl2-head"><div class="fl2-ico" aria-hidden="true">🧭</div>
+    <div><h2 id="flTitle">เส้นทางการกำกับติดตามบันทึกข้อความ</h2>
+     <p>ทุกเรื่องเดินผ่าน 4 ขั้นตอน ตามลำดับจากซ้ายไปขวา · ตัวเลขในแต่ละขั้นคือข้อมูลจริงจากระบบ · แตะการ์ดหรือกล่องเพื่อดูรายชื่อเรื่อง</p></div></div>
+   <div class="fl2-chips" id="flChips"></div>
+   <div class="fl2-board" id="flBoard">
+    <div class="fl2-cards" id="flCards"></div>
+    <div class="fl2-stage" aria-hidden="true"></div>
+    <svg class="fl2-svg" id="flSvg" aria-hidden="true"></svg>
+    <div id="flCubes"></div>
+   </div>
+   <div class="fl2-foot"><span><i class="fl2-ring"></i> จุดเคลื่อนที่แสดงเส้นทางที่บันทึกข้อความเดินผ่านแต่ละขั้นตอน</span>
+    <button type="button" id="flPause" onclick="flToggle()">⏸ หยุดการเคลื่อนไหว</button></div>
+  </section>
    </section>
 
  <!-- ===== 2. ศูนย์แจ้งเตือน ===== -->
@@ -1048,7 +1048,6 @@ function openDD(o){
   r.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}};});
  document.getElementById('dd').classList.add('on');
 }
-var f3T;window.addEventListener('resize',function(){clearTimeout(f3T);f3T=setTimeout(function(){if(typeof DATA!=='undefined'&&DATA.length)renderFlow3d();},200);});
 function closeDD(){document.getElementById('dd').classList.remove('on');}
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeDD();});
 function openStep(n){var st=STEPDEF[n-1];
@@ -1061,30 +1060,93 @@ var CHART_INFO={
  c4:['ระยะเวลาดำเนินงาน (SLA)','นับเฉพาะ <b>งานที่แล้วเสร็จ</b> ว่าใช้เวลากี่วันตั้งแต่เสนอเรื่องจนเสร็จ แล้วจัดเป็นช่วง ตัวเลขบนแท่งคือจำนวนเรื่องและสัดส่วน ยิ่งแท่งด้านซ้าย (สีเขียว) สูง แปลว่างานส่วนใหญ่เสร็จเร็ว แท่งสีแดงคือเรื่องที่ใช้เวลาเกินเกณฑ์ 120 วัน']};
 function chartInfo(id){var x=CHART_INFO[id];openDD({kicker:'วิธีอ่านกราฟ',title:x[0],text:x[1]+'<br><br>💡 คลิกแท่งหรือส่วนของกราฟ เพื่อดูรายชื่อเรื่องในกลุ่มนั้น'});}
 
-/* ================= 3D เส้นทางงาน 4 ขั้น ================= */
-var F3POS=[[12,36],[37,70],[63,36],[88,70]],F3POS_M=[[20,34],[40,70],[60,34],[80,70]];
+/* ================= เส้นทางการกำกับติดตาม 4 ขั้น ================= */
+var FL={t:0,run:true,raf:null,pts:[],last:0,user:false};
+var FLMETA=[
+ {icon:'📝',sub:'ส่งบันทึกข้อความเข้าระบบ'},
+ {icon:'✍️',sub:'ผู้บริหารพิจารณาอนุมัติ'},
+ {icon:'🛠️',sub:'หน่วยงานผู้รับผิดชอบดำเนินการ'},
+ {icon:'✅',sub:'ปิดเรื่องพร้อมวันที่แล้วเสร็จ'}];
+function flAvg(arr){return arr.length?arr.reduce(function(a,b){return a+b;},0)/arr.length:0;}
 function renderFlow3d(){
- var floor=document.getElementById('f3Floor');if(!floor)return;
- var narrow=window.innerWidth<760;floor.parentNode.parentNode.classList.toggle('narrow',narrow);
- var POS=narrow?F3POS_M:F3POS;
- floor.querySelectorAll('.f3-st').forEach(function(x){x.remove();});
+ var cards=document.getElementById('flCards');if(!cards)return;
  var sc=[0,0,0,0,0];DATA.forEach(function(d){sc[stepOfD(d)]++;});
- var mx=Math.max(1,sc[1],sc[2],sc[3],sc[4]);
- STEPDEF.forEach(function(st,i){
-  var h=Math.round(18+sc[st.n]/mx*120);
-  var b=document.createElement('button');b.className='f3-st';b.type='button';
-  b.style.cssText='left:'+POS[i][0]+'%;top:'+POS[i][1]+'%;--c:'+st.c+';--c2:'+st.c2+';--h:'+h+'px';
-  b.setAttribute('aria-label','ขั้นที่ '+st.n+' '+st.label+' '+sc[st.n]+' เรื่อง — ดูรายชื่อ');
-  b.innerHTML='<span class="f3-pad"></span><span class="f3-box"><i class="l"></i><i class="r"></i><i class="f"></i><i class="t"></i></span>'+
-   '<span class="f3-lab"><b>'+sc[st.n]+'</b><span>'+st.n+' · '+st.label+'</span></span>';
-  b.onclick=function(){openStep(st.n);};
-  floor.appendChild(b);
- });
- var open=DATA.length-sc[4];
- document.getElementById('f3Total').innerHTML='<b>'+open+'</b>เรื่องที่ยังต้องติดตาม<br>จากทั้งหมด '+DATA.length+' เรื่อง';
- document.getElementById('f3Legend').innerHTML=STEPDEF.map(function(st){
-  return '<button type="button" style="--c:'+st.c+'" onclick="openStep('+st.n+')"><b>'+st.n+'. '+st.label+' · '+sc[st.n]+' เรื่อง</b><small>'+st.desc+'</small></button>';}).join('');
+ var n=DATA.length,open=n-sc[4],rate=n?sc[4]/n*100:0;
+ var dn=DATA.filter(function(d){return d.done;}),avgDone=flAvg(dn.map(function(d){return d.days;}));
+ var appr=DATA.filter(function(d){return d.dApp&&d.dSub;}).map(function(d){return Math.max(0,Math.round((d.dApp-d.dSub)/864e5));});
+ var working=DATA.filter(function(d){return stepOfD(d)===3;}),oldest=working.reduce(function(m,d){return Math.max(m,d.days);},0);
+ var latest=DATA.reduce(function(m,d){return d.dSub&&(!m||d.dSub>m)?d.dSub:m;},null);
+ document.getElementById('flChips').innerHTML=
+  '<span style="--c:#ff5470">ลำดับการดำเนินงาน <b>4 ขั้นตอน</b></span>'+
+  '<span style="--c:#0b63e5">บันทึกข้อความทั้งหมด <b>'+n+' เรื่อง</b></span>'+
+  '<span style="--c:#6d5efc">ยังต้องติดตาม <b>'+open+' เรื่อง</b></span>'+
+  '<span style="--c:#12c26a">อัตราความสำเร็จ <b>'+nf(rate,0)+'%</b></span>'+
+  '<span style="--c:#f5a524">เฉลี่ยจนแล้วเสร็จ <b>'+nf(avgDone,1)+' วัน</b></span>';
+ var lines=[
+  ['รอผู้บริหารพิจารณาขณะนี้','เรื่องล่าสุดเสนอ '+(latest?fmt(latest):'—')],
+  ['อนุมัติแล้ว รอเริ่มดำเนินการ','อนุมัติเฉลี่ย '+nf(flAvg(appr),1)+' วันหลังเสนอ'],
+  ['กำลังดำเนินการขณะนี้',working.length?'ค้างนานสุด '+oldest+' วัน':'ไม่มีงานค้างในขั้นนี้'],
+  ['ปิดเรื่องแล้ว · สำเร็จ '+nf(rate,0)+'%','ใช้เวลาเฉลี่ย '+nf(avgDone,1)+' วัน/เรื่อง']];
+ cards.innerHTML=STEPDEF.map(function(st,i){
+  return '<button type="button" class="fl2-card" data-s="'+st.n+'" style="--c:'+st.c2+'" onclick="openStep('+st.n+')" aria-label="ขั้นที่ '+st.n+' '+st.label+' '+sc[st.n]+' เรื่อง ดูรายชื่อ">'+
+   '<span class="fl2-badge" style="background:'+st.c+'">'+(i===0?'เริ่ม · ':'')+st.n+(i===3?' · ปิดเรื่อง':'')+'</span>'+
+   '<h4>'+FLMETA[i].icon+' '+st.label+'</h4><div class="sub">'+FLMETA[i].sub+'</div>'+
+   '<div class="big">'+sc[st.n]+'<small>เรื่อง</small></div>'+
+   '<div class="ln">'+lines[i][0]+'</div><div class="ln m">'+lines[i][1]+'</div>'+
+   '<span class="more">ดูรายชื่อเรื่อง ›</span></button>';}).join('');
+ var cubes=document.getElementById('flCubes');
+ cubes.innerHTML=STEPDEF.map(function(st,i){
+  return '<button type="button" class="fl2-cube" data-s="'+st.n+'" style="--c:'+st.c+';--c2:'+st.c2+';--i:'+i+'" onclick="openStep('+st.n+')" aria-label="ขั้นที่ '+st.n+' '+st.label+'">'+
+   '<span class="shadow"></span><span class="wrap"><span class="cb"><i class="fc left"></i><i class="fc right"></i><i class="fc top"></i><i class="fc front">'+st.n+'</i></span></span></button>';}).join('');
+ flLayout();
+ if(!FL.raf&&!FL.user){FL.run=!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);flBtn();}
+ flStart();
 }
+/* วางกล่อง เส้นทาง และเส้นเชื่อมตามตำแหน่งการ์ดจริง */
+function flLayout(){
+ var board=document.getElementById('flBoard'),svg=document.getElementById('flSvg');if(!board||!svg)return;
+ var br=board.getBoundingClientRect();if(!br.width)return;
+ var cards=board.querySelectorAll('.fl2-card'),cubes=board.querySelectorAll('.fl2-cube');
+ var H=br.height,base=H-26,rise=26,pts=[],conn='';
+ cards.forEach(function(c,i){var r=c.getBoundingClientRect();
+  var x=r.left-br.left+r.width/2,y=base-i*rise;pts.push([x,y]);
+  cubes[i].style.left=x+'px';cubes[i].style.top=y+'px';
+  var col=STEPDEF[i].c2;
+  conn+='<line x1="'+x+'" y1="'+(r.bottom-br.top)+'" x2="'+x+'" y2="'+(y-86)+'" stroke="'+col+'" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="3 4"/>';});
+ FL.pts=pts;
+ var x0=8,x1=br.width-8,slope=(pts[3][1]-pts[0][1])/(pts[3][0]-pts[0][0]);
+ var y0=pts[0][1]+(x0-pts[0][0])*slope,y1=pts[0][1]+(x1-pts[0][0])*slope;
+ var seg='';for(var i=0;i<3;i++){seg+='<line x1="'+pts[i][0]+'" y1="'+pts[i][1]+'" x2="'+pts[i+1][0]+'" y2="'+pts[i+1][1]+'" stroke="'+STEPDEF[i].c2+'" stroke-width="3" stroke-dasharray="7 6" stroke-linecap="round"><animate attributeName="stroke-dashoffset" from="26" to="0" dur="1.2s" repeatCount="indefinite"/></line>';}
+ var dots=pts.map(function(p,i){return '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="6" fill="#fff" stroke="'+STEPDEF[i].c2+'" stroke-width="3"/>';}).join('');
+ svg.setAttribute('viewBox','0 0 '+br.width+' '+H);
+ svg.innerHTML=conn+'<line x1="'+x0+'" y1="'+y0+'" x2="'+x1+'" y2="'+y1+'" stroke="#c9d8f2" stroke-width="16" stroke-linecap="round" opacity=".7"/>'+seg+dots+
+  '<circle id="flDot" r="8" fill="#fff" stroke="#ff5470" stroke-width="4"/><circle id="flHalo" r="16" fill="#ff5470" opacity=".18"/>';
+ flDraw();
+}
+/* จุดเคลื่อนที่: หยุดที่แต่ละขั้น 1.4 วิ แล้วเดินต่อ 1.1 วิ วนรอบ */
+var FL_STOP=1400,FL_GO=1100;
+function flDraw(){
+ var p=FL.pts;if(p.length<4)return;
+ var cyc=4*FL_STOP+3*FL_GO+600,t=FL.t%cyc,pos,act=0,acc=0;
+ for(var i=0;i<4;i++){
+  if(t<acc+FL_STOP){pos=p[i];act=i;break;}acc+=FL_STOP;
+  if(i<3&&t<acc+FL_GO){var k=(t-acc)/FL_GO;k=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;pos=[p[i][0]+(p[i+1][0]-p[i][0])*k,p[i][1]+(p[i+1][1]-p[i][1])*k];act=k<.5?i:i+1;break;}
+  if(i<3)acc+=FL_GO;
+ }
+ if(!pos){pos=p[3];act=3;}
+ var d=document.getElementById('flDot'),h=document.getElementById('flHalo');
+ if(d){d.setAttribute('cx',pos[0]);d.setAttribute('cy',pos[1]);h.setAttribute('cx',pos[0]);h.setAttribute('cy',pos[1]);h.setAttribute('r',13+Math.sin(FL.t/180)*4);}
+ document.querySelectorAll('.fl2-card,.fl2-cube').forEach(function(el){el.classList.toggle('on',+el.dataset.s===act+1);});
+}
+function flTick(ts){if(!FL.run){FL.raf=null;return;}if(FL.last)FL.t+=Math.min(64,ts-FL.last);FL.last=ts;flDraw();FL.raf=requestAnimationFrame(flTick);}
+function flStart(){if(FL.run&&!FL.raf){FL.last=0;FL.raf=requestAnimationFrame(flTick);}}
+function flBtn(){var b=document.getElementById('flPause');if(b)b.textContent=FL.run?'⏸ หยุดการเคลื่อนไหว':'▶ เล่นการเคลื่อนไหว';
+ document.getElementById('flow3d').classList.toggle('paused',!FL.run);
+ var sv=document.getElementById('flSvg');if(sv&&sv.pauseAnimations){if(FL.run)sv.unpauseAnimations();else sv.pauseAnimations();}}
+function flToggle(){FL.user=true;FL.run=!FL.run;flBtn();if(FL.run)flStart();}
+var flRT;window.addEventListener('resize',function(){clearTimeout(flRT);flRT=setTimeout(flLayout,150);});
+if(window.IntersectionObserver){new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)flLayout();});},{threshold:.05})
+ .observe(document.getElementById('flow3d'));}
 
 /* ================= CHARTS ================= */
 function renderCharts(){
