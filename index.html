@@ -7,9 +7,17 @@
 <meta name="description" content="ระบบกำกับติดตามสถานะบันทึกข้อความ งานโสตทัศนศึกษา คณะวิศวกรรมศาสตร์ มหาวิทยาลัยมหาสารคาม พัฒนาโดย นายปัญญา จีระฉัตร">
 <meta name="author" content="ปัญญา จีระฉัตร">
 <link rel="icon" href="logo.png">
+<script>
+/* ★ เริ่มดึงข้อมูลสดทันทีที่หน้าเริ่มโหลด (ก่อนฟอนต์ ไลบรารี และเนื้อหาอื่น) เพื่อให้ได้ข้อมูลเร็วที่สุด */
+window.WEBAPP_URL='https://script.google.com/macros/s/AKfycbwlwNLXiJD35wG9khK4gs9bOUY2jIKUhBtWZtrBpBRaBfW4HNY18T2wcglpJEfeGEV1/exec';
+window.__dwmsP=fetch(WEBAPP_URL+'?api=public&_='+Date.now(),{cache:'no-store',credentials:'omit'})
+ .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.text();});
+window.__dwmsP.catch(function(){});
+</script>
+<link rel="preconnect" href="https://script.google.com"><link rel="preconnect" href="https://script.googleusercontent.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" onload="window.__chartReady&&window.__chartReady()"></script>
 <style>
 :root{
  --blue:#0b63e5;--blue-dk:#083f9c;--blue-lt:#22b8ff;--soft:#eef5ff;--soft2:#f7fbff;
@@ -258,6 +266,10 @@ tbody tr:hover{background:var(--soft)}
 .prev{margin-top:17px;border-top:1px solid var(--line);padding-top:15px}
 .prev iframe{width:100%;height:430px;border:1px solid var(--line);border-radius:13px;background:#fafcff}
 .chgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+/* ---- กำลังโหลดครั้งแรก: ไม่แสดงตัวเลขปลอม ---- */
+body.loading [data-n],body.loading .kc-say{color:transparent!important;background:linear-gradient(90deg,#e8eef9 25%,#f4f7fd 50%,#e8eef9 75%);background-size:200% 100%;animation:skel 1.2s linear infinite;border-radius:8px}
+tr.sk td{padding:14px 12px}tr.sk i{display:block;height:14px;border-radius:7px;background:linear-gradient(90deg,#e8eef9 25%,#f4f7fd 50%,#e8eef9 75%);background-size:200% 100%;animation:skel 1.2s linear infinite}
+@keyframes skel{to{background-position:-200% 0}}
 /* ---- KPI charts: 2x2 กะทัดรัด ---- */
 .kc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:16px}
 .kc{display:flex;flex-direction:column;margin-bottom:0}
@@ -583,10 +595,9 @@ tbody tr:hover{background:var(--soft)}
 
 <script>
 /* ================= CONFIG ================= */
-var SHEET_ID='1qTTLdfwnMaDyomcaGcc_DbiAqbLHTjTFPeZWi5NlaBk',GID='0';
 /* ★ URL /exec ของ Apps Script (ระบบผู้ดูแล) — ใช้ 3 อย่าง: ดึงข้อมูล (?api=public), QR ติดตามสถานะ (?track=เลขที่รับ), ปุ่มผู้ดูแลระบบ
    หน้านี้ไม่ลิงก์ไปที่ Google Sheet แล้ว จึงตั้งชีตเป็น "จำกัด" (ส่วนตัว) ได้ */
-var WEBAPP_URL='https://script.google.com/macros/s/AKfycbwlwNLXiJD35wG9khK4gs9bOUY2jIKUhBtWZtrBpBRaBfW4HNY18T2wcglpJEfeGEV1/exec';
+var WEBAPP_URL=window.WEBAPP_URL;
 function trackUrl(d){return d&&d.rid?WEBAPP_URL+'?track='+encodeURIComponent(d.rid):'';}
 var PAPER=4, CO2=0.0086, MINS=45, URGENT_DAY=60;
 var LABOR_RATE=300;   /* บาท/ชั่วโมง */
@@ -635,36 +646,7 @@ function closeAdminFrame(){
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeAdminChooser();});
 
 /* ========= ข้อมูลสำรอง (ใช้เมื่อดึงสดไม่ได้) ========= */
-var FB_COLS=['วันที่','ไฟล์','เรื่อง','วันที่อนุมัติ','ระยะเวลา (วัน)','สถานะ','วันที่งานสำเร็จ','ผู้รับผิดชอบ','ประเภทบันทึกข้อความ','หมายเหตุ'];
-var FALLBACK=[
-["27/11/2025","https://drive.google.com/file/d/1MEMO0001AVSMSUENG0000000001/view","ขออนุมัติจัดซื้อครุภัณฑ์โสตทัศนูปกรณ์ประจำห้องเรียนรวม","2/12/2025",5,"สำเร็จ","7/12/2025","งานพัสดุ","ภายใน","ดำเนินการจัดซื้อเรียบร้อย"],
-["3/12/2025","https://drive.google.com/file/d/1MEMO0002AVSMSUENG0000000002/view","ขออนุมัติซ่อมบำรุงระบบเครื่องเสียงห้องประชุมคณะ","9/12/2025",12,"สำเร็จ","21/12/2025","งานพัสดุ","ภายใน","ซ่อมโดยผู้รับจ้างภายนอก"],
-["15/12/2025","https://drive.google.com/file/d/1MEMO0003AVSMSUENG0000000003/view","ขอความอนุเคราะห์บันทึกวีดิทัศน์พิธีพระราชทานปริญญาบัตร","18/12/2025",8,"สำเร็จ","26/12/2025","งานโสตทัศนศึกษา","ภายใน","ส่งไฟล์ให้หน่วยงานแล้ว"],
-["6/1/2026","https://drive.google.com/file/d/1MEMO0004AVSMSUENG0000000004/view","ขออนุมัติเบิกจ่ายค่าตอบแทนปฏิบัติงานนอกเวลาราชการ","8/1/2026",11,"สำเร็จ","19/1/2026","งานพัสดุ","ภายใน","เบิกจ่ายเรียบร้อย"],
-["19/1/2026","https://drive.google.com/file/d/1MEMO0005AVSMSUENG0000000005/view","ขออนุมัติปรับปรุงระบบเครือข่ายและสัญญาณภาพห้องปฏิบัติการ","26/1/2026",236,"อยู่ระหว่างดำเนินการ","","งานพัสดุ","ภายใน","รอผลพิจารณาจากส่วนกลาง ควรเร่งติดตาม"],
-["2/2/2026","https://drive.google.com/file/d/1MEMO0006AVSMSUENG0000000006/view","ขอความอนุเคราะห์ถ่ายภาพกิจกรรมปฐมนิเทศนิสิตใหม่","5/2/2026",7,"สำเร็จ","12/2/2026","งานโสตทัศนศึกษา","ภายใน","ส่งภาพขึ้นคลังภาพคณะแล้ว"],
-["16/2/2026","https://drive.google.com/file/d/1MEMO0007AVSMSUENG0000000007/view","ขออนุมัติจัดทำสื่อประชาสัมพันธ์หลักสูตรคณะวิศวกรรมศาสตร์","20/2/2026",25,"สำเร็จ","17/3/2026","งานประชาสัมพันธ์","ภายใน","เผยแพร่ผ่านสื่อออนไลน์"],
-["2/3/2026","https://drive.google.com/file/d/1MEMO0008AVSMSUENG0000000008/view","ขอเชิญวิทยากรบรรยายการผลิตสื่อดิจิทัลเพื่อการเรียนการสอน","6/3/2026",18,"สำเร็จ","24/3/2026","งานโสตทัศนศึกษา","ภายนอก","วิทยากรตอบรับเรียบร้อย"],
-["12/3/2026","https://drive.google.com/file/d/1MEMO0009AVSMSUENG0000000009/view","ขออนุมัติจัดซื้อวัสดุสิ้นเปลืองงานโสตทัศนศึกษา","17/3/2026",9,"สำเร็จ","26/3/2026","งานพัสดุ","ภายใน","รับของครบถ้วน"],
-["24/3/2026","https://drive.google.com/file/d/1MEMO0010AVSMSUENG0000000010/view","ขอความอนุเคราะห์ใช้ห้องประชุมและอุปกรณ์โสตทัศนูปกรณ์","27/3/2026",6,"สำเร็จ","2/4/2026","งานอาคารสถานที่","ภายใน","อนุมัติใช้ห้องตามกำหนด"],
-["7/4/2026","https://drive.google.com/file/d/1MEMO0011AVSMSUENG0000000011/view","ขออนุมัติเดินทางไปราชการเพื่อบันทึกภาพกิจกรรมนอกสถานที่","10/4/2026",14,"สำเร็จ","24/4/2026","งานโสตทัศนศึกษา","ภายนอก","เบิกค่าเดินทางเรียบร้อย"],
-["21/4/2026","https://drive.google.com/file/d/1MEMO0012AVSMSUENG0000000012/view","ขออนุมัติจ้างเหมาบริการถ่ายทอดสดกิจกรรมคณะ","28/4/2026",203,"อยู่ระหว่างดำเนินการ","","งานพัสดุ","ภายนอก","อยู่ระหว่างจัดทำสัญญาจ้าง ควรเร่งติดตาม"],
-["5/5/2026","https://drive.google.com/file/d/1MEMO0013AVSMSUENG0000000013/view","ขอความอนุเคราะห์ประชาสัมพันธ์กิจกรรมผ่านสื่อของมหาวิทยาลัย","8/5/2026",10,"สำเร็จ","18/5/2026","งานประชาสัมพันธ์","ภายใน","เผยแพร่แล้วทุกช่องทาง"],
-["19/5/2026","https://drive.google.com/file/d/1MEMO0014AVSMSUENG0000000014/view","ขออนุมัติซ่อมแซมโปรเจกเตอร์ห้องเรียนอาคารเรียนรวม","22/5/2026",16,"สำเร็จ","7/6/2026","งานพัสดุ","ภายใน","เปลี่ยนหลอดภาพใหม่"],
-["2/6/2026","https://drive.google.com/file/d/1MEMO0015AVSMSUENG0000000015/view","ขออนุมัติแต่งตั้งคณะกรรมการตรวจรับพัสดุงานโสตทัศนูปกรณ์","5/6/2026",7,"สำเร็จ","12/6/2026","งานพัสดุ","ภายใน","แต่งตั้งเรียบร้อย"],
-["9/6/2026","https://drive.google.com/file/d/1MEMO0016AVSMSUENG0000000016/view","ขอความอนุเคราะห์บุคลากรปฏิบัติงานควบคุมระบบเสียงงานสัมมนา","12/6/2026",8,"สำเร็จ","20/6/2026","งานโสตทัศนศึกษา","ภายใน","จัดบุคลากรตามที่ร้องขอ"],
-["22/6/2026","https://drive.google.com/file/d/1MEMO0017AVSMSUENG0000000017/view","ขออนุมัติจัดทำวีดิทัศน์แนะนำคณะวิศวกรรมศาสตร์","26/6/2026",4,"สำเร็จ","30/6/2026","งานประชาสัมพันธ์","ภายใน","เผยแพร่บนเว็บไซต์คณะ"],
-["6/7/2026","https://drive.google.com/file/d/1MEMO0018AVSMSUENG0000000018/view","ขออนุมัติจัดอบรมการใช้งานระบบห้องเรียนอัจฉริยะ","10/7/2026",21,"สำเร็จ","31/7/2026","งานโสตทัศนศึกษา","ภายใน","จัดอบรมครบทุกรุ่น"],
-["15/7/2026","https://drive.google.com/file/d/1MEMO0019AVSMSUENG0000000019/view","ขอความอนุเคราะห์ยืมครุภัณฑ์โสตทัศนูปกรณ์ระหว่างหน่วยงาน","20/7/2026",12,"สำเร็จ","1/8/2026","งานพัสดุ","ภายนอก","คืนครุภัณฑ์ครบถ้วน"],
-["27/7/2026","https://drive.google.com/file/d/1MEMO0020AVSMSUENG0000000020/view","ขออนุมัติเบิกค่าใช้จ่ายในการผลิตสื่อการเรียนการสอนออนไลน์","31/7/2026",15,"สำเร็จ","15/8/2026","งานพัสดุ","ภายใน","เบิกจ่ายตามระเบียบ"],
-["10/8/2026","https://drive.google.com/file/d/1MEMO0021AVSMSUENG0000000021/view","ขออนุมัติปรับปรุงห้องสตูดิโอบันทึกสื่อการสอน","14/8/2026",120,"อยู่ระหว่างดำเนินการ","","งานอาคารสถานที่","ภายใน","รออนุมัติงบประมาณ ควรเร่งติดตาม"],
-["17/8/2026","https://drive.google.com/file/d/1MEMO0022AVSMSUENG0000000022/view","ขอความอนุเคราะห์ข้อมูลเพื่อจัดทำรายงานประจำปีงานโสตทัศนศึกษา","20/8/2026",9,"สำเร็จ","29/8/2026","งานโสตทัศนศึกษา","ภายใน","รวบรวมข้อมูลครบถ้วน"],
-["24/8/2026","https://drive.google.com/file/d/1MEMO0023AVSMSUENG0000000023/view","ขออนุมัติจัดซื้อกล้องบันทึกภาพเคลื่อนไหวความละเอียดสูง","28/8/2026",6,"สำเร็จ","3/9/2026","งานพัสดุ","ภายใน","รับมอบครุภัณฑ์แล้ว"],
-["28/8/2026","https://drive.google.com/file/d/1MEMO0024AVSMSUENG0000000024/view","ขอความอนุเคราะห์ถ่ายทอดสดพิธีเปิดการแข่งขันวิชาการ","1/9/2026",8,"สำเร็จ","9/9/2026","งานโสตทัศนศึกษา","ภายนอก","ถ่ายทอดสดสำเร็จตามกำหนด"],
-["1/9/2026","https://drive.google.com/file/d/1MEMO0025AVSMSUENG0000000025/view","ขออนุมัติจัดทำระบบติดตามสถานะบันทึกข้อความออนไลน์","3/9/2026",6,"อยู่ระหว่างดำเนินการ","","งานโสตทัศนศึกษา","ภายใน","อยู่ระหว่างพัฒนาระบบ"],
-["3/9/2026","https://drive.google.com/file/d/1MEMO0026AVSMSUENG0000000026/view","ขอความอนุเคราะห์ประสานงานผลิตสื่อร่วมกับหน่วยงานภายนอก","5/9/2026",4,"สำเร็จ","9/9/2026","งานประชาสัมพันธ์","ภายนอก","ประสานงานเรียบร้อย"],
-["5/9/2026","https://drive.google.com/file/d/1MEMO0027AVSMSUENG0000000027/view","ขออนุมัติจัดเก็บและสำรองข้อมูลสื่อดิจิทัลของคณะ","8/9/2026",5,"สำเร็จ","9/9/2026","งานโสตทัศนศึกษา","ภายใน","สำรองข้อมูลขึ้นคลาวด์แล้ว"]
-];
+/* (ลบข้อมูลสำรองที่ฝังในไฟล์ออกแล้ว — เคยทำให้ผู้ชมเห็นข้อมูลเก่า 27 รายการก่อนข้อมูลจริง) */
 
 var DATA=[],VIEW=[],curr=null,curMode='file',charts={},prevOn=false;
 
@@ -759,54 +741,57 @@ function setSrc(kind,msg,note){
  if(note){nb.innerHTML=note;nb.classList.add('on');}else{nb.classList.remove('on');}
 }
 
-/* ================= LOAD ================= */
-function loadLocal(){
- DATA=build(FALLBACK.map(function(r){var o={};FB_COLS.forEach(function(c,j){o[c]=r[j];});return o;}));
- initFilters();render();
+/* ================= LOAD =================
+   ลำดับการแสดงผล (เร็วและไม่ทำให้เข้าใจผิด)
+   1) ถ้าเครื่องนี้เคยเปิด → แสดงข้อมูลชุดล่าสุดที่จำไว้ทันที พร้อมบอกเวลาและ "กำลังอัปเดต"
+      ถ้าไม่เคย → แสดงสถานะกำลังโหลด (ไม่แสดงตัวเลขปลอม)
+   2) ข้อมูลสดที่เริ่มดึงตั้งแต่ <head> มาถึง → แสดงผลทันที (วาดใหม่เฉพาะเมื่อข้อมูลเปลี่ยนจริง) */
+var CACHE_KEY='dwms_pub_v2',LAST_RAW='',LAST_OK=0,FIRST=true;
+function hhmm(t){return new Date(t).toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'});}
+function applyPayload(raw){
+ if(raw===LAST_RAW)return false;                          /* ข้อมูลเหมือนเดิม ไม่ต้องวาดใหม่ */
+ var j=JSON.parse(raw);
+ if(!j||!j.ok||!j.cols)throw new Error(j&&j.error||'ระบบตอบกลับผิดรูปแบบ');
+ var objs=j.rows.map(function(r){var o={};j.cols.forEach(function(c,k){o[c]=r[k];});return o;});
+ DATA=build(objs);LAST_RAW=raw;
+ document.body.classList.remove('loading');
+ initFilters();renderAll();
+ return true;
 }
-/* ดึงข้อมูลผ่าน Apps Script (ชีตเป็นส่วนตัวได้) — ถ้าไม่สำเร็จจึงลองอ่านชีตตรง (ต้องแชร์ชีตแบบมีลิงก์) */
-function loadApi(){
- return fetch(WEBAPP_URL+'?api=public&_='+Date.now(),{cache:'no-store',credentials:'omit'}).then(function(res){
-  if(!res.ok)throw new Error('HTTP '+res.status);return res.json();
- }).then(function(j){
-  if(!j||!j.ok)throw new Error(j&&j.error||'ระบบตอบกลับผิดรูปแบบ');
-  var objs=j.rows.map(function(r){var o={};j.cols.forEach(function(c,k){o[c]=r[k];});return o;});
-  var built=build(objs);if(!built.length)throw new Error('ไม่มีข้อมูล');
-  DATA=built;initFilters();render();
-  setSrc('live','ข้อมูลสด · อัปเดต '+new Date().toLocaleTimeString('th-TH'),'');
- });
+function fetchRaw(){
+ if(FIRST&&window.__dwmsP){FIRST=false;return window.__dwmsP;}
+ return fetch(WEBAPP_URL+'?api=public&_='+Date.now(),{cache:'no-store',credentials:'omit'})
+  .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.text();});
 }
 function loadLive(manual){
- loadApi().catch(function(){loadSheet(manual);});
-}
-function loadSheet(manual){
- var url='https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/gviz/tq?tqx=out:json&gid='+GID+'&headers=1&_='+Date.now();
- fetch(url,{cache:'no-store'}).then(function(res){
-  if(!res.ok)throw new Error('HTTP '+res.status);
-  return res.text();
- }).then(function(txt){
-  var json=JSON.parse(txt.substring(txt.indexOf('{'),txt.lastIndexOf('}')+1));
-  var cols=json.table.cols.map(function(c){return clean(c.label);});
-  var rows=json.table.rows||[];
-  var allEmpty=cols.every(function(c){return !c;});
-  if(allEmpty&&rows.length){cols=rows[0].c.map(function(c){return c?clean(c.v):'';});rows=rows.slice(1);}
-  if(!rows.length)throw new Error('ไม่มีข้อมูลในชีต');
-  var objs=rows.map(function(r){var o={};cols.forEach(function(c,j){
-   var cc=r.c[j];o[c]=cc?(cc.f!=null?cc.f:cc.v):null;});return o;});
-  var built=build(objs);
-  if(!built.length)throw new Error('อ่านข้อมูลไม่ได้');
-  DATA=built;initFilters();render();
-  setSrc('live','ข้อมูลสด · อัปเดต '+new Date().toLocaleTimeString('th-TH'),'');
+ if(manual)setSrc('local','กำลังดึงข้อมูลสด…','');
+ return fetchRaw().then(function(raw){
+  applyPayload(raw);LAST_OK=Date.now();
+  try{localStorage.setItem(CACHE_KEY,JSON.stringify({t:LAST_OK,raw:raw}));}catch(e){}
+  setSrc('live','ข้อมูลสด · อัปเดต '+hhmm(LAST_OK),'');
  }).catch(function(e){
-  setSrc('local','ข้อมูลสำรองในไฟล์ ('+DATA.length+' รายการ)',
-   '<b>⚠ ยังไม่ได้เชื่อมต่อ Google Sheets สด</b> — ขณะนี้แสดงผลจากข้อมูลสำรองที่ฝังไว้ในไฟล์<br>'+
-   'สาเหตุที่พบบ่อย: <b>(1)</b> เปิดไฟล์แบบ <code>file://</code> หรือในหน้าพรีวิวที่บล็อก CORS → '+
-   'ต้องเปิดผ่าน <b>GitHub Pages (https://)</b> จึงจะดึงสดได้ '+
-   '<b>(2)</b> ชีตยังไม่ได้ตั้งเป็น "ทุกคนที่มีลิงก์ = ผู้มีสิทธิ์อ่าน" '+
-   '<b>(3)</b> เครือข่ายองค์กรบล็อก docs.google.com<br>'+
-   '<span style="opacity:.85">รายละเอียด: '+esc(e.message)+'</span>');
-  if(manual)alert('ยังเชื่อมต่อชีตสดไม่ได้ในสภาพแวดล้อมนี้\nระบบใช้ข้อมูลสำรองแทน — เมื่อเปิดผ่าน GitHub Pages จะดึงสดได้อัตโนมัติ');
+  if(DATA.length){setSrc('err','แสดงข้อมูลเมื่อ '+hhmm(LAST_OK||Date.now())+' · เชื่อมต่อไม่ได้ จะลองใหม่อัตโนมัติ','');}
+  else{
+   document.body.classList.remove('loading');
+   setSrc('err','ยังโหลดข้อมูลไม่ได้',
+    '<b>⚠ ยังดึงข้อมูลจากระบบไม่ได้</b> — ตรวจสอบอินเทอร์เน็ต แล้วกด <b>🔄 ดึงข้อมูลสด</b> อีกครั้ง'+
+    '<br><span style="opacity:.85">รายละเอียด: '+esc(e.message)+'</span>');
+   document.getElementById('tb').innerHTML='<tr><td colspan="20" style="text-align:center;padding:28px;color:var(--muted)">ยังโหลดข้อมูลไม่ได้ — กด 🔄 ดึงข้อมูลสด</td></tr>';
+  }
+  if(manual)alert('ยังดึงข้อมูลสดไม่ได้ ลองใหม่อีกครั้ง\n'+e.message);
  });
+}
+function bootData(){
+ var c=null;try{c=JSON.parse(localStorage.getItem(CACHE_KEY)||'null');}catch(e){}
+ if(c&&c.raw){
+  try{applyPayload(c.raw);LAST_OK=c.t;setSrc('local','ข้อมูลเมื่อ '+hhmm(c.t)+' · กำลังอัปเดตเป็นข้อมูลล่าสุด…','');}catch(e){c=null;}
+ }
+ if(!c||!c.raw){
+  setSrc('local','กำลังโหลดข้อมูลล่าสุด…','');
+  document.getElementById('navBadge').textContent='…';
+  document.getElementById('tb').innerHTML=Array.from({length:6},function(){return '<tr class="sk"><td colspan="20"><i></i></td></tr>';}).join('');
+ }
+ loadLive(false);
 }
 
 /* ================= FILTER ================= */
@@ -852,12 +837,15 @@ function applyFilter(){
 }
 
 /* ================= RENDER ================= */
-function render(){
+/* ข้อมูลเปลี่ยน → วาดทุกส่วน · ตัวกรองเปลี่ยน → วาดเฉพาะตารางและชิป (กราฟ/KPI/เส้นทาง ไม่ขึ้นกับตัวกรอง) */
+function renderAll(){
  VIEW=applyFilter();
  renderHero();renderTable();renderChips();renderAlert();renderKPI();renderGreen();renderCharts();renderFlow3d();
  document.querySelectorAll('[data-n]').forEach(function(e){e.removeAttribute('data-done');});
  setTimeout(function(){animateNums();},60);
 }
+function render(){VIEW=applyFilter();renderTable();renderChips();}
+window.__chartReady=function(){if(DATA.length)renderCharts();};
 function renderHero(){
  var n=DATA.length,
   done=DATA.filter(function(d){return d.done;}).length,
@@ -1150,6 +1138,7 @@ if(window.IntersectionObserver){new IntersectionObserver(function(es){es.forEach
 
 /* ================= CHARTS ================= */
 function renderCharts(){
+ if(typeof Chart==='undefined')return;                  /* ไลบรารีกราฟยังโหลดไม่เสร็จ — จะวาดเองเมื่อพร้อม */
  function mk(id,cfg){
   if(charts[id])charts[id].destroy();
   var el=document.getElementById(id);if(el)charts[id]=new Chart(el,cfg);}
@@ -1370,19 +1359,18 @@ window.addEventListener('scroll',function(){
  links.forEach(function(a,i){a.classList.toggle('on',i===cur);});
 },{passive:true});
 
-['q','fStatus','fType','fOwner','fAlert','fSort'].forEach(function(id){
- document.getElementById(id).addEventListener(id==='q'?'input':'change',render);});
+var qT;['q','fStatus','fType','fOwner','fAlert','fSort'].forEach(function(id){
+ document.getElementById(id).addEventListener(id==='q'?'input':'change',id==='q'?function(){clearTimeout(qT);qT=setTimeout(render,150);}:render);});
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeM();});
 
 /* ================= BOOT ================= */
-loadLocal();
-setSrc('local','ข้อมูลสำรองในไฟล์ ('+DATA.length+' รายการ)','');
+document.body.classList.add('loading');
 observeAll();
-setTimeout(function(){
- document.querySelectorAll('.rv').forEach(function(el){el.classList.add('in');});
- animateNums();},250);
-loadLive(false);
-setInterval(function(){loadLive(false);},300000);
+bootData();
+setTimeout(function(){document.querySelectorAll('.rv').forEach(function(el){el.classList.add('in');});animateNums();},250);
+/* อัปเดตอัตโนมัติทุก 5 นาที เฉพาะตอนที่ผู้ชมเปิดหน้านี้อยู่ · กลับมาที่แท็บแล้วข้อมูลเก่ากว่า 1 นาทีจะอัปเดตทันที */
+setInterval(function(){if(!document.hidden)loadLive(false);},300000);
+document.addEventListener('visibilitychange',function(){if(!document.hidden&&Date.now()-LAST_OK>60000)loadLive(false);});
 </script>
 </body>
 </html>
